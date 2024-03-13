@@ -3,9 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
 import { Dahsboard } from "./pages/Dahsboard";
-import { MyProfile } from "../pages/MyProfile";
-import "./App.css";
 import MyProfile from "./pages/MyProfile";
+import "./App.css";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -33,7 +32,6 @@ function App() {
             <Route path="/" element={<LoginPage />} />
           </>
         )}
-
       </Routes>
     </BrowserRouter>
   );
