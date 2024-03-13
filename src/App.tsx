@@ -5,6 +5,7 @@ import { ApiContextProvider } from "./context/ApiContext";
 import { Dahsboard } from "./pages/Dahsboard";
 import { MyProfile } from "../pages/MyProfile";
 import "./App.css";
+import MyProfile from "./pages/MyProfile";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -32,6 +33,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
           </>
         )}
+
       </Routes>
     </BrowserRouter>
   );
