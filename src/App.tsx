@@ -2,7 +2,8 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
-import logo from "./logo.svg";
+import { Dahsboard } from "./pages/Dahsboard";
+import { MyProfile } from "../pages/MyProfile";
 import "./App.css";
 
 function App() {
@@ -14,37 +15,23 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/">
-          {isAuthenticated ? (
+        {isAuthenticated ? (
+          <>
             <Route
               path="/"
               element={
-                <>
-                  <ApiContextProvider>
-                    <div className="App">
-                      <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo" />
-                        <p>
-                          Edit <code>src/App.tsx</code> and save to reload.
-                        </p>
-                        <a
-                          className="App-link"
-                          href="https://reactjs.org"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Learn React
-                        </a>
-                      </header>
-                    </div>
-                  </ApiContextProvider>
-                </>
+                <ApiContextProvider>
+                  <Dahsboard />
+                </ApiContextProvider>
               }
-            />
-          ) : (
+            ></Route>
+            <Route path="/myProfile" element={<MyProfile />} />
+          </>
+        ) : (
+          <>
             <Route path="/" element={<LoginPage />} />
-          )}
-        </Route>
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );
