@@ -1,16 +1,50 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./styles/components/mainMenu";
+import { useAuth0 } from "@auth0/auth0-react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ApiContextProvider } from "./context/ApiContext";
+import { Dahsboard } from "./pages/Dahsboard";
+import MyProfile from "./pages/MyProfile";
 import MainMenu from "./components/mainMenu";
+import "./styles/components/mainMenu";
+import "./App.css";
+import logo from "./logo.svg";
 
 function App() {
+  const { isAuthenticated, isLoading } = useAuth0();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainMenu />} />
+        {isAuthenticated ? (
+          <>
+            <Route
+              path="/"
+              element={
+                <ApiContextProvider>
+                  <Dahsboard />
+                </ApiContextProvider>
+              }
+            ></Route>
+            <Route path="/myProfile" element={<MyProfile />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<MainMenu />} />
+          </>
+        )}
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
+
+const LoginPage = () => {
+  const { loginWithRedirect } = useAuth0();
+  loginWithRedirect();
+  return <div>Login</div>;
+};
 
 export default App;
