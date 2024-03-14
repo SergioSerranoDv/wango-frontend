@@ -4,10 +4,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
 import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
-import MainMenu from "./components/mainMenu";
-import "./styles/components/mainMenu";
+import MainMenu from "./pages/MainMenu";
+import RegisterForm from "./pages/RegisterForm";
+import "./styles/mainMenu";
 import "./App.css";
-import logo from "./logo.svg";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -24,17 +24,19 @@ function App() {
               path="/"
               element={
                 <ApiContextProvider>
+                  <MainMenu />
                   <Dashboard />
-                  <MyProfile />
                 </ApiContextProvider>
               }
             />
-            <Route path="/myProfile" element={<MyProfile />} />
+            <Route path="/RegisterForm" element={<RegisterForm />} />
+            <Route path="/MyProfile" element={<MyProfile />} />
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/" element={<MainMenu />} />
+            <Route path="/RegisterForm" element={<RegisterForm />} />
+            <Route path="/MyProfile" element={<MyProfile />} />
           </>
         )}
       </Routes>
