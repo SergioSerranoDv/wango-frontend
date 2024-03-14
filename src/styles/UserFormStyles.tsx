@@ -23,11 +23,11 @@ const InputBase = styled.input`
 `;
 
 export const FormWrapper = styled.div`
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   margin: auto;
-  max-width: 800px;
+  max-width: 700px;
 `;
 
 export const Form = styled.form`
@@ -35,11 +35,16 @@ export const Form = styled.form`
   background-color: ${colors.white};
   border-radius: 10px;
   width: 100%;
+  box-sizing: border-box;
 `;
 
-export const FormHeader = styled.p`
+export const FormHeader = styled.h2`
+  margin-top: 56px;
+  margin-bottom: 8px;
   color: ${colors.text};
   text-align: center;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
   font-weight: 550;
 `;
 
@@ -51,14 +56,6 @@ export const Label = styled.label`
   display: block;
   font-weight: bold;
   margin-bottom: ${spacing.small};
-`;
-
-export const InlineContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  box-sizing: border-box;
-  width: 100%;
 `;
 
 export const Dropdown = styled.select`
