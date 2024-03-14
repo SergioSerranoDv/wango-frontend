@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
 import { Dahsboard } from "./pages/Dahsboard";
 import MyProfile from "./pages/MyProfile";
+import MainMenu from "./components/mainMenu";
+import "./styles/components/mainMenu";
 import "./App.css";
 import logo from "./logo.svg";
 
@@ -31,6 +33,7 @@ function App() {
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<MainMenu />} />
           </>
         )}
       </Routes>
