@@ -12,6 +12,8 @@ root.render(
     domain={process.env.REACT_APP_AUTH0_DOMAIN as string}
     authorizationParams={{
       redirect_uri: window.location.origin,
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+      scope: "read:current_user, update:current_user_metadata",
     }}
   >
     <React.StrictMode>

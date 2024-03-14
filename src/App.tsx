@@ -1,7 +1,9 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import logo from "./logo.svg";
+import { ApiContextProvider } from "./context/ApiContext";
+import { Dashboard } from "./pages/Dashboard";
+import MyProfile from "./pages/MyProfile";
 import "./App.css";
 
 function App() {
@@ -9,38 +11,28 @@ function App() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/">
-          {isAuthenticated ? (
+        {isAuthenticated ? (
+          <>
             <Route
               path="/"
               element={
-                <>
-                  <div className="App">
-                    <header className="App-header">
-                      <img src={logo} className="App-logo" alt="logo" />
-                      <p>
-                        Edit <code>src/App.tsx</code> and save to reload.
-                      </p>
-                      <a
-                        className="App-link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Learn React
-                      </a>
-                    </header>
-                  </div>
-                </>
+                <ApiContextProvider>
+                  <Dashboard />
+                  <MyProfile />
+                </ApiContextProvider>
               }
             />
-          ) : (
+            <Route path="/myProfile" element={<MyProfile />} />
+          </>
+        ) : (
+          <>
             <Route path="/" element={<LoginPage />} />
-          )}
-        </Route>
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );
