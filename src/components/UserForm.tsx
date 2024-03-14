@@ -4,7 +4,6 @@ import {
   FormHeader,
   FormField,
   Label,
-  InlineContainer,
   Dropdown,
   DropdownItem,
   IdInput,
@@ -25,23 +24,21 @@ function UserForm() {
 
   return (
     <FormWrapper>
+      <FormHeader>Información de usuario</FormHeader>
       <Form onSubmit={handleSubmit}>
-        <FormHeader>Información de usuario</FormHeader>
-        <InlineContainer>
-          <div style={{ display: "flex", width: "100%", gap: "1em" }}>
-            <FormField style={{ width: "30%" }}>
-              <Label htmlFor="identificationType">Tipo*</Label>
-              <Dropdown style={{ width: "100%" }} id="identificationType" required>
-                <DropdownItem value="CC">CC</DropdownItem>
-                <DropdownItem value="CE">CE</DropdownItem>
-              </Dropdown>
-            </FormField>
-            <FormField style={{ width: "70%" }}>
-              <Label htmlFor="identification">Identificación*</Label>
-              <IdInput style={{ width: "100%" }} id="identification" type="text" required />
-            </FormField>
-          </div>
-        </InlineContainer>
+        <div style={{ display: "flex", width: "100%", gap: "1em" }}>
+          <FormField style={{ width: "20%" }}>
+            <Label htmlFor="identificationType">Tipo*</Label>
+            <Dropdown style={{ width: "100%" }} id="identificationType" required>
+              <DropdownItem value="CC">CC</DropdownItem>
+              <DropdownItem value="CE">CE</DropdownItem>
+            </Dropdown>
+          </FormField>
+          <FormField style={{ width: "80%" }}>
+            <Label htmlFor="identification">Identificación*</Label>
+            <IdInput style={{ width: "100%" }} id="identification" type="text" required />
+          </FormField>
+        </div>
         <FormField>
           <Label htmlFor="name">Nombre*</Label>
           <Input id="name" type="text" required />
