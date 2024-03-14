@@ -4,7 +4,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
 import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
+import MainMenu from "./components/mainMenu";
+import "./styles/components/mainMenu";
 import "./App.css";
+import logo from "./logo.svg";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -31,6 +34,7 @@ function App() {
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/" element={<MainMenu />} />
           </>
         )}
       </Routes>
