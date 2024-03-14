@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ApiContext } from "../context/ApiContext";
-export const Dahsboard = () => {
+export const Dashboard = () => {
   const { backendApiCall } = useContext(ApiContext);
   const getGreetingFromApi = async () => {
     const res = await backendApiCall({ method: "GET", endpoint: "v1/" });
@@ -9,7 +9,7 @@ export const Dahsboard = () => {
 
   return (
     <div>
-      Dahsboard
+      Dashboard
       <button onClick={getGreetingFromApi}>Get Greeting</button>
     </div>
   );
