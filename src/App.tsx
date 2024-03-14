@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
-import { Dahsboard } from "./pages/Dahsboard";
+import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
 import "./App.css";
 
@@ -21,10 +21,11 @@ function App() {
               path="/"
               element={
                 <ApiContextProvider>
-                  <Dahsboard />
+                  <Dashboard />
+                  <MyProfile />
                 </ApiContextProvider>
               }
-            ></Route>
+            />
             <Route path="/myProfile" element={<MyProfile />} />
           </>
         ) : (
