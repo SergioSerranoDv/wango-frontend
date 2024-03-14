@@ -5,6 +5,7 @@ import { ApiContextProvider } from "./context/ApiContext";
 import { Dahsboard } from "./pages/Dahsboard";
 import MyProfile from "./pages/MyProfile";
 import "./App.css";
+import logo from "./logo.svg";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
