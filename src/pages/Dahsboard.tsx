@@ -1,16 +1,12 @@
-import React, { useContext } from "react";
-import { ApiContext } from "../context/ApiContext";
-export const Dahsboard = () => {
-  const { backendApiCall } = useContext(ApiContext);
-  const getGreetingFromApi = async () => {
-    const res = await backendApiCall({ method: "GET", endpoint: "v1/" });
-    console.log(res);
-  };
+import React from "react";
+import Navbar from "../components/Navbar";
+import MainMenu from "../components/MainMenu";
 
+export default function Dahsboard() {
   return (
     <div>
-      Dahsboard
-      <button onClick={getGreetingFromApi}>Get Greeting</button>
+      <Navbar />
+      <MainMenu />
     </div>
   );
-};
+}
