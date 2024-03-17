@@ -17,14 +17,16 @@ function Navbar() {
       <NavbarInnerContainer>
         <LeftContainer>
           <NavbarLinkContainer>
-            <NavbarLink to="/profile">Editar perfil</NavbarLink>
+            <NavbarLink to="/myProfile">Editar perfil</NavbarLink>
             <NavbarLink to="/variables">Configurar variables</NavbarLink>
             <NavbarLink to="/logout">Cerrar sesión</NavbarLink>
             <Dropdown></Dropdown>
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <Logo src={LogoImg}></Logo>
+          <NavbarLink to="/">
+            <Logo src={LogoImg}></Logo>
+          </NavbarLink>
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>
