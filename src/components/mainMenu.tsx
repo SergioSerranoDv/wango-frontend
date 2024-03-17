@@ -1,24 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  MainWrapper,
-  TopBar,
-  BurguerMenuNav,
-  WangoLogoTiny,
-  ContentArea,
-  Menu,
-  ItemsMenu,
-  Item,
-  Text,
-} from "../styles/components/mainMenu";
+import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/MainMenuStyles";
 
-import MisLotes from "../assets/mis_lotes.svg";
-import MiPerfil from "../assets/mi_perfil.svg";
-import CrearTrabajador from "../assets/crear_usuario_trabajador.svg";
-import VerTrabajador from "../assets/ver_mis_trabajadores.svg";
-import CerrarSesion from "../assets/cerrar_sesion.svg";
-import BurguerMenu from "../assets/burguer_menu.svg";
-import WangoTiny from "../assets/wango_tiny.svg";
+import MisLotes from "../assets/icons/misLotes.svg";
+import MiPerfil from "../assets/icons/miPerfil.svg";
+import CrearTrabajador from "../assets/icons/crearUsuarioTrabajador.svg";
+import VerTrabajador from "../assets/icons/verMisTrabajadores.svg";
+import CerrarSesion from "../assets/icons/cerrarSesion.svg";
 
 interface TextoItem {
   src: string;
@@ -31,36 +19,32 @@ const MainMenu: React.FC = () => {
     {
       src: MisLotes,
       text: "Mis lotes",
-      link: "/mis-lotes",
+      link: "/myLotes",
     },
     {
       src: MiPerfil,
       text: "Mi perfil",
-      link: "/mi-perfil",
+      link: "/myProfile",
     },
     {
       src: CrearTrabajador,
       text: "Crear un usuario trabajador",
-      link: "/crear-trabajador",
+      link: "/crearTrabajador",
     },
     {
       src: VerTrabajador,
       text: "Ver mis trabajadores",
-      link: "/ver-trabajadores",
+      link: "/verTrabajador",
     },
     {
       src: CerrarSesion,
       text: "Cerrar sesión",
-      link: "/cerrar-sesion",
+      link: "/logout",
     },
   ];
 
   return (
     <MainWrapper>
-      <TopBar>
-        <BurguerMenuNav src={BurguerMenu} alt="MenuHamburguesa" />
-        <WangoLogoTiny src={WangoTiny} alt="Wango Tiny" />
-      </TopBar>
       <ContentArea>
         <Text>¡Bienvenido Carlos Mario!</Text>
         <Menu>
