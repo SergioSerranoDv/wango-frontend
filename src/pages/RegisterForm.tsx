@@ -11,9 +11,9 @@ import {
   RegisterFormContainer,
   Select,
   SignBoard,
-} from "../styles/Form";
-import logo from "../assets/images/logo.svg";
-import { DivIdentification } from "../styles/Form";
+} from "../styles/FormStyles";
+import logo from "../images/logo.svg";
+import { DivIdentification } from "../styles/FormStyles";
 const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({
     typeID: "",

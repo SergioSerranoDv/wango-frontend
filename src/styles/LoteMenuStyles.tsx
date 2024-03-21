@@ -19,25 +19,6 @@ export const Text = styled.div`
   color: black;
 `;
 
-export const TopBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 1);
-  padding: 0px 20px 7px;
-`;
-
-export const BurguerMenuNav = styled.img`
-  width: 27px;
-  object-fit: contain;
-`;
-
-export const WangoLogoTiny = styled.img`
-  width: 121px;
-  max-width: 100%;
-  object-fit: contain;
-`;
-
 export const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
