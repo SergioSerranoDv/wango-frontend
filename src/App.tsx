@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
@@ -24,8 +25,10 @@ function App() {
               path="/"
               element={
                 <ApiContextProvider>
-                  <MainMenu />
-                  <Dashboard />
+                  <AppContextProvider>
+                    {/* <MainMenu /> */}
+                    <Dashboard />
+                  </AppContextProvider>
                 </ApiContextProvider>
               }
             />
