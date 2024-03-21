@@ -34,7 +34,6 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para enviar los datos a tu servidor o hacer lo que necesites con la información del formulario.
     console.log("Formulario enviado:", formData);
   };
 
