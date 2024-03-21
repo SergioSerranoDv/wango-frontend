@@ -26,7 +26,6 @@ function App() {
               element={
                 <ApiContextProvider>
                   <AppContextProvider>
-                    {/* <MainMenu /> */}
                     <Dashboard />
                   </AppContextProvider>
                 </ApiContextProvider>
