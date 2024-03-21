@@ -10,7 +10,7 @@ import {
   ItemsMenu,
   Item,
   Text,
-} from "../styles/mainMenu";
+} from "../styles/MainMenu";
 import Navbar from "../components/Navbar";
 
 import MisLotes from "../assets/icons/mis_lotes.svg";
@@ -32,7 +32,7 @@ const MainMenu: React.FC = () => {
     {
       src: MisLotes,
       text: "Mis lotes",
-      link: "/mis-lotes",
+      link: "/BatchManage",
     },
     {
       src: MiPerfil,

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { ApiContext } from "../context/ApiContext";
 import MainMenu from "./MainMenu";
 import RegisterForm from "./RegisterForm";
 

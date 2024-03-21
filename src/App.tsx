@@ -3,11 +3,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
-import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
+import DashboardLotes from "./pages/DashboardLotes";
 import MainMenu from "./pages/MainMenu";
 import RegisterForm from "./pages/RegisterForm";
-import "./styles/mainMenu";
+import BatchManage from "./pages/BatchManage";
+import LoteForm from "./pages/AddLote";
+import "./styles/MainMenuStyles";
 import "./App.css";
 
 function App() {
@@ -30,15 +32,17 @@ function App() {
                   </AppContextProvider>
                 </ApiContextProvider>
               }
-            />
+            ></Route>
+            <Route path="/myProfile" element={<MyProfile />} />
+            <Route path="/addLote" element={<LoteForm />} />
+            <Route path="/loteMenu" element={<DashboardLotes />} />
             <Route path="/RegisterForm" element={<RegisterForm />} />
             <Route path="/MyProfile" element={<MyProfile />} />
+            <Route path="/BatchManage" element={<BatchManage />} />
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/RegisterForm" element={<RegisterForm />} />
-            <Route path="/MyProfile" element={<MyProfile />} />
           </>
         )}
       </Routes>
