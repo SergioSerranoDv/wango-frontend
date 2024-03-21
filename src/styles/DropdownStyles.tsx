@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const DropdownButton = styled.button`
   border: none;
   width: 70px;
@@ -42,5 +48,17 @@ export const DropdownItem = styled.div`
 
   &:hover {
     background-color: #ffdda8;
+  }
+`;
+
+export const LogoContainer = styled.div`
+  position: absolute;
+  right: 0;
+  padding-right: 10px;
+  text-align: right;
+  width: auto;
+
+  @media (min-width: 768px) {
+    display: none;
   }
 `;
