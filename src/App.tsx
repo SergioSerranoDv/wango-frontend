@@ -2,11 +2,11 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
-import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
 import MainMenu from "./pages/MainMenu";
 import RegisterForm from "./pages/RegisterForm";
-import "./styles/mainMenu";
+import BatchManage from "./pages/BatchManage";
+import "./styles/MainMenu";
 import "./App.css";
 
 function App() {
@@ -25,7 +25,6 @@ function App() {
               element={
                 <ApiContextProvider>
                   <MainMenu />
-                  <Dashboard />
                 </ApiContextProvider>
               }
             />
@@ -37,6 +36,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/RegisterForm" element={<RegisterForm />} />
             <Route path="/MyProfile" element={<MyProfile />} />
+            <Route path="/BatchManage" element={<BatchManage />} />
           </>
         )}
       </Routes>

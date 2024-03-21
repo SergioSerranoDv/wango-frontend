@@ -24,7 +24,9 @@ function Navbar() {
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <Logo src={LogoImg}></Logo>
+          <Logo to="/">
+            <img src={LogoImg}></img>
+          </Logo>
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>
