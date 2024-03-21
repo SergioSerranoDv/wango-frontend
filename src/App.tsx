@@ -2,8 +2,11 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext";
-import { Dahsboard } from "./pages/Dahsboard";
+import { Dashboard } from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
+import MainMenu from "./pages/MainMenu";
+import RegisterForm from "./pages/RegisterForm";
+import "./styles/mainMenu";
 import "./App.css";
 
 function App() {
@@ -21,15 +24,19 @@ function App() {
               path="/"
               element={
                 <ApiContextProvider>
-                  <Dahsboard />
+                  <MainMenu />
+                  <Dashboard />
                 </ApiContextProvider>
               }
-            ></Route>
-            <Route path="/myProfile" element={<MyProfile />} />
+            />
+            <Route path="/RegisterForm" element={<RegisterForm />} />
+            <Route path="/MyProfile" element={<MyProfile />} />
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/RegisterForm" element={<RegisterForm />} />
+            <Route path="/MyProfile" element={<MyProfile />} />
           </>
         )}
       </Routes>
