@@ -62,7 +62,7 @@ export const Button = styled.button`
 
 export const Logo = styled.img`
   max-width: 277px;
-  max-heigh: 90px;
+  max-height: 90px;
   align-self: center;
   margin-bottom: -22px; /* Espacio entre el logo Wango y el formulario */
 `;
@@ -82,7 +82,7 @@ export const Description = styled.p<InputProps>`
   padding: 0px;
   color: #4d4d4d;
   opacity: 0.95;
-  border: 0px #;
+  border: 0px;
 `;
 
 export const InputContainer = styled.div`
