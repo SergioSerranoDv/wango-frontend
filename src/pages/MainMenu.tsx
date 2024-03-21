@@ -10,7 +10,7 @@ import {
   ItemsMenu,
   Item,
   Text,
-} from "../styles/MainMenu";
+} from "../styles/MainMenuStyles";
 import Navbar from "../components/Navbar";
 
 import MisLotes from "../assets/icons/mis_lotes.svg";
