@@ -1,10 +1,11 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import MyProfile from "./pages/MyProfile";
 import DashboardLotes from "./pages/DashboardLotes";
-import MainMenu from "./pages/MainMenu";
+import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
 import BatchManage from "./pages/BatchManage";
 import LoteForm from "./pages/AddLote";
@@ -26,7 +27,9 @@ function App() {
               path="/"
               element={
                 <ApiContextProvider>
-                  <MainMenu />
+                  <AppContextProvider>
+                    <Dashboard />
+                  </AppContextProvider>
                 </ApiContextProvider>
               }
             ></Route>
