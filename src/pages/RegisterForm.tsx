@@ -12,7 +12,7 @@ import {
   Select,
   SignBoard,
 } from "../styles/FormStyles";
-import logo from "../images/logo.svg";
+import logo from "../assets/images/logo.svg";
 import { DivIdentification } from "../styles/FormStyles";
 const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ const RegisterForm: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para enviar los datos a tu servidor o hacer lo que necesites con la información del formulario.
     console.log("Formulario enviado:", formData);
@@ -48,10 +48,16 @@ const RegisterForm: React.FC = () => {
             <Label $primary htmlFor="typeID">
               Tipo*
             </Label>
-            <Select id="typeID" name="typeID" value={formData.typeID} /*onChange={handleChange}*/>
+            <Select
+              id="typeID"
+              name="typeID"
+              value={formData.typeID}
+              onChange={(e) => setFormData({ ...formData, typeID: e.target.value })}
+              required
+            >
               <option value="C.C">C.C</option>
-              <option value="C.C">C.E</option>
-              <option value="C.C">T.I</option>
+              <option value="C.E">C.E</option>
+              <option value="T.I">T.I</option>
             </Select>
           </FormField>
 
