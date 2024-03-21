@@ -5,7 +5,7 @@ import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import MyProfile from "./pages/MyProfile";
 import DashboardLotes from "./pages/DashboardLotes";
-import MainMenu from "./pages/MainMenu";
+import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
 import BatchManage from "./pages/BatchManage";
 import LoteForm from "./pages/AddLote";
