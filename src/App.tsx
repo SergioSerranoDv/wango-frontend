@@ -11,6 +11,7 @@ import BatchManage from "./pages/BatchManage";
 import LoteForm from "./pages/AddLote";
 import "./styles/MainMenuStyles";
 import "./App.css";
+import NewCrop from "./pages/NewCrop";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -39,10 +40,14 @@ function App() {
             <Route path="/RegisterForm" element={<RegisterForm />} />
             <Route path="/MyProfile" element={<MyProfile />} />
             <Route path="/BatchManage" element={<BatchManage />} />
+            
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/RegisterForm" element={<RegisterForm />} />
+            <Route path="/NewCrop" element={<NewCrop />} />
+            <Route path="/MyProfile" element={<MyProfile />} />
           </>
         )}
       </Routes>
