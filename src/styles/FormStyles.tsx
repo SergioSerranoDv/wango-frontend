@@ -62,7 +62,7 @@ export const Button = styled.button`
 
 export const Logo = styled.img`
   max-width: 277px;
-  max-heigh: 90px;
+  max-height: 90px;
   align-self: center;
   margin-bottom: -22px; /* Espacio entre el logo Wango y el formulario */
 `;
