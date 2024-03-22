@@ -6,7 +6,7 @@ import MyProfile from "./pages/MyProfile";
 import MainMenu from "./pages/MainMenu";
 import RegisterForm from "./pages/RegisterForm";
 import BatchManage from "./pages/BatchManage";
-import "./styles/MainMenu";
+import "./styles/MainMenuStyles";
 import "./App.css";
 
 function App() {
@@ -30,13 +30,11 @@ function App() {
             />
             <Route path="/RegisterForm" element={<RegisterForm />} />
             <Route path="/MyProfile" element={<MyProfile />} />
+            <Route path="/BatchManage" element={<BatchManage />} />
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/RegisterForm" element={<RegisterForm />} />
-            <Route path="/MyProfile" element={<MyProfile />} />
-            <Route path="/BatchManage" element={<BatchManage />} />
           </>
         )}
       </Routes>
