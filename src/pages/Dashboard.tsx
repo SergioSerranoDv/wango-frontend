@@ -1,16 +1,24 @@
 import React, { useContext } from "react";
-import { ApiContext } from "../context/ApiContext";
+import { AppContext } from "../context/AppContext";
+import MainMenu from "./MainMenu";
+import RegisterForm from "./RegisterForm";
+
 export const Dashboard = () => {
-  const { backendApiCall } = useContext(ApiContext);
-  const getGreetingFromApi = async () => {
-    const res = await backendApiCall({ method: "GET", endpoint: "v1/" });
-    console.log(res);
-  };
+  const { userData, appContextIsFetching } = useContext(AppContext);
+
+  console.log(appContextIsFetching);
 
   return (
     <div>
-      Dashboard
-      <button onClick={getGreetingFromApi}>Get Greeting</button>
+      {appContextIsFetching ? (
+        <div>Loading...</div>
+      ) : userData && userData.security.identity_verified ? (
+        <MainMenu />
+      ) : (
+        <div>
+          <RegisterForm />
+        </div>
+      )}
     </div>
   );
 };
