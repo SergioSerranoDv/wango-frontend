@@ -7,7 +7,7 @@ import {
   LogoContainer,
   Container,
 } from "../styles/DropdownStyles";
-import LogoImg from "../assets/icons/logoNavbar.svg";
+import LogoImg from "../assets/images/logo.svg";
 
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
