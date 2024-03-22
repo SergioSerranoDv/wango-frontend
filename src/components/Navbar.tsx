@@ -9,7 +9,7 @@ import {
   Logo,
 } from "../styles/NavbarStyles";
 import Dropdown from "../components/Dropdown";
-import LogoImg from "../assets/icons/logoNavbar.svg";
+import LogoImg from "../assets/images/logo_navbar.svg";
 
 function Navbar() {
   return (
@@ -24,9 +24,9 @@ function Navbar() {
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <NavbarLink to="/">
-            <Logo src={LogoImg}></Logo>
-          </NavbarLink>
+          <Logo to="/">
+            <img src={LogoImg}></img>
+          </Logo>
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>
