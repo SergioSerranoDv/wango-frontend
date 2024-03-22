@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
 
-import VerCultvos from "../assets/icons/verCultivos.svg";
-import AñadirCultivo from "../assets/icons/añadirCultivo.svg";
-import HuellaHidrica from "../assets/icons/huellHidrica.svg";
-import AnalisisIA from "../assets/icons/analisisIA.svg";
-import EditarLote from "../assets/icons/editLote.svg";
-import VerUsuarios from "../assets/icons/verUsuarios.svg";
+import VerCultvos from "../assets/icons/viewCrops.svg";
+import AñadirCultivo from "../assets/icons/addCrop.svg";
+import HuellaHidrica from "../assets/icons/waterFootprint.svg";
+import AnalisisIA from "../assets/icons/analysisAI.svg";
+import EditarLote from "../assets/icons/editBatch.svg";
+import VerUsuarios from "../assets/icons/viewUsers.svg";
 
 interface TextoItem {
   src: string;

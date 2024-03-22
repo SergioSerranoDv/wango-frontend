@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  DropdownButton,
-  DropdownContent,
-  DropdownItem,
-  LogoContainer,
-  Container,
-} from "../styles/DropdownStyles";
+import { DropdownButton, DropdownContent, DropdownItem, Container } from "../styles/DropdownStyles";
 import LogoImg from "../assets/images/logo.svg";
 
 function Dropdown() {
@@ -32,11 +26,6 @@ function Dropdown() {
           </Link>
         </DropdownContent>
       </div>
-      <LogoContainer>
-        <Link to="/">
-          <img src={LogoImg} alt="Logo" />
-        </Link>
-      </LogoContainer>
     </Container>
   );
 }

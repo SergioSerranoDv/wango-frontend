@@ -50,15 +50,3 @@ export const DropdownItem = styled.div`
     background-color: #ffdda8;
   }
 `;
-
-export const LogoContainer = styled.div`
-  position: absolute;
-  right: 0;
-  padding-right: 10px;
-  text-align: right;
-  width: auto;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
