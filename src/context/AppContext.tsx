@@ -4,8 +4,14 @@ import { User } from "@auth0/auth0-react";
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;
+  refetchData: boolean;
+  setRefetchData: (value: boolean) => void;
 }
 interface UserDataI {
+  name: string;
+  last_name: string;
+  id_type: string;
+  id_number: string;
   user: string;
   email: string;
   security: {
@@ -15,6 +21,10 @@ interface UserDataI {
   updated_at: string;
 }
 const UserDataInit: UserDataI = {
+  name: "",
+  last_name: "",
+  id_type: "",
+  id_number: "",
   user: "",
   email: "",
   security: {
@@ -27,10 +37,13 @@ const UserDataInit: UserDataI = {
 export const AppContext = createContext<ContextData>({
   userData: UserDataInit,
   appContextIsFetching: false,
+  refetchData: false,
+  setRefetchData: () => {},
 });
 
 export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { backendApiCall, tokenIsReady, userToken } = useContext(ApiContext);
+  const [refetchData, setRefetchData] = useState<boolean>(false);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
 
@@ -46,10 +59,10 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
     };
     console.log("AppContextProvider");
     getUserData();
-  }, [tokenIsReady]);
+  }, [tokenIsReady, refetchData]);
 
   return (
-    <AppContext.Provider value={{ userData, appContextIsFetching }}>
+    <AppContext.Provider value={{ userData, appContextIsFetching, refetchData, setRefetchData }}>
       {props.children}
     </AppContext.Provider>
   );
