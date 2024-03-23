@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Description,
@@ -13,9 +13,14 @@ import {
   SignBoard,
 } from "../styles/FormStyles";
 import logo from "../assets/images/logo.svg";
+import { ApiContext } from "../context/ApiContext";
+import { AppContext } from "../context/AppContext";
 import { DivIdentification } from "../styles/FormStyles";
 
 const RegisterForm: React.FC = () => {
+  const { backendApiCall } = useContext(ApiContext);
+  const { setRefetchData } = useContext(AppContext);
+
   const [formData, setFormData] = useState({
     typeID: "",
     identification: "",
@@ -27,7 +32,6 @@ const RegisterForm: React.FC = () => {
   });
 
   const [isValidEmail, setIsValidEmail] = useState(true);
-
   const [isValidPassword, setIsValidPassword] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -47,7 +51,7 @@ const RegisterForm: React.FC = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulario enviado:", formData);
     // Obtener los datos de los inputs
@@ -62,6 +66,26 @@ const RegisterForm: React.FC = () => {
 
     if (validatePassword(password)) {
       setIsValidPassword(true);
+      // Upate user data in the backend
+      const response = await backendApiCall({
+        method: "PUT",
+        endpoint: "v1/user/info/update",
+        body: {
+          name: userName,
+          last_name: lastName,
+          id_number: identification,
+          id_type: typeID,
+          security: {
+            identity_verified: true,
+            password: password,
+          },
+        },
+      });
+      if (response.status === "error") {
+        console.error(response.message);
+        return;
+      }
+      setRefetchData(true);
     } else {
       setIsValidPassword(false);
     }
