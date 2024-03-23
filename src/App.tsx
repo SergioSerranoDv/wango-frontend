@@ -40,7 +40,6 @@ function App() {
             <Route path="/RegisterForm" element={<RegisterForm />} />
             <Route path="/MyProfile" element={<MyProfile />} />
             <Route path="/BatchManage" element={<BatchManage />} />
-            
           </>
         ) : (
           <>
