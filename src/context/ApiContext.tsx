@@ -2,14 +2,14 @@ import React, { createContext, useEffect, useState, PropsWithChildren } from "re
 import { useAuth0 } from "@auth0/auth0-react";
 interface apiData {
   userToken: string;
-  backendApiCall: (apiData: apiProps) => Promise<apiResponse>;
+  backendApiCall: (apiData: ApiProps) => Promise<apiResponse>;
   tokenIsReady: boolean;
 }
 
-interface apiProps {
+export interface ApiProps {
   method: string;
   endpoint: string;
-  body?: string;
+  body?: any;
 }
 interface apiResponse {
   data?: any;
@@ -27,7 +27,7 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { getAccessTokenSilently } = useAuth0();
   const [tokenIsReady, setTokenIsReady] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>("");
-  const backendApiCall = async (apiData: apiProps): Promise<apiResponse> => {
+  const backendApiCall = async (apiData: ApiProps): Promise<apiResponse> => {
     if (!tokenIsReady) {
       return { data: null, status: "error", message: "Token not ready yet" };
     }
@@ -38,6 +38,7 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
           Authorization: `Bearer ${userToken}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(apiData.body),
       });
       const data = await res.json();
       console.log(data);

@@ -39,6 +39,7 @@ function App() {
             <Route path="/loteMenu" element={<DashboardLotes />} />
             <Route path="/RegisterForm" element={<RegisterForm />} />
             <Route path="/NewCrop" element={<NewCrop />} />
+            <Route path="/BatchManage" element={<BatchManage />} />
           </>
         ) : (
           <>

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
+
 import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/MainMenuStyles";
 import Navbar from "../components/Navbar";
 
@@ -8,39 +10,61 @@ import MiPerfil from "../assets/icons/myProfile.svg";
 import CrearTrabajador from "../assets/icons/createWorkerUser.svg";
 import VerTrabajador from "../assets/icons/viewMyWorkers.svg";
 import CerrarSesion from "../assets/icons/logout.svg";
+import { useAuth0 } from "@auth0/auth0-react";
 
-interface TextoItem {
+interface MenuProps {
+  id: number;
+  elementList: JSX.Element;
+}
+interface LinkElementProps {
   src: string;
   text: string;
   link: string;
+  alt?: string;
 }
-
 const MainMenu: React.FC = () => {
-  const MenuItems: TextoItem[] = [
+  const { userData } = useContext(AppContext);
+  const { logout } = useAuth0();
+  const MenuItems: MenuProps[] = [
     {
-      src: MisLotes,
-      text: "Mis lotes",
-      link: "/BatchManage",
+      id: 1,
+      elementList: <LinkElement src={MisLotes} text="Mis lotes" link="/BatchManage" />,
     },
     {
-      src: MiPerfil,
-      text: "Mi perfil",
-      link: "/MyProfile",
+      id: 2,
+      elementList: <LinkElement src={MiPerfil} text="Mi perfil" link="/MyProfile" />,
     },
     {
-      src: CrearTrabajador,
-      text: "Crear un usuario trabajador",
-      link: "/crear-trabajador",
+      id: 3,
+      elementList: (
+        <LinkElement
+          src={CrearTrabajador}
+          text="Crear un usuario trabajador"
+          link="/crear-trabajador"
+        />
+      ),
     },
     {
-      src: VerTrabajador,
-      text: "Ver mis trabajadores",
-      link: "/ver-trabajadores",
+      id: 4,
+      elementList: (
+        <LinkElement src={VerTrabajador} text="Ver mis trabajadores" link="/ver-trabajadores" />
+      ),
     },
     {
-      src: CerrarSesion,
-      text: "Cerrar sesión",
-      link: "/cerrar-sesion",
+      id: 5,
+      elementList: (
+        <button
+          style={{
+            border: "none",
+            background: "none",
+            cursor: "pointer",
+          }}
+          onClick={() => logout()}
+        >
+          <Item src={CerrarSesion} alt="Cerrar Sesion" />
+          <Text>Cerrar sesión</Text>
+        </button>
+      ),
     },
   ];
 
@@ -49,10 +73,19 @@ const MainMenu: React.FC = () => {
       <Navbar />
       <MainWrapper>
         <ContentArea>
-          <Text>¡Bienvenido Carlos Mario!</Text>
+          <Text>¡Bienvenido {userData.name}!</Text>
           <Menu>
             {MenuItems.map((item, index) => (
-              <IconText key={index} src={item.src} text={item.text} link={item.link} />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                key={index}
+              >
+                {item.elementList}
+              </div>
             ))}
           </Menu>
         </ContentArea>
@@ -61,7 +94,7 @@ const MainMenu: React.FC = () => {
   );
 };
 
-const IconText: React.FC<TextoItem> = ({ src, text, link }) => (
+const LinkElement: React.FC<LinkElementProps> = ({ src, text, link }) => (
   <Link to={link} style={{ textDecoration: "none", color: "inherit" }}>
     <ItemsMenu>
       <Item src={src} alt={text} />
