@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
 import NotificationModal from "./modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
 
@@ -15,14 +14,14 @@ import {
 } from "../styles/AddLoteStyles";
 
 interface FormData {
-  nombreLote: string;
-  capacidadLote: string;
+  name: string;
+  capacity: number | "";
 }
 
 function LoteForm() {
   const [formData, setFormData] = useState<FormData>({
-    nombreLote: "",
-    capacidadLote: "",
+    name: "",
+    capacity: "",
   });
   const [showNotification, setShowNotification] = useState(false);
 
@@ -37,11 +36,21 @@ function LoteForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3230/api/lotes/", formData);
-      console.log("Response:", response.data);
+      const response = await fetch("http://localhost:3230/api/lotes/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const responseData = await response.json();
+      console.log("Response:", responseData);
       setFormData({
-        nombreLote: "",
-        capacidadLote: "",
+        name: "",
+        capacity: "",
       });
       setShowNotification(true);
     } catch (error) {
@@ -59,23 +68,23 @@ function LoteForm() {
         <Form onSubmit={handleSubmit}>
           <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader>
           <FormField>
-            <Label htmlFor="nombreLote">Nombre del lote*</Label>
+            <Label htmlFor="name">Nombre del lote*</Label>
             <Input
-              id="nombreLote"
-              name="nombreLote"
+              id="name"
+              name="name"
               type="text"
-              value={formData.nombreLote}
+              value={formData.name}
               onChange={handleChange}
               required
             />
           </FormField>
           <FormField>
-            <Label htmlFor="capacidadLote">Capacidad (Ha)*</Label>
+            <Label htmlFor="capacity">Capacidad (Ha)*</Label>
             <Input
-              id="capacidadLote"
-              name="capacidadLote"
+              id="capacity"
+              name="capacity"
               type="text"
-              value={formData.capacidadLote}
+              value={formData.capacity}
               onChange={handleChange}
               required
             />
