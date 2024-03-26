@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
 import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
 
@@ -9,61 +10,79 @@ import AnalisisIA from "../assets/icons/analisisIA.svg";
 import EditarLote from "../assets/icons/editLote.svg";
 import VerUsuarios from "../assets/icons/verUsuarios.svg";
 
-interface TextoItem {
+interface MenuProps {
+  id: number;
+  elementList: JSX.Element;
+}
+interface LinkElementProps {
   src: string;
   text: string;
   link: string;
+  alt?: string;
 }
-
-const LoteMenu: React.FC = () => {
-  const MenuItems: TextoItem[] = [
+const MainMenu: React.FC = () => {
+  const { userData } = useContext(AppContext);
+  const MenuItems: MenuProps[] = [
     {
-      src: VerCultvos,
-      text: "Ver cultivos del lote",
-      link: "/verCultivos",
+      id: 1,
+      elementList: (
+        <LinkElement src={VerCultvos} text="Ver cultivos del lote" link="/verCultivos" />
+      ),
     },
     {
-      src: AñadirCultivo,
-      text: "Añadir nuevo cultivo al lote",
-      link: "/addCultivo",
+      id: 2,
+      elementList: (
+        <LinkElement src={AñadirCultivo} text="Añadir nuevo cultivo al lote" link="/addCultivo" />
+      ),
     },
     {
-      src: HuellaHidrica,
-      text: "Calcular huella hídrica",
-      link: "/huellaHidrica",
+      id: 3,
+      elementList: (
+        <LinkElement src={HuellaHidrica} text="Calcular huella hídrica" link="/huellaHidrica" />
+      ),
     },
     {
-      src: AnalisisIA,
-      text: "Análisis IA",
-      link: "/analisisIA",
+      id: 4,
+      elementList: <LinkElement src={AnalisisIA} text="Análisis IA" link="/analisisIA" />,
     },
     {
-      src: EditarLote,
-      text: "Editar lote",
-      link: "/editLote",
+      id: 5,
+      elementList: <LinkElement src={EditarLote} text="Editar lote" link="/editLote" />,
     },
     {
-      src: VerUsuarios,
-      text: "Ver usuarios encargados",
-      link: "/verUsers",
+      id: 6,
+      elementList: (
+        <LinkElement src={VerUsuarios} text="Ver usuarios encargados" link="/verUsers" />
+      ),
     },
   ];
 
   return (
-    <MainWrapper>
-      <ContentArea>
-        <Text>Lote: MisPruebas01</Text>
-        <Menu>
-          {MenuItems.map((item, index) => (
-            <IconText key={index} src={item.src} text={item.text} link={item.link} />
-          ))}
-        </Menu>
-      </ContentArea>
-    </MainWrapper>
+    <>
+      <MainWrapper>
+        <ContentArea>
+          <Text>Lote: {userData.name}</Text>
+          <Menu>
+            {MenuItems.map((item, index) => (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                key={index}
+              >
+                {item.elementList}
+              </div>
+            ))}
+          </Menu>
+        </ContentArea>
+      </MainWrapper>
+    </>
   );
 };
 
-const IconText: React.FC<TextoItem> = ({ src, text, link }) => (
+const LinkElement: React.FC<LinkElementProps> = ({ src, text, link }) => (
   <Link to={link} style={{ textDecoration: "none", color: "inherit" }}>
     <ItemsMenu>
       <Item src={src} alt={text} />
@@ -72,4 +91,4 @@ const IconText: React.FC<TextoItem> = ({ src, text, link }) => (
   </Link>
 );
 
-export default LoteMenu;
+export default MainMenu;
