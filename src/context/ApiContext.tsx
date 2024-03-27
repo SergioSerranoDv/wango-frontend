@@ -11,7 +11,7 @@ export interface ApiProps {
   endpoint: string;
   body?: any;
 }
-interface apiResponse {
+export interface apiResponse {
   data?: any;
   message: string;
   status: string;
