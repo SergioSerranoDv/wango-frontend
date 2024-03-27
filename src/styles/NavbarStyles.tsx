@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 export const NavbarContainer = styled.nav`
   position: relative;
@@ -32,7 +31,7 @@ export const NavbarLinkContainer = styled.div`
   padding-right: 20px;
 `;
 
-export const NavbarLink = styled(Link)`
+export const NavbarLink = styled.span`
   text-decoration: none;
   color: #fff;
   margin: 10px;
@@ -51,7 +50,7 @@ export const RightContainer = styled.div`
   padding-right: 5%;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.img`
   max-width: 121px;
   max-height: auto;
 `;
