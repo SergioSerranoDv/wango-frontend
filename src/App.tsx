@@ -34,12 +34,30 @@ function App() {
                 </ApiContextProvider>
               }
             ></Route>
-            <Route path="/MyProfile" element={<MyProfile />} />
-            <Route path="/addLote" element={<LoteForm />} />
-            <Route path="/loteMenu" element={<DashboardLotes />} />
-            <Route path="/RegisterForm" element={<RegisterForm />} />
-            <Route path="/NewCrop" element={<NewCrop />} />
-            <Route path="/BatchManage" element={<BatchManage />} />
+            <Route
+              path="/my-profile"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <MyProfile />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            ></Route>
+            <Route
+              path="/register-form"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <RegisterForm />{" "}
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
+            <Route path="/lote-menu" element={<DashboardLotes />} />
+            <Route path="/add-lote" element={<LoteForm />} />
+            <Route path="/new-crop" element={<NewCrop />} />
+            <Route path="/batch-manage" element={<BatchManage />} />
           </>
         ) : (
           <>
