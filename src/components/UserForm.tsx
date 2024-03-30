@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import { ApiContext } from "../context/ApiContext";
 
 import {
   FormWrapper,
@@ -16,6 +18,7 @@ import {
 } from "../styles/UserFormStyles";
 
 const UserForm: React.FC = () => {
+  const { backendApiCall } = useContext(ApiContext);
   const { userData } = useContext(AppContext);
   const [editedData, setEditedData] = useState(userData);
 
@@ -23,13 +26,15 @@ const UserForm: React.FC = () => {
     setEditedData(userData);
   }, [userData]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Lógica para guardar los cambios del formulario
-  };
+    console.log("Formulario enviado:", editedData);
 
-  const handleCancel = () => {
-    // Lógica para cancelar el formulario
+    const response = await backendApiCall({
+      method: "PUT",
+      endpoint: "v1/user/info/update",
+      body: editedData,
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -96,15 +101,33 @@ const UserForm: React.FC = () => {
         </FormField>
         <FormField>
           <Label htmlFor="email">Correo*</Label>
-          <Input id="email" type="email" name="email" required value={editedData.email} />
+          <Input
+            id="email"
+            type="email"
+            name="email"
+            required
+            defaultValue={editedData.email}
+            onChange={handleChange}
+            disabled
+          />
         </FormField>
         <FormField>
           <Label htmlFor="userType">Tipo de usuario*</Label>
-          <Input id="userType" type="text" name="user_type" required value="Administrador" />
+          <Input
+            id="userType"
+            type="text"
+            name="user_type"
+            required
+            defaultValue="Administrador"
+            onChange={handleChange}
+            disabled
+          />
         </FormField>
         <ButtonContainer>
-          <Button type="button" onClick={handleCancel}>
-            Cancelar
+          <Button type="button">
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+              Cancelar
+            </Link>
           </Button>
           <Button type="submit">Guardar cambios</Button>
         </ButtonContainer>
