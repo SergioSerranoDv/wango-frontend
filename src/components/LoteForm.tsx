@@ -1,7 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import NotificationModal from "./modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
+import { ApiContext } from "../context/ApiContext";
+import { createNewLot } from "../services/lot_s";
 
 import {
   FormWrapper,
@@ -20,6 +21,7 @@ interface FormData {
 }
 
 function LoteForm() {
+  const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
     capacidadLote: "",
@@ -37,12 +39,14 @@ function LoteForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3230/api/lotes/", formData);
-      console.log("Response:", response.data);
-      setFormData({
-        nombreLote: "",
-        capacidadLote: "",
+      console.log("Form data:", formData);
+      const response = await createNewLot(backendApiCall, {
+        name: formData.nombreLote,
+        capacity: parseInt(formData.capacidadLote),
       });
+      if (response.status == "error") {
+        alert(response.message);
+      }
       setShowNotification(true);
     } catch (error) {
       console.error("Error:", error);

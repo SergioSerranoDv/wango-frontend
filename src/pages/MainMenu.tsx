@@ -1,26 +1,16 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
-import {
-  MainWrapper,
-  // TopBar,
-  // BurguerMenuNav,
-  // WangoLogoTiny,
-  ContentArea,
-  Menu,
-  ItemsMenu,
-  Item,
-  Text,
-} from "../styles/MainMenuStyles";
+
+import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/MainMenuStyles";
 import Navbar from "../components/Navbar";
-import MisLotes from "../assets/icons/mis_lotes.svg";
-import MiPerfil from "../assets/icons/mi_perfil.svg";
-import CrearTrabajador from "../assets/icons/crear_usuario_trabajador.svg";
-import VerTrabajador from "../assets/icons/ver_mis_trabajadores.svg";
-import CerrarSesion from "../assets/icons/cerrar_sesion.svg";
-// import BurguerMenu from "../assets/icons/burguer_menu.svg";
-// import WangoTiny from "../assets/icons/wango_tiny.svg";
+
+import MisLotes from "../assets/icons/myBatches.svg";
+import MiPerfil from "../assets/icons/myProfile.svg";
+import CrearTrabajador from "../assets/icons/createWorkerUser.svg";
+import VerTrabajador from "../assets/icons/viewMyWorkers.svg";
+import CerrarSesion from "../assets/icons/logout.svg";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface MenuProps {
   id: number;
@@ -82,10 +72,6 @@ const MainMenu: React.FC = () => {
     <>
       <Navbar />
       <MainWrapper>
-        {/* <TopBar>
-          <BurguerMenuNav src={BurguerMenu} alt="MenuHamburguesa" />
-          <WangoLogoTiny src={WangoTiny} alt="Wango Tiny" />
-        </TopBar> */}
         <ContentArea>
           <Text>¡Bienvenido {userData.name}!</Text>
           <Menu>

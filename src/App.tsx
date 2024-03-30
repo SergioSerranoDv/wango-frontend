@@ -36,10 +36,19 @@ function App() {
               }
             ></Route>
             <Route path="/myProfile" element={<MyProfile />} />
-            <Route path="/addLote" element={<LoteForm />} />
+            <Route
+              path="/addLote"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <LoteForm />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
             <Route path="/loteMenu" element={<DashboardLotes />} />
             <Route path="/RegisterForm" element={<RegisterForm />} />
-            <Route path="/MyProfile" element={<MyProfile />} />
+            <Route path="/NewCrop" element={<NewCrop />} />
             <Route path="/BatchManage" element={<BatchManage />} />
             <Route path="/NewCrop" element={<NewCrop />} />
           </>
@@ -47,7 +56,6 @@ function App() {
           <>
             <Route path="/" element={<LoginPage />} />
             <Route path="/RegisterForm" element={<RegisterForm />} />
-
             <Route path="/MyProfile" element={<MyProfile />} />
             <Route path="/Loading" element={<Loading />} />
           </>
