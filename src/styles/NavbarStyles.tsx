@@ -1,6 +1,17 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+export const Text = styled.div`
+  font-family: Inter, sans-serif;
+  margin: 10px;
+  font-size: 19px;
+  text-align: center;
+  color: black;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 export const NavbarContainer = styled.nav`
   position: relative;
   display: flex;
@@ -32,17 +43,6 @@ export const NavbarLinkContainer = styled.div`
   padding-right: 20px;
 `;
 
-export const NavbarLink = styled(Link)`
-  text-decoration: none;
-  color: #fff;
-  margin: 10px;
-  font-size: 19px;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
 export const RightContainer = styled.div`
   flex: 30%;
   display: flex;
@@ -51,7 +51,7 @@ export const RightContainer = styled.div`
   padding-right: 5%;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.img`
   max-width: 121px;
   max-height: auto;
 `;

@@ -6,6 +6,17 @@ export const Container = styled.div`
   justify-content: space-between;
 `;
 
+export const Text = styled.div`
+  font-family: Inter, sans-serif;
+  margin: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: black;
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
 export const DropdownButton = styled.button`
   border: none;
   width: 70px;
@@ -48,17 +59,5 @@ export const DropdownItem = styled.div`
 
   &:hover {
     background-color: #ffdda8;
-  }
-`;
-
-export const LogoContainer = styled.div`
-  position: absolute;
-  right: 0;
-  padding-right: 10px;
-  text-align: right;
-  width: auto;
-
-  @media (min-width: 768px) {
-    display: none;
   }
 `;
