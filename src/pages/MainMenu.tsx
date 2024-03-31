@@ -9,7 +9,7 @@ import MisLotes from "../assets/icons/myBatches.svg";
 import MiPerfil from "../assets/icons/myProfile.svg";
 import CrearTrabajador from "../assets/icons/createWorkerUser.svg";
 import VerTrabajador from "../assets/icons/viewMyWorkers.svg";
-import CerrarSesion from "../assets/icons/logout.svg";
+import CerrarSesion from "../assets/icons/logoutIcon.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface MenuProps {
@@ -28,11 +28,11 @@ const MainMenu: React.FC = () => {
   const MenuItems: MenuProps[] = [
     {
       id: 1,
-      elementList: <LinkElement src={MisLotes} text="Mis lotes" link="/BatchManage" />,
+      elementList: <LinkElement src={MisLotes} text="Mis lotes" link="/batch-manage" />,
     },
     {
       id: 2,
-      elementList: <LinkElement src={MiPerfil} text="Mi perfil" link="/MyProfile" />,
+      elementList: <LinkElement src={MiPerfil} text="Mi perfil" link="/my-profile" />,
     },
     {
       id: 3,

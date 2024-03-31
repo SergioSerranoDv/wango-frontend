@@ -71,9 +71,7 @@ const Navbar: React.FC = () => {
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <Logo to="/">
-            <img src={LogoImg}></img>
-          </Logo>
+          <Logo src={LogoImg} />
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>

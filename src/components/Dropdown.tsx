@@ -9,7 +9,6 @@ import {
   Text,
 } from "../styles/DropdownStyles";
 
-
 interface DropdownProps {
   id: number;
   elementList: JSX.Element;

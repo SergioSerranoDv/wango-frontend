@@ -51,7 +51,7 @@ export const RightContainer = styled.div`
   padding-right: 5%;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.img`
   max-width: 121px;
   max-height: auto;
 `;
