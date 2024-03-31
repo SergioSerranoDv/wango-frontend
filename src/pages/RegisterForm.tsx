@@ -19,7 +19,7 @@ import { DivIdentification } from "../styles/FormStyles";
 
 const RegisterForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
-  const { setRefetchData } = useContext(AppContext);
+  const { setRefetchData, userData } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     typeID: "",
@@ -55,14 +55,7 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     console.log("Formulario enviado:", formData);
     // Obtener los datos de los inputs
-    const { typeID, identification, userName, lastName, email, userType, password } = formData;
-    console.log("Tipo de ID:", typeID);
-    console.log("Identificación:", identification);
-    console.log("Nombres:", userName);
-    console.log("Apellidos:", lastName);
-    console.log("Correo:", email);
-    console.log("Tipo de usuario:", userType);
-    console.log("Contraseña:", password);
+    const { typeID, identification, userName, lastName, password } = formData;
 
     if (validatePassword(password)) {
       setIsValidPassword(true);
@@ -127,7 +120,7 @@ const RegisterForm: React.FC = () => {
     setIsValidPassword(isValid);
     console.log("Contraseña válida:", isValid);
   };
-
+  console.log("Email:", userData.email);
   return (
     <RegisterFormContainer>
       <Logo src={logo} alt="Logo" />
@@ -142,7 +135,13 @@ const RegisterForm: React.FC = () => {
             <Label $primary htmlFor="typeID">
               Tipo*
             </Label>
-            <Select id="typeID" name="typeID" value={formData.typeID} onChange={handleChange}>
+            <Select
+              id="typeID"
+              name="typeID"
+              value={formData.typeID}
+              onChange={handleChange}
+              required
+            >
               <option value="">--</option>
               <option value="C.C">C.C</option>
               <option value="C.E">C.E</option>
@@ -188,12 +187,19 @@ const RegisterForm: React.FC = () => {
           type="email"
           id="email"
           name="email"
-          value={formData.email}
+          value={userData.email}
           onChange={handleChange}
+          disabled
         />
 
         <Label htmlFor="userType">Tipo de usuario*</Label>
-        <Select id="userType" name="userType" value={formData.userType} onChange={handleChange}>
+        <Select
+          id="userType"
+          name="userType"
+          value={formData.userType}
+          onChange={handleChange}
+          required
+        >
           <option value="">--</option>
           <option value="Admin">Administrador</option>
         </Select>
