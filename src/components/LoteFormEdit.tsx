@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import NotificationModal from "./modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
 import { ApiContext } from "../context/ApiContext";
-import { fetchLotDetails, saveLot } from "../services/lot_s";
+import { createNewLot } from "../services/lot_s";
 
 import {
   FormWrapper,
@@ -20,37 +20,13 @@ interface FormData {
   capacidadLote: string;
 }
 
-interface Props {
-  lotId?: string;
-  userId: string;
-}
-
-function LoteFormEdit({ lotId = "", userId }: Props) {
-  // Proporcionar un valor predeterminado para lotId
+function LoteForm() {
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
     capacidadLote: "",
   });
   const [showNotification, setShowNotification] = useState(false);
-
-  useEffect(() => {
-    async function loadLotDetails() {
-      if (lotId) {
-        const lots = await fetchLotDetails(backendApiCall, userId); // Suponiendo que userId está definido en tu componente
-        if (lots) {
-          const lot = lots.find(lot => lot.name === lotId); // Encuentra el lote con el nombre correspondiente
-          if (lot) {
-            setFormData({
-              nombreLote: lot.name,
-              capacidadLote: lot.capacity.toString(),
-            });
-          }
-        }
-      }
-    }
-    loadLotDetails();
-  }, [backendApiCall, lotId, userId]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -64,15 +40,11 @@ function LoteFormEdit({ lotId = "", userId }: Props) {
     e.preventDefault();
     try {
       console.log("Form data:", formData);
-      const response = await saveLot(
-        backendApiCall,
-        {
-          name: formData.nombreLote,
-          capacity: parseInt(formData.capacidadLote),
-        },
-        lotId // No es necesario manejar lotId como cadena vacía aquí
-      );
-      if (response.status === "error") {
+      const response = await createNewLot(backendApiCall, {
+        name: formData.nombreLote,
+        capacity: parseInt(formData.capacidadLote),
+      });
+      if (response.status == "error") {
         alert(response.message);
       }
       setShowNotification(true);
@@ -89,7 +61,7 @@ function LoteFormEdit({ lotId = "", userId }: Props) {
     <>
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
-          <FormHeader>Editar lote</FormHeader>
+          <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader>
           <FormField>
             <Label htmlFor="nombreLote">Nombre del lote</Label>
             <Input
@@ -113,14 +85,17 @@ function LoteFormEdit({ lotId = "", userId }: Props) {
             />
           </FormField>
           <ButtonContainer>
-            <Button type="submit">Guardar cambios</Button>
+            <Button type="submit">Añadir Lote</Button>
           </ButtonContainer>
+          <FormHeader>
+            Podrás añadir un cultivo entrando al lote en específico en la sección anterior.
+          </FormHeader>
         </Form>
       </FormWrapper>
       {showNotification && (
         <NotificationModal
-          title="Lote editado exitosamente"
-          description="Los cambios en el lote han sido guardados correctamente."
+          title="Lote añadido exitosamente"
+          description="Excelente! Podrás ver tu nuevo lote en la sección <br /> de ‘Mis lotes’."
           imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
@@ -131,4 +106,4 @@ function LoteFormEdit({ lotId = "", userId }: Props) {
   );
 }
 
-export default LoteFormEdit;
+export default LoteForm;
