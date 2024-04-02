@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from "
 import NotificationModal from "./modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
 import { ApiContext } from "../context/ApiContext";
-import { saveLot, fetchLotDetails } from "../services/lot_s";
+import { fetchLotDetails, saveLot } from "../services/lot_s";
 
 import {
   FormWrapper,
@@ -20,7 +20,13 @@ interface FormData {
   capacidadLote: string;
 }
 
-function LoteFormEdit({ lotId }: { lotId: string }) {
+interface Props {
+  lotId?: string;
+  userId: string;
+}
+
+function LoteFormEdit({ lotId = "", userId }: Props) {
+  // Proporcionar un valor predeterminado para lotId
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
@@ -30,16 +36,21 @@ function LoteFormEdit({ lotId }: { lotId: string }) {
 
   useEffect(() => {
     async function loadLotDetails() {
-      const lotDetails = await fetchLotDetails(backendApiCall, lotId);
-      if (lotDetails) {
-        setFormData({
-          nombreLote: lotDetails.name,
-          capacidadLote: lotDetails.capacity.toString(),
-        });
+      if (lotId) {
+        const lots = await fetchLotDetails(backendApiCall, userId); // Suponiendo que userId está definido en tu componente
+        if (lots) {
+          const lot = lots.find(lot => lot.name === lotId); // Encuentra el lote con el nombre correspondiente
+          if (lot) {
+            setFormData({
+              nombreLote: lot.name,
+              capacidadLote: lot.capacity.toString(),
+            });
+          }
+        }
       }
     }
     loadLotDetails();
-  }, [backendApiCall, lotId]);
+  }, [backendApiCall, lotId, userId]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,9 +70,9 @@ function LoteFormEdit({ lotId }: { lotId: string }) {
           name: formData.nombreLote,
           capacity: parseInt(formData.capacidadLote),
         },
-        lotId
+        lotId // No es necesario manejar lotId como cadena vacía aquí
       );
-      if (response.status == "error") {
+      if (response.status === "error") {
         alert(response.message);
       }
       setShowNotification(true);
