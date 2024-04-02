@@ -1,20 +1,32 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Table, TableRow, TableCell } from "../styles/BatchTableStyles";
+import { fetchLotsPerUser } from "../services/lot_s";
+import { ApiContext } from "../context/ApiContext";
+import { Lot } from "../interfaces/Lot";
 
 const BatchTable = () => {
-  const data = [
-    { id: 1, name: "Lote1", age: "20 Ha" },
-    { id: 2, name: "Lote2", age: "30 Ha" },
-  ];
+  const { backendApiCall } = useContext(ApiContext);
+  const [lots, setLots] = useState<Lot[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userLots = await fetchLotsPerUser(backendApiCall);
+      if (userLots) {
+        setLots(userLots);
+      }
+    };
+
+    fetchData();
+  }, [backendApiCall]);
 
   const handleEdit = (id: number) => {
-    // Implement your edit logic here
-    console.log(`Edit item with id ${id}`);
+    // Implementa tu lógica de edición aquí
+    console.log(`Editar elemento con ID ${id}`);
   };
 
   const handleDelete = (id: number) => {
-    // Implement your delete logic here
-    console.log(`Delete item with id ${id}`);
+    // Implementa tu lógica de eliminación aquí
+    console.log(`Eliminar elemento con ID ${id}`);
   };
 
   return (
@@ -36,14 +48,14 @@ const BatchTable = () => {
           </TableRow>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <TableRow key={item.id} index={index}>
-              <TableCell>{item.id}</TableCell>
+          {lots.map((item, index) => (
+            <TableRow key={index} index={index}>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{item.age}</TableCell>
+              <TableCell>{item.capacity}</TableCell>
               <TableCell>
-                <button onClick={() => handleEdit(item.id)}>Edit</button>
-                <button onClick={() => handleDelete(item.id)}>Delete</button>
+                <button onClick={() => handleEdit(index + 1)}>Editar</button>
+                <button onClick={() => handleDelete(index + 1)}>Eliminar</button>
               </TableCell>
             </TableRow>
           ))}

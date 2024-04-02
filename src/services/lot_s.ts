@@ -31,3 +31,13 @@ export const fetchLotDetails = async (
   }
   return null;
 };
+
+export const fetchLotsPerUser = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>
+): Promise<Lot[] | null> => {
+  const response = await backendApiCall({ method: "GET", endpoint: "v1/lot/user" });
+  if (response.status === "success") {
+    return response.data as Lot[];
+  }
+  return null;
+};

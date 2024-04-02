@@ -78,7 +78,16 @@ function App() {
               }
             />
             <Route path="/new-crop" element={<NewCrop />} />
-            <Route path="/batch-manage" element={<BatchManage />} />
+            <Route
+              path="/batch-manage"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <BatchManage />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
           </>
         ) : (
           <>
