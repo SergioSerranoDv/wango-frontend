@@ -28,7 +28,7 @@ const MainMenu: React.FC = () => {
   const MenuItems: MenuProps[] = [
     {
       id: 1,
-      elementList: <LinkElement src={MisLotes} text="Mis lotes" link="/batch-manage" />,
+      elementList: <LinkElement src={MisLotes} text="Mis lotes" link="/lots-manage" />,
     },
     {
       id: 2,

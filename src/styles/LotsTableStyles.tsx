@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: block;
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+`;
+
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;

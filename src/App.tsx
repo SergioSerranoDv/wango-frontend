@@ -7,7 +7,7 @@ import MyProfile from "./pages/MyProfile";
 import DashboardLotes from "./pages/DashboardLotes";
 import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
-import BatchManage from "./pages/BatchManage";
+import LotsManage from "./pages/LotsManage";
 import LoteForm from "./pages/AddLote";
 import LoteFormEdit from "./pages/EditLote";
 import "./styles/MainMenuStyles";
@@ -79,11 +79,11 @@ function App() {
             />
             <Route path="/new-crop" element={<NewCrop />} />
             <Route
-              path="/batch-manage"
+              path="/lots-manage"
               element={
                 <ApiContextProvider>
                   <AppContextProvider>
-                    <BatchManage />
+                    <LotsManage />
                   </AppContextProvider>
                 </ApiContextProvider>
               }

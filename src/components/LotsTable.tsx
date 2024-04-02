@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Table, TableRow, TableCell } from "../styles/BatchTableStyles";
+import { Container, Table, TableRow, TableCell } from "../styles/LotsTableStyles";
 import { fetchLotsPerUser } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import { Lot } from "../interfaces/Lot";
 
-const BatchTable = () => {
+const LotsTable = () => {
   const { backendApiCall } = useContext(ApiContext);
   const [lots, setLots] = useState<Lot[]>([]);
 
@@ -19,25 +19,12 @@ const BatchTable = () => {
     fetchData();
   }, [backendApiCall]);
 
-  const handleEdit = (id: number) => {
-    // Implementa tu lógica de edición aquí
-    console.log(`Editar elemento con ID ${id}`);
-  };
+  const handleEdit = (id: number) => {};
 
-  const handleDelete = (id: number) => {
-    // Implementa tu lógica de eliminación aquí
-    console.log(`Eliminar elemento con ID ${id}`);
-  };
+  const handleDelete = (id: number) => {};
 
   return (
-    <div
-      style={{
-        display: "block",
-        maxWidth: "700px",
-        margin: "auto",
-        paddingTop: "20px",
-      }}
-    >
+    <Container>
       <Table>
         <thead>
           <TableRow index={-1}>
@@ -61,8 +48,8 @@ const BatchTable = () => {
           ))}
         </tbody>
       </Table>
-    </div>
+    </Container>
   );
 };
 
-export default BatchTable;
+export default LotsTable;
