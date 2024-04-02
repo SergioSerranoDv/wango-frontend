@@ -30,11 +30,37 @@ const Dropdown: React.FC = () => {
   const DropdownItems: DropdownProps[] = [
     {
       id: 1,
-      elementList: <LinkElement text="Editar perfil" link="/MyProfile" />,
+      elementList: (
+        <button
+          style={{
+            border: "none",
+            background: "none",
+            cursor: "pointer",
+            display: "inline-block",
+            width: "100%",
+          }}
+          onClick={() => (window.location.href = "/my-profile")}
+        >
+          <Text>Editar perfil</Text>
+        </button>
+      ),
     },
     {
       id: 2,
-      elementList: <LinkElement text="Configurar variables" link="/variables" />,
+      elementList: (
+        <button
+          style={{
+            border: "none",
+            background: "none",
+            cursor: "pointer",
+            display: "inline-block",
+            width: "100%",
+          }}
+          onClick={() => (window.location.href = "/variables")}
+        >
+          <Text>Editar variables</Text>
+        </button>
+      ),
     },
     {
       id: 3,
@@ -44,6 +70,8 @@ const Dropdown: React.FC = () => {
             border: "none",
             background: "none",
             cursor: "pointer",
+            display: "inline-block",
+            width: "100%",
           }}
           onClick={() => logout()}
         >
