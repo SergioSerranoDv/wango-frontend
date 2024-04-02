@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import NotificationModal from "./modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
 import { ApiContext } from "../context/ApiContext";
-import { createNewLot } from "../services/lot_s";
+import { saveLot, fetchLotDetails } from "../services/lot_s";
 
 import {
   FormWrapper,
@@ -20,13 +20,26 @@ interface FormData {
   capacidadLote: string;
 }
 
-function LoteForm() {
+function LoteFormEdit({ lotId }: { lotId: string }) {
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
     capacidadLote: "",
   });
   const [showNotification, setShowNotification] = useState(false);
+
+  useEffect(() => {
+    async function loadLotDetails() {
+      const lotDetails = await fetchLotDetails(backendApiCall, lotId);
+      if (lotDetails) {
+        setFormData({
+          nombreLote: lotDetails.name,
+          capacidadLote: lotDetails.capacity.toString(),
+        });
+      }
+    }
+    loadLotDetails();
+  }, [backendApiCall, lotId]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,10 +53,14 @@ function LoteForm() {
     e.preventDefault();
     try {
       console.log("Form data:", formData);
-      const response = await createNewLot(backendApiCall, {
-        name: formData.nombreLote,
-        capacity: parseInt(formData.capacidadLote),
-      });
+      const response = await saveLot(
+        backendApiCall,
+        {
+          name: formData.nombreLote,
+          capacity: parseInt(formData.capacidadLote),
+        },
+        lotId
+      );
       if (response.status == "error") {
         alert(response.message);
       }
@@ -61,7 +78,7 @@ function LoteForm() {
     <>
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
-          <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader>
+          <FormHeader>Editar lote</FormHeader>
           <FormField>
             <Label htmlFor="nombreLote">Nombre del lote</Label>
             <Input
@@ -85,17 +102,14 @@ function LoteForm() {
             />
           </FormField>
           <ButtonContainer>
-            <Button type="submit">Añadir Lote</Button>
+            <Button type="submit">Guardar cambios</Button>
           </ButtonContainer>
-          <FormHeader>
-            Podrás añadir un cultivo entrando al lote en específico en la sección anterior.
-          </FormHeader>
         </Form>
       </FormWrapper>
       {showNotification && (
         <NotificationModal
-          title="Lote añadido exitosamente"
-          description="Excelente! Podrás ver tu nuevo lote en la sección <br /> de ‘Mis lotes’."
+          title="Lote editado exitosamente"
+          description="Los cambios en el lote han sido guardados correctamente."
           imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
@@ -106,4 +120,4 @@ function LoteForm() {
   );
 }
 
-export default LoteForm;
+export default LoteFormEdit;

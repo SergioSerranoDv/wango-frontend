@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
   const NavbarItems: NavbarProps[] = [
     {
       id: 1,
-      elementList: <LinkElement text="Editar perfil" link="/MyProfile" />,
+      elementList: <LinkElement text="Editar perfil" link="/my-profile" />,
     },
     {
       id: 2,
@@ -71,7 +71,9 @@ const Navbar: React.FC = () => {
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <Logo src={LogoImg} />
+          <Link to="/">
+            <Logo src={LogoImg} />
+          </Link>
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>

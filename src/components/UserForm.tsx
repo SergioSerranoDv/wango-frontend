@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
+import NotificationModal from "./modals/NotificationModal";
+import checkLogo from "../assets/icons/checkLogo.svg";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { ApiContext } from "../context/ApiContext";
@@ -21,6 +23,7 @@ const UserForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { userData } = useContext(AppContext);
   const [editedData, setEditedData] = useState(userData);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     setEditedData(userData);
@@ -35,6 +38,7 @@ const UserForm: React.FC = () => {
       endpoint: "v1/user/info/update",
       body: editedData,
     });
+    setShowNotification(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -43,6 +47,10 @@ const UserForm: React.FC = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleNotificationClose = () => {
+    setShowNotification(false);
   };
 
   return (
@@ -132,6 +140,16 @@ const UserForm: React.FC = () => {
           <Button type="submit">Guardar cambios</Button>
         </ButtonContainer>
       </Form>
+      {showNotification && (
+        <NotificationModal
+          title="Cambios guardados"
+          description="¡Cambios guardados correctamente!."
+          imageUrl={checkLogo}
+          buttonText="Aceptar"
+          onClose={handleNotificationClose}
+          redirectUrl="/"
+        />
+      )}
     </FormWrapper>
   );
 };
