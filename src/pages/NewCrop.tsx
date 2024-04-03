@@ -8,7 +8,7 @@ import {
   InfoContainer,
   Input,
   Label,
-  RegisterFormContainer,
+  FormContainer,
   SignBoard,
 } from "../styles/FormStyles";
 import React, { useState } from "react";
@@ -36,7 +36,7 @@ export default function NewCrop() {
   return (
     <div>
       <Navbar />
-      <RegisterFormContainer>
+      <FormContainer>
         <SignBoard $custom1>Agrega un nuevo cultivo al lote ‘MisPruebas01’</SignBoard>
         <InfoContainer>
           <DetailsSign>
@@ -98,7 +98,7 @@ export default function NewCrop() {
             principal.
           </Description>
         </Form>
-      </RegisterFormContainer>
+      </FormContainer>
     </div>
   );
 }
