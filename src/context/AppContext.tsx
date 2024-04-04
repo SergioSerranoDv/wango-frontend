@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from "react";
 import { ApiContext } from "./ApiContext";
-import { User } from "@auth0/auth0-react";
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;
@@ -19,6 +18,11 @@ interface UserDataI {
   };
   created_at: string;
   updated_at: string;
+  environment_variables: {
+    fraction: number;
+    maximum_quantity: number;
+    natural_amount_chemical: number;
+  };
 }
 const UserDataInit: UserDataI = {
   name: "",
@@ -32,6 +36,11 @@ const UserDataInit: UserDataI = {
   },
   created_at: "",
   updated_at: "",
+  environment_variables: {
+    fraction: 0,
+    maximum_quantity: 50,
+    natural_amount_chemical: 0.5,
+  },
 };
 
 export const AppContext = createContext<ContextData>({
