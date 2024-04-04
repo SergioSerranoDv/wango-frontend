@@ -69,18 +69,14 @@ const MyProfile: React.FC = () => {
               <Label $primary htmlFor="typeID">
                 Tipo*
               </Label>
-              <Select
+              <Input
                 id="identificationType"
                 name="id_type"
                 required
                 value={editedData.id_type}
                 onChange={handleChange}
-              >
-                <option value="">--</option>
-                <option value="C.C">C.C</option>
-                <option value="C.E">C.E</option>
-                <option value="T.I">T.I</option>
-              </Select>
+                disabled
+              ></Input>
             </FormField>
 
             <FormField style={{ width: "75%" }}>
@@ -88,15 +84,13 @@ const MyProfile: React.FC = () => {
                 Identificación*
               </Label>
               <Input
-                $custom
                 id="identification"
                 type="text"
                 name="id_number"
                 required
                 value={editedData.id_number}
                 onChange={handleChange}
-                min={10000000}
-                max={1999999999}
+                disabled
               />
             </FormField>
           </DivIdentification>

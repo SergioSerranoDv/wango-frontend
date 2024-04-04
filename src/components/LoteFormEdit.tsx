@@ -69,8 +69,9 @@ function LoteFormEdit({ lotId = "" }: Props) {
         backendApiCall,
         {
           _id: lotId,
-          name: formData.nombreLote,
+          available_capacity: parseInt(formData.capacidadLote),
           capacity: parseInt(formData.capacidadLote),
+          name: formData.nombreLote,
         },
         lotId
       );
@@ -80,7 +81,7 @@ function LoteFormEdit({ lotId = "" }: Props) {
         setShowNotification(true);
       }
     } catch (error) {
-      console.error("Error saving lot:", error);
+      console.error("Error updating lot:", error);
     }
   };
 
