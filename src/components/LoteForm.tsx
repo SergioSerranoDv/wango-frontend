@@ -41,6 +41,7 @@ function LoteForm() {
     try {
       console.log("Form data:", formData);
       const response = await createNewLot(backendApiCall, {
+        available_capacity: parseInt(formData.capacidadLote),
         name: formData.nombreLote,
         capacity: parseInt(formData.capacidadLote),
       });
