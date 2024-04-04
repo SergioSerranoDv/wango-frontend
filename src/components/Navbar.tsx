@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
     },
     {
       id: 2,
-      elementList: <LinkElement text="Configurar variables" link="/variables" />,
+      elementList: <LinkElement text="Configurar variables" link="/config-vars" />,
     },
     {
       id: 3,
