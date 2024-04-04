@@ -56,7 +56,13 @@ function App() {
                 </ApiContextProvider>
               }
             />
-            <Route path="/lote-menu" element={<DashboardLotes />} />
+            <Route path="/lote-menu/:id" element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <DashboardLotes />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              } />
             <Route
               path="/add-lote"
               element={

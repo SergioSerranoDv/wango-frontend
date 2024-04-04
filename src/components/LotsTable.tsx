@@ -19,8 +19,10 @@ const LotsTable = () => {
     fetchData();
   }, [backendApiCall]);
 
-  const handleEdit = (id: number) => {};
-
+  const handleEdit = (lot: Lot) => {
+    window.open(`/lote-Menu/${lot._id}`, "_self");
+  };
+  
   const handleDelete = (id: number) => {};
 
   return (
@@ -41,7 +43,8 @@ const LotsTable = () => {
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.capacity}</TableCell>
               <TableCell>
-                <button onClick={() => handleEdit(index + 1)}>Editar</button>
+                <button onClick={() => handleEdit(item)}>Editar</button>
+
                 <button onClick={() => handleDelete(index + 1)}>Eliminar</button>
               </TableCell>
             </TableRow>

@@ -4,12 +4,13 @@ import Navbar from "../components/Navbar";
 import LoteFormEdit from "../components/LoteFormEdit";
 
 export default function EditLote() {
-  const { id } = useParams<{ id?: string }>(); // Indica que 'id' podría ser 'undefined'
+  const { id } = useParams();
+  const lotId = id;
 
   return (
     <div>
       <Navbar />
-      <LoteFormEdit />{/* Verifica si 'id' no es 'undefined' antes de pasarla al componente */}
+      <LoteFormEdit lotId={lotId} />
     </div>
   );
 }
