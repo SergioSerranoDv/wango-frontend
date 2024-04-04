@@ -7,8 +7,9 @@ import MyProfile from "./pages/MyProfile";
 import DashboardLotes from "./pages/DashboardLotes";
 import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
-import BatchManage from "./pages/BatchManage";
+import LotsManage from "./pages/LotsManage";
 import LoteForm from "./pages/AddLote";
+import LoteFormEdit from "./pages/EditLote";
 import "./styles/MainMenuStyles";
 import "./App.css";
 import NewCrop from "./pages/NewCrop";
@@ -56,9 +57,37 @@ function App() {
               }
             />
             <Route path="/lote-menu" element={<DashboardLotes />} />
-            <Route path="/add-lote" element={<LoteForm />} />
+            <Route
+              path="/add-lote"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <LoteForm />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
+            <Route
+              path="/edit-lote/:id"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <LoteFormEdit />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
             <Route path="/new-crop" element={<NewCrop />} />
-            <Route path="/batch-manage" element={<BatchManage />} />
+            <Route
+              path="/lots-manage"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <LotsManage />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
           </>
         ) : (
           <>
