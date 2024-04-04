@@ -24,96 +24,35 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {isAuthenticated ? (
-          <>
-            <Route
-              path="/"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <Dashboard />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            ></Route>
-            <Route
-              path="/my-profile"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <MyProfile />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            ></Route>
-            <Route
-              path="/register-form"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <RegisterForm />{" "}
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            />
-            <Route path="/lote-menu/:id" element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <DashboardLotes />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              } />
-            <Route
-              path="/add-lote"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <LoteForm />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            />
-            <Route
-              path="/edit-lote/:id"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <LoteFormEdit />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            />
-            <Route path="/new-crop" element={<NewCrop />} />
-            <Route
-              path="/lots-manage"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <LotsManage />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            />
-            <Route
-              path="/config-vars"
-              element={
-                <ApiContextProvider>
-                  <AppContextProvider>
-                    <VarForm />
-                  </AppContextProvider>
-                </ApiContextProvider>
-              }
-            />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<LoginPage />} />
-          </>
-        )}
-      </Routes>
-    </BrowserRouter>
+    <>
+      <ApiContextProvider>
+        <AppContextProvider>
+          <BrowserRouter>
+            <Routes>
+              {isAuthenticated ? (
+                <>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/my-profile" element={<MyProfile />} />
+                  <Route path="/register-form" element={<RegisterForm />} />
+                  <Route path="/lot-menu/:id" element={<DashboardLotes />} />
+                  <Route path="/add-lote" element={<LoteForm />} />
+                  <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
+                  <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
+                  <Route path="/lots-manage" element={<LotsManage />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/" element={<LoginPage />} />
+                  <Route path="/RegisterForm" element={<RegisterForm />} />
+                  <Route path="/MyProfile" element={<MyProfile />} />
+                  <Route path="/Loading" element={<Loading />} />
+                </>
+              )}
+            </Routes>
+          </BrowserRouter>
+        </AppContextProvider>
+      </ApiContextProvider>
+    </>
   );
 }
 
