@@ -2,9 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { Container, Table, TableRow, TableCell } from "../styles/LotsTableStyles";
 import { fetchLotsPerUser } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
+import { AppContext } from "../context/AppContext";
 import { Lot } from "../interfaces/Lot";
+import { SignBoard, Link } from "../styles/FormStyles";
+import { Text } from "../styles/MainMenuStyles";
 
 const LotsTable = () => {
+  const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
   const [lots, setLots] = useState<Lot[]>([]);
 
@@ -25,6 +29,9 @@ const LotsTable = () => {
 
   return (
     <Container>
+      <Text>Estos son tus lotes, {userData.name}!</Text>
+      <br />
+      <br />
       <Table>
         <thead>
           <TableRow index={-1}>
@@ -78,7 +85,6 @@ const LotsTable = () => {
                     </defs>
                   </svg>
                 </button>
-                Ver
                 <button onClick={() => handleDelete(index + 1)}>
                   <svg
                     width="19"
@@ -116,12 +122,17 @@ const LotsTable = () => {
                     </defs>
                   </svg>
                 </button>
-                Borrar
               </TableCell>
             </TableRow>
           ))}
         </tbody>
       </Table>
+      <SignBoard>
+        ¿Quieres añadir un lote?
+        <Link $primary href="/add-lote">
+          Agregar lote
+        </Link>
+      </SignBoard>
     </Container>
   );
 };
