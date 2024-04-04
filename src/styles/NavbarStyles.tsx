@@ -20,6 +20,7 @@ export const NavbarContainer = styled.nav`
   background-color: #ffb032;
   padding-top: 26px;
   border-bottom: 1px solid #000;
+
   @media (max-width: 768px) {
     background-color: #fff;
   }
@@ -29,10 +30,12 @@ export const LeftContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5%;
+
   @media (max-width: 768px) {
     padding-left: 0px;
   }
 `;
+
 export const NavbarLinkContainer = styled.div`
   display: flex;
   align-items: center;
