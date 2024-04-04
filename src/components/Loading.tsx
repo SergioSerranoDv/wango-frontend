@@ -1,6 +1,4 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import logoLoading from "../assets/images/loading2.gif";
+import logoLoading from "../assets/images/loading.gif";
 import { LogoContainer, LogoImage } from "../styles/LoadingStyles";
 
 const LogoLoadingAnimation = () => {
