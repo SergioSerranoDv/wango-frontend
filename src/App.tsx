@@ -14,6 +14,7 @@ import "./styles/MainMenuStyles";
 import "./App.css";
 import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
+import LotsCrops from "./pages/LotsCrops";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -98,9 +99,10 @@ function App() {
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/RegisterForm" element={<RegisterForm />} />
-            <Route path="/MyProfile" element={<MyProfile />} />
-            <Route path="/Loading" element={<Loading />} />
+            <Route path="/register-form" element={<RegisterForm />} />
+            <Route path="/my-profile" element={<MyProfile />} />
+            <Route path="/lots-crops" element={<LotsCrops />} />
+            <Route path="/new-crop" element={<NewCrop />} />
           </>
         )}
       </Routes>

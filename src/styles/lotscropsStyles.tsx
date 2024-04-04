@@ -17,7 +17,9 @@ export const RegisterFormContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100vh;
-  position: relative; /* Añade posición relativa */
+  position: relative;
+  top: 0;
+  left: 0;
 `;
 
 export const Form = styled.form`
@@ -55,12 +57,12 @@ export const Button = styled.button<InputProps>`
   font-size: 14px;
   font-weight: 550; /*semibold*/
   padding: 10px;
-  background-color: #ff670f;
+  background-color: #fb9e0b;
   color: #fff;
   cursor: pointer;
   border-radius: 6px;
   border: 1px #ff670f;
-  margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
+  margin-bottom: ${(props) => (props.$custom1 ? "20px" : "")};
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
 `;
@@ -75,10 +77,11 @@ export const Logo = styled.img`
 export const SignBoard = styled.p<InputProps>`
   font-size: ${(props) => (props.$primary ? "13px" : "13px")};
   font-weight: ${(props) => (props.$primary ? "" : "620")};
-  text-align: center;
+  text-align: ${(props) => (props.$custom3 ? "" : "center")};
+  font-weight: ${(props) => (props.$custom3 ? "450" : "")};
   color: ${(props) => (props.$primary ? "#000000" : "#4d4d4d")};
   margin: ${(props) => (props.$primary ? "20px 0 20px 0" : "0 0 24px 0")};
-  margin-top: ${(props) => (props.$custom1 ? "-250px" : "10px")};
+  margin-top: ${(props) => (props.$custom1 ? "-230px" : "10px")};
   margin-bottom: ${(props) => (props.$custom1 ? "40px" : "10px")};
   margin-top: ${(props) => (props.$custom2 ? "10px" : "")};
   margin-bottom: ${(props) => (props.$custom2 ? "42px" : "")};
@@ -86,6 +89,8 @@ export const SignBoard = styled.p<InputProps>`
   font-weight: ${(props) => (props.$custom ? "450" : "")};
   color: ${(props) => (props.$custom ? "#D80000" : "")};
   opacity: 0.95;
+  padding: ${(props) => (props.$custom3 ? "8px 0 20px 0" : "")};
+  border-bottom: ${(props) => (props.$custom3 ? "1px solid #000000" : "")};
 `;
 
 export const Description = styled.p<InputProps>`
@@ -106,18 +111,6 @@ export const InputContainer = styled.div`
   flex: 1;
 `;
 
-export const Select = styled.select<{ $primary?: boolean }>`
-  color: ${(props) => (props.$primary ? "#cccccc" : "#4d4d4d")};
-  padding: 8px;
-  font-weight: 550;
-  opacity: 0.85;
-  border-radius: 5px;
-  margin-top: 6px;
-  width: 100%;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-`;
-
 export const DivIdentification = styled.div`
   display: flex;
   width: 100%;
@@ -128,6 +121,7 @@ export const FormField = styled.div<InputProps>``;
 
 export const Link = styled.a<InputProps>`
   color: ${(props) => (props.$primary ? "#548af7" : "#4d4d4d")};
+  color: ${(props) => (props.$custom3 ? "#2a64f6" : "")};
   cursor: pointer;
 `;
 
@@ -136,14 +130,14 @@ export const InfoContainer = styled.div<InputProps>`
   flex-direction: column;
   gap: 7.5px;
   box-sizing: border-box;
-  border-bottom: 1px solid #000000;
-  padding-bottom: 18px;
-  margin-bottom: 26px;
+  //border-bottom: 1px solid #000000;
+  padding-bottom: ${(props) => (props.$custom1 ? "28px" : "8px")};
+  margin-bottom: -8px;
   margin-top: -6px;
 `;
 
 export const DetailsSign = styled.a<InputProps>`
-  font-size: 13px;
+  font-size: ${(props) => (props.$custom3 ? "14px" : "13px")};
   font-weight: bold;
   color: ${(props) => (props.$custom3 ? "#4d4d4d" : "#3dac17")};
   //color: #3dac17;
