@@ -1,23 +1,48 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface InputProps {
+  $primary?: boolean;
+  $custom?: boolean;
+  $custom1?: boolean;
+  $custom2?: boolean;
+  $custom3?: boolean;
+}
+
+export const Container = styled.div<InputProps>`
+  //background-color: ${(props) => (props.$custom ? "#50ab64" : "")};
   display: block;
-  max-width: 700px;
+  Width: 120%
   margin: auto;
-  padding: 20px;
+  padding: 0px;
   box-sizing: border-box;
 `;
 
-export const Table = styled.table`
+export const Table = styled.table<InputProps>`
+  border: 1px solid #000000;
+  padding: 20px;
   width: 100%;
   border-collapse: collapse;
+  margin-top: ${(props) => (props.$custom ? "14px" : "4px")};
 `;
 
 export const TableRow = styled.tr<{ index: number }>`
-  background-color: ${(props) => (props.index % 2 === 0 ? "#FFFFFF" : "#FFE1CF")};
+  background-color: ${(props) => (props.index % 2 === 0 ? "#ffffff" : "#fae2d1")};
+  background-color: ${(props) => (props.index === -1 ? "#ffffff" : "")};
+  font-weight: ${(props) => (props.index === -1 ? "bold" : "")};
+  font-size: ${(props) => (props.index === -1 ? "14px" : "12.5px")};
+  color: ${(props) => (props.index === -1 ? "#737373" : "#4c443f")};
 `;
 
-export const TableCell = styled.td`
-  padding: 8px;
-  border: 1px solid #ccc;
+export const TableRow2 = styled.tr<{ index: number }>`
+  background-color: ${(props) => (props.index % 2 === 0 ? "#ffffff" : "#d4eff5")};
+  background-color: ${(props) => (props.index === -1 ? "#ffffff" : "")};
+  font-weight: ${(props) => (props.index === -1 ? "bold" : "")};
+  font-size: ${(props) => (props.index === -1 ? "14px" : "12.5px")};
+  color: ${(props) => (props.index === -1 ? "#737373" : "#4c443f")};
+`;
+
+export const TableCell = styled.td<InputProps>`
+  font-weight: ${(props) => (props.$custom1 ? "600" : "")};
+  padding: ${(props) => (props.$custom ? "4px 8px 4px 8px" : "11px")};
+  border-bottom: 1px solid #000000;
 `;
