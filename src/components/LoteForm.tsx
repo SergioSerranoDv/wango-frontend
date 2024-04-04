@@ -99,7 +99,7 @@ function LoteForm() {
           imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
-          redirectUrl="/Batch-Manage"
+          redirectUrl="/batch-Manage"
         />
       )}
     </>
