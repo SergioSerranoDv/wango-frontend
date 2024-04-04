@@ -23,8 +23,10 @@ const LotsTable = () => {
     fetchData();
   }, [backendApiCall]);
 
-  const handleEdit = (id: number) => {};
-
+  const handleEdit = (lot: Lot) => {
+    window.open(`/lote-Menu/${lot._id}`, "_self");
+  };
+  
   const handleDelete = (id: number) => {};
 
   return (
