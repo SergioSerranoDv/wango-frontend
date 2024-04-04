@@ -10,8 +10,7 @@ import {
   Logo,
 } from "../styles/NavbarStyles";
 import Dropdown from "../components/Dropdown";
-import LogoImg from "../assets/images/logo_navbar.svg";
-import LogoutIcon from "../assets/icons/logoutIcon.svg";
+import LogoImg from "../assets/images/logoNavbar.svg";
 
 interface LinkElementProps {
   text: string;
@@ -23,7 +22,7 @@ const Navbar: React.FC = () => {
 
   const NavbarItems: LinkElementProps[] = [
     { text: "Editar perfil", link: "/my-profile" },
-    { text: "Configurar variables", link: "/variables" },
+    { text: "Configurar variables", link: "/config-vars" },
   ];
 
   return (
