@@ -36,3 +36,14 @@ export const fetchLotsPerUser = async (
   }
   return null;
 };
+
+export const deleteLot = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  lotId: string
+): Promise<boolean> => {
+  const response = await backendApiCall({ method: "DELETE", endpoint: "v1/lot/delete/${lotId}" });
+  if (response.status === "success") {
+    return true;
+  }
+  return false;
+};

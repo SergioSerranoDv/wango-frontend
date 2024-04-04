@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SVG from "react-inlinesvg";
+import { Link } from "react-router-dom";
 
 export const Text = styled.div`
   font-family: Inter, sans-serif;
@@ -20,6 +20,7 @@ export const NavbarContainer = styled.nav`
   background-color: #ffb032;
   padding-top: 26px;
   border-bottom: 1px solid #000;
+
   @media (max-width: 768px) {
     background-color: #fff;
   }
@@ -30,19 +31,16 @@ export const LeftContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5%;
+
   @media (max-width: 768px) {
     padding-left: 0px;
   }
 `;
 
-export const NavbarLink = styled.span`
-  text-decoration: none;
-  color: #fff;
-  margin: 10px;
-  font-size: 19px;
-  @media (max-width: 768px) {
-    display: none;
-  }
+export const NavbarLinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
 `;
 
 export const RightContainer = styled.div`
@@ -58,7 +56,7 @@ export const Logo = styled.img`
   max-height: auto;
 `;
 
-export const NavbarInner = styled.div`
+export const NavbarInnerContainer = styled.div`
   display: flex;
   width: 100%;
   height: 80px;
