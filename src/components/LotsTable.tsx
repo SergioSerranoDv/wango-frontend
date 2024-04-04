@@ -26,7 +26,7 @@ const LotsTable = () => {
   const handleEdit = (lot: Lot) => {
     window.open(`/lote-Menu/${lot._id}`, "_self");
   };
-  
+
   const handleDelete = (id: number) => {};
 
   return (
@@ -50,7 +50,7 @@ const LotsTable = () => {
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.capacity}</TableCell>
               <TableCell>
-                <button onClick={() => handleEdit(index + 1)}>
+                <button onClick={() => handleEdit(lots[index])}>
                   <svg
                     width="19"
                     height="20"
@@ -87,7 +87,7 @@ const LotsTable = () => {
                     </defs>
                   </svg>
                 </button>
-                <button onClick={() => handleDelete(index + 1)}>
+                <button onClick={() => handleDelete(index)}>
                   <svg
                     width="19"
                     height="21"
