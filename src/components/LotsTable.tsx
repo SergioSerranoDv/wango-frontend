@@ -2,11 +2,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { Container, Table, TableRow, TableCell } from "../styles/LotsTableStyles";
 import { fetchLotsPerUser, deleteLot } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
+import { AppContext } from "../context/AppContext";
 import { Lot } from "../interfaces/Lot";
+import { SignBoard, Link } from "../styles/FormStyles";
+import { Text } from "../styles/MainMenuStyles";
 import checkLogo from "../assets/icons/checkLogo.svg";
 import NotificationModal from "../components/modals/NotificationModal";
 
 const LotsTable = () => {
+  const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
   const [lots, setLots] = useState<Lot[]>([]);
   const [showNotification, setShowNotification] = useState(false);
@@ -41,6 +45,9 @@ const LotsTable = () => {
 
   return (
     <Container>
+      <Text>Estos son tus lotes, {userData.name}!</Text>
+      <br />
+      <br />
       <Table>
         <thead>
           <TableRow index={-1}>
@@ -132,12 +139,17 @@ const LotsTable = () => {
                     </defs>
                   </svg>
                 </button>
-                Borrar
               </TableCell>
             </TableRow>
           ))}
         </tbody>
       </Table>
+      <SignBoard>
+        ¿Quieres añadir un lote?
+        <Link $primary href="/add-lote">
+          Agregar lote
+        </Link>
+      </SignBoard>
       {/* Mostrar modal de notificación si showNotification es true */}
       {showNotification && (
         <NotificationModal

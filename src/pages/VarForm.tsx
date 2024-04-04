@@ -20,7 +20,7 @@ import {
 
 const VarForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
-  const { userData } = useContext(AppContext);
+  const { userData, setRefetchData } = useContext(AppContext);
   const [editedData, setEditedData] = useState(userData);
   const [showNotification, setShowNotification] = useState(false);
 
@@ -42,6 +42,7 @@ const VarForm: React.FC = () => {
       return;
     }
     setShowNotification(true);
+    setRefetchData(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

@@ -25,7 +25,6 @@ export const NavbarContainer = styled.nav`
     background-color: #fff;
   }
 `;
-
 export const LeftContainer = styled.div`
   flex: 70%;
   display: flex;
@@ -51,7 +50,7 @@ export const RightContainer = styled.div`
   padding-right: 5%;
 `;
 
-export const Logo = styled.img`
+export const Logo = styled(Link)`
   max-width: 121px;
   max-height: auto;
 `;

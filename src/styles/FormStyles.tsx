@@ -159,3 +159,8 @@ export const DetailsItem = styled.a<InputProps>`
   color: #000000;
   font-weight: 300;
 `;
+
+export const Link = styled.a<InputProps>`
+  color: ${(props) => (props.$primary ? "#548af7" : "#4d4d4d")};
+  cursor: pointer;
+`;
