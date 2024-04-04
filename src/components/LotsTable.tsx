@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Table, TableRow, TableCell } from "../styles/LotsTableStyles";
-import { fetchLotsPerUser } from "../services/lot_s";
+import { fetchLotsPerUser, deleteLot } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import { Lot } from "../interfaces/Lot";
+import checkLogo from "../assets/icons/checkLogo.svg";
+import NotificationModal from "../components/modals/NotificationModal";
 
 const LotsTable = () => {
   const { backendApiCall } = useContext(ApiContext);
   const [lots, setLots] = useState<Lot[]>([]);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,8 +25,19 @@ const LotsTable = () => {
   const handleEdit = (lot: Lot) => {
     window.open(`/lote-Menu/${lot._id}`, "_self");
   };
-  
-  const handleDelete = (id: number) => {};
+
+  const handleDelete = async (lotId: string) => {
+    const success = await deleteLot(backendApiCall, lotId);
+    if (success) {
+      setShowNotification(true); // Mostrar notificación cuando se elimine con éxito
+      // No es recomendable recargar la página después de eliminar un elemento; preferiblemente, actualiza el estado para reflejar los cambios
+      // window.location.reload(); 
+    }
+  };
+
+  const handleNotificationClose = () => {
+    setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
+  };
 
   return (
     <Container>
@@ -43,7 +57,7 @@ const LotsTable = () => {
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.capacity}</TableCell>
               <TableCell>
-                <button onClick={() => handleEdit(index + 1)}>
+                <button onClick={() => handleEdit(item)}>
                   <svg
                     width="19"
                     height="20"
@@ -81,7 +95,7 @@ const LotsTable = () => {
                   </svg>
                 </button>
                 Ver
-                <button onClick={() => handleDelete(index + 1)}>
+                <button onClick={() => handleDelete((index + 1).toString())}>
                   <svg
                     width="19"
                     height="21"
@@ -124,6 +138,18 @@ const LotsTable = () => {
           ))}
         </tbody>
       </Table>
+      {/* Mostrar modal de notificación si showNotification es true */}
+      {showNotification && (
+        <NotificationModal
+          title="Lote eliminado exitosamente"
+          description="El lote ha sido eliminado con éxito."
+          imageUrl={checkLogo} // Asegúrate de tener esta variable definida
+          buttonText="Aceptar"
+          onClose={handleNotificationClose}
+          // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
+          redirectUrl="" 
+        />
+      )}
     </Container>
   );
 };
