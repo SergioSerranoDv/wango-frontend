@@ -11,7 +11,7 @@ import {
   Text,
 } from "../styles/NavbarStyles";
 import Dropdown from "../components/Dropdown";
-import LogoImg from "../assets/images/logo_navbar.svg";
+import LogoImg from "../assets/images/logoNavbar.svg";
 
 interface NavbarProps {
   id: number;
@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
     },
     {
       id: 2,
-      elementList: <LinkElement text="Configurar variables" link="/variables" />,
+      elementList: <LinkElement text="Configurar variables" link="/config-vars" />,
     },
     {
       id: 3,

@@ -14,6 +14,8 @@ import "./styles/MainMenuStyles";
 import "./App.css";
 import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
+import VarForm from "./pages/VarForm";
+import LotsCrops from "./pages/LotsCrops";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -56,7 +58,13 @@ function App() {
                 </ApiContextProvider>
               }
             />
-            <Route path="/lote-menu" element={<DashboardLotes />} />
+            <Route path="/lote-menu/:id" element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <DashboardLotes />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              } />
             <Route
               path="/add-lote"
               element={
@@ -88,13 +96,20 @@ function App() {
                 </ApiContextProvider>
               }
             />
+            <Route
+              path="/config-vars"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <VarForm />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/RegisterForm" element={<RegisterForm />} />
-            <Route path="/MyProfile" element={<MyProfile />} />
-            <Route path="/Loading" element={<Loading />} />
           </>
         )}
       </Routes>
