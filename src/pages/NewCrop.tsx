@@ -94,7 +94,7 @@ export default function NewCrop() {
     <div>
       <Navbar />
       <FormContainer>
-        <SignBoard $custom1>Agrega un nuevo cultivo al lote ‘MisPruebas01’</SignBoard>
+        <SignBoard>Agrega un nuevo cultivo al lote ‘MisPruebas01’</SignBoard>
         <InfoContainer>
           <DetailsSign>
             ID lote: <DetailsItem>{lotData._id}</DetailsItem>
