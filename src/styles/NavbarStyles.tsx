@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 export const Text = styled.div`
   font-family: Inter, sans-serif;
@@ -50,7 +49,7 @@ export const RightContainer = styled.div`
   padding-right: 5%;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.img`
   max-width: 121px;
   max-height: auto;
 `;
