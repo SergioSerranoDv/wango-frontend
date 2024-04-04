@@ -9,7 +9,7 @@ export default function EditLote() {
   return (
     <div>
       <Navbar />
-      {id && <LoteFormEdit lotId={id} />} {/* Verifica si 'id' no es 'undefined' antes de pasarla al componente */}
+      <LoteFormEdit />{/* Verifica si 'id' no es 'undefined' antes de pasarla al componente */}
     </div>
   );
 }
