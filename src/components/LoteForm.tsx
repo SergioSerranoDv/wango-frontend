@@ -79,7 +79,7 @@ function LoteForm() {
             <Input
               id="capacidadLote"
               name="capacidadLote"
-              type="text"
+              type="number"
               value={formData.capacidadLote}
               onChange={handleChange}
               required
@@ -100,7 +100,7 @@ function LoteForm() {
           imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
-          redirectUrl="/Batch-Manage"
+          redirectUrl="/lots-manage"
         />
       )}
     </>

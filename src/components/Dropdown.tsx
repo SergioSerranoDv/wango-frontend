@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
 import {
   DropdownButton,
   DropdownContent,
@@ -12,11 +11,6 @@ import {
 interface DropdownProps {
   id: number;
   elementList: JSX.Element;
-}
-
-interface LinkElementProps {
-  text: string;
-  link: string;
 }
 
 const Dropdown: React.FC = () => {
@@ -56,7 +50,7 @@ const Dropdown: React.FC = () => {
             display: "inline-block",
             width: "100%",
           }}
-          onClick={() => (window.location.href = "/variables")}
+          onClick={() => (window.location.href = "/config-vars")}
         >
           <Text>Editar variables</Text>
         </button>
@@ -94,11 +88,5 @@ const Dropdown: React.FC = () => {
     </Container>
   );
 };
-
-const LinkElement: React.FC<LinkElementProps> = ({ text, link }) => (
-  <Link to={link} style={{ textDecoration: "none", color: "inherit" }}>
-    <Text>{text}</Text>
-  </Link>
-);
 
 export default Dropdown;

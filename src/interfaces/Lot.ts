@@ -1,7 +1,7 @@
 export interface Lot {
-  available_capacity: number;
   _id?: string;
-  name: string;
+  available_capacity: number;
   capacity: number;
   capacity_in_use?: number;
+  name: string;
 }

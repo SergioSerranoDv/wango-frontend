@@ -1,8 +1,16 @@
-import React, { useContext } from "react";
-import { AppContext } from "../context/AppContext";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
+import { ApiContext } from "../context/ApiContext";
+import { fetchLotDetails } from "../services/lot_s";
 
+import {
+  MainWrapper,
+  ContentArea,
+  Menu,
+  ItemsMenu,
+  Item,
+  Text,
+} from "../styles/LoteMenuStyles";
 import VerCultvos from "../assets/icons/viewCrops.svg";
 import AñadirCultivo from "../assets/icons/addCrop.svg";
 import HuellaHidrica from "../assets/icons/waterFootprint.svg";
@@ -20,8 +28,32 @@ interface LinkElementProps {
   link: string;
   alt?: string;
 }
-const MainMenu: React.FC = () => {
-  const { userData } = useContext(AppContext);
+interface Props {
+  lotId?: string;
+}
+
+function LoteMenu({ lotId = "" }: Props) {
+  const { backendApiCall } = useContext(ApiContext);
+  const [nombreLote, setNombreLote] = useState<string>("");
+  const [showNotification, setShowNotification] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function loadLotDetails() {
+      if (lotId) {
+        try {
+          const lot = await fetchLotDetails(backendApiCall, lotId);
+          if (lot) {
+            const { name } = lot;
+            setNombreLote(name);
+          }
+        } catch (error) {
+          console.error("Error fetching lot details:", error);
+        }
+      }
+    }
+    loadLotDetails();
+  }, [backendApiCall, lotId]);
+
   const MenuItems: MenuProps[] = [
     {
       id: 1,
@@ -32,7 +64,7 @@ const MainMenu: React.FC = () => {
     {
       id: 2,
       elementList: (
-        <LinkElement src={AñadirCultivo} text="Añadir nuevo cultivo al lote" link="/addCultivo" />
+        <LinkElement src={AñadirCultivo} text="Añadir nuevo cultivo al lote" link="/new-crop" />
       ),
     },
     {
@@ -47,7 +79,7 @@ const MainMenu: React.FC = () => {
     },
     {
       id: 5,
-      elementList: <LinkElement src={EditarLote} text="Editar lote" link="/editLote" />,
+      elementList: <LinkElement src={EditarLote} text="Editar lote" link={`/edit-lote/${lotId}`} />,
     },
     {
       id: 6,
@@ -61,7 +93,7 @@ const MainMenu: React.FC = () => {
     <>
       <MainWrapper>
         <ContentArea>
-          <Text>Lote: {userData.name}</Text>
+        <Text>Lote: {nombreLote}</Text>
           <Menu>
             {MenuItems.map((item, index) => (
               <div
@@ -91,4 +123,4 @@ const LinkElement: React.FC<LinkElementProps> = ({ src, text, link }) => (
   </Link>
 );
 
-export default MainMenu;
+export default LoteMenu;
