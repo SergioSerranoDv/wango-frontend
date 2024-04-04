@@ -6,9 +6,8 @@ import {
   FormField,
   Input,
   Label,
-  Link,
   Logo,
-  RegisterFormContainer,
+  FormContainer,
   Select,
   SignBoard,
 } from "../styles/FormStyles";
@@ -122,7 +121,7 @@ const RegisterForm: React.FC = () => {
   };
   console.log("Email:", userData.email);
   return (
-    <RegisterFormContainer>
+    <FormContainer>
       <Logo src={logo} alt="Logo" />
       <SignBoard $custom2>¡Escribe tu información para registrarte!</SignBoard>
       {!isValidPassword && (
@@ -227,10 +226,7 @@ const RegisterForm: React.FC = () => {
           </Button>
         )}
       </Form>
-      <SignBoard $primary>
-        ¿Ya tienes una cuenta? <Link $primary>¡Ingresa usándola!</Link>
-      </SignBoard>
-    </RegisterFormContainer>
+    </FormContainer>
   );
 };
 

@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+const colors = {
+  orange: "#ff670f",
+  red: "#cf352b",
+  green: "#39ca07",
+};
+
 interface InputProps {
   $primary?: boolean;
   $custom?: boolean;
@@ -8,14 +14,13 @@ interface InputProps {
   $custom3?: boolean;
 }
 
-export const RegisterFormContainer = styled.div`
+export const FormContainer = styled.div`
   max-width: 400px;
   margin: 0 auto;
   background-color: #ffffff;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   height: 100vh;
   position: relative; /* Añade posición relativa */
 `;
@@ -41,7 +46,7 @@ export const Input = styled.input<InputProps>`
   margin: ${(props) => (props.$primary ? "-12px 0 12px 0" : "6px 0 4px 0")};
   padding: 9.5px;
   font-size: 14px;
-  color: #4d4d4d;
+  color: ${(props) => (props.$custom ? "#000" : "#4d4d4d")};
   font-weight: 550; /*semibold*/
   opacity: 0.85;
   border-radius: 5px;
@@ -51,15 +56,21 @@ export const Input = styled.input<InputProps>`
   //background-color: #ff0078;
 `;
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 15px;
+`;
+
 export const Button = styled.button<InputProps>`
   font-size: 14px;
   font-weight: 550; /*semibold*/
   padding: 10px;
-  background-color: #ff670f;
+  background-color: ${(props) => colors[(props.color as keyof typeof colors) || "orange"]};
   color: #fff;
   cursor: pointer;
   border-radius: 6px;
-  border: 1px #ff670f;
+  border: 1px solid ${(props) => colors[(props.color as keyof typeof colors) || "orange"]};
   margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
@@ -67,7 +78,7 @@ export const Button = styled.button<InputProps>`
 
 export const Logo = styled.img`
   max-width: 277px;
-  max-heigh: 90px;
+  max-height: 90px;
   align-self: center;
   margin-bottom: -22px; /* Espacio entre el logo Wango y el formulario */
 `;
@@ -125,11 +136,6 @@ export const DivIdentification = styled.div`
 `;
 
 export const FormField = styled.div<InputProps>``;
-
-export const Link = styled.a<InputProps>`
-  color: ${(props) => (props.$primary ? "#548af7" : "#4d4d4d")};
-  cursor: pointer;
-`;
 
 export const InfoContainer = styled.div<InputProps>`
   display: flex;

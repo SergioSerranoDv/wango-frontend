@@ -14,12 +14,11 @@ import {
   Input,
   Label,
   FormContainer,
-  Select,
   SignBoard,
-  DivIdentification,
+  Description,
 } from "../styles/FormStyles";
 
-const MyProfile: React.FC = () => {
+const VarForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { userData } = useContext(AppContext);
   const [editedData, setEditedData] = useState(userData);
@@ -49,7 +48,10 @@ const MyProfile: React.FC = () => {
     const { name, value } = e.target;
     setEditedData((prevData) => ({
       ...prevData,
-      [name]: value,
+      environment_variables: {
+        ...prevData.environment_variables,
+        [name]: value,
+      },
     }));
   };
 
@@ -61,90 +63,47 @@ const MyProfile: React.FC = () => {
     <>
       <Navbar />
       <FormContainer>
-        <SignBoard $custom2>Información de usuario</SignBoard>
+        <SignBoard $custom2>Configuración del sistema</SignBoard>
+        <Description>
+          Nota: Estas variables se obtuvieron como resultado de estudios que sugerían lo números,
+          puedes cambiar los valores, y el resto de acciones a partir de la alteración se realizarán
+          con ellos.
+        </Description>
         <Form onSubmit={handleSubmit}>
-          <DivIdentification>
-            <FormField style={{ width: "25%" }}>
-              <Label $primary htmlFor="typeID">
-                Tipo*
-              </Label>
-              <Select
-                id="identificationType"
-                name="id_type"
-                required
-                value={editedData.id_type}
-                onChange={handleChange}
-              >
-                <option value="">--</option>
-                <option value="C.C">C.C</option>
-                <option value="C.E">C.E</option>
-                <option value="T.I">T.I</option>
-              </Select>
-            </FormField>
-
-            <FormField style={{ width: "75%" }}>
-              <Label $primary htmlFor="identification">
-                Identificación*
-              </Label>
-              <Input
-                $custom
-                id="identification"
-                type="text"
-                name="id_number"
-                required
-                value={editedData.id_number}
-                onChange={handleChange}
-                min={10000000}
-                max={1999999999}
-              />
-            </FormField>
-          </DivIdentification>
           <FormField>
-            <Label htmlFor="name">Nombre*</Label>
+            <Label htmlFor="fraction">Fracción (α)*</Label>
             <Input
               $custom
-              id="name"
-              type="text"
-              name="name"
+              id="fraction"
+              type="number"
+              name="fraction"
               required
-              value={editedData.name}
+              value={editedData.environment_variables.fraction}
               onChange={handleChange}
             />
           </FormField>
           <FormField>
-            <Label htmlFor="lastName">Apellidos*</Label>
+            <Label htmlFor="maximumQuantity">Cant. Máxima permitida (Cmax)*</Label>
             <Input
               $custom
-              id="lastName"
-              type="text"
-              name="last_name"
+              id="maximumQuantity"
+              type="number"
+              name="maximum_quantity"
               required
-              value={editedData.last_name}
+              value={editedData.environment_variables.maximum_quantity}
               onChange={handleChange}
             />
           </FormField>
           <FormField>
-            <Label htmlFor="email">Correo*</Label>
+            <Label htmlFor="naturalAmountChemical">Cant. natural del químico (Cnat)*</Label>
             <Input
-              id="email"
-              type="email"
-              name="email"
+              $custom
+              id="naturalAmountChemical"
+              type="number"
+              name="natural_amount_chemical"
               required
-              defaultValue={editedData.email}
+              value={editedData.environment_variables.natural_amount_chemical}
               onChange={handleChange}
-              disabled
-            />
-          </FormField>
-          <FormField>
-            <Label htmlFor="userType">Tipo de usuario*</Label>
-            <Input
-              id="userType"
-              type="text"
-              name="user_type"
-              required
-              defaultValue="Administrador"
-              onChange={handleChange}
-              disabled
             />
           </FormField>
           <ButtonContainer>
@@ -173,4 +132,4 @@ const MyProfile: React.FC = () => {
   );
 };
 
-export default MyProfile;
+export default VarForm;

@@ -14,6 +14,7 @@ import "./styles/MainMenuStyles";
 import "./App.css";
 import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
+import VarForm from "./pages/VarForm";
 import LotsCrops from "./pages/LotsCrops";
 
 function App() {
@@ -95,14 +96,20 @@ function App() {
                 </ApiContextProvider>
               }
             />
+            <Route
+              path="/config-vars"
+              element={
+                <ApiContextProvider>
+                  <AppContextProvider>
+                    <VarForm />
+                  </AppContextProvider>
+                </ApiContextProvider>
+              }
+            />
           </>
         ) : (
           <>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/register-form" element={<RegisterForm />} />
-            <Route path="/my-profile" element={<MyProfile />} />
-            <Route path="/lots-crops" element={<LotsCrops />} />
-            <Route path="/new-crop" element={<NewCrop />} />
           </>
         )}
       </Routes>
