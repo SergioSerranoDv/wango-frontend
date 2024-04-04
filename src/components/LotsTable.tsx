@@ -27,7 +27,7 @@ const LotsTable = () => {
   }, [backendApiCall]);
 
   const handleEdit = (lot: Lot) => {
-    window.open(`/lote-Menu/${lot._id}`, "_self");
+    window.open(`/lot-menu/${lot._id}`, "_self");
   };
 
   const handleDelete = async (lotId: string) => {
