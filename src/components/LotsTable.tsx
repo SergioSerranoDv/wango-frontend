@@ -35,7 +35,7 @@ const LotsTable = () => {
     if (success) {
       setShowNotification(true); // Mostrar notificación cuando se elimine con éxito
       // No es recomendable recargar la página después de eliminar un elemento; preferiblemente, actualiza el estado para reflejar los cambios
-      // window.location.reload(); 
+      // window.location.reload();
     }
   };
 
@@ -101,7 +101,6 @@ const LotsTable = () => {
                     </defs>
                   </svg>
                 </button>
-                Ver
                 <button onClick={() => handleDelete((index + 1).toString())}>
                   <svg
                     width="19"
@@ -159,7 +158,7 @@ const LotsTable = () => {
           buttonText="Aceptar"
           onClose={handleNotificationClose}
           // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
-          redirectUrl="" 
+          redirectUrl=""
         />
       )}
     </Container>
