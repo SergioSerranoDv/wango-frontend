@@ -3,14 +3,7 @@ import { Link } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
 
-import {
-  MainWrapper,
-  ContentArea,
-  Menu,
-  ItemsMenu,
-  Item,
-  Text,
-} from "../styles/LoteMenuStyles";
+import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
 import VerCultvos from "../assets/icons/viewCrops.svg";
 import AñadirCultivo from "../assets/icons/addCrop.svg";
 import HuellaHidrica from "../assets/icons/waterFootprint.svg";
@@ -64,7 +57,11 @@ function LoteMenu({ lotId = "" }: Props) {
     {
       id: 2,
       elementList: (
-        <LinkElement src={AñadirCultivo} text="Añadir nuevo cultivo al lote" link="/new-crop" />
+        <LinkElement
+          src={AñadirCultivo}
+          text="Añadir nuevo cultivo al lote"
+          link={`/lot-menu/new-crop/${lotId}`}
+        />
       ),
     },
     {
@@ -93,7 +90,7 @@ function LoteMenu({ lotId = "" }: Props) {
     <>
       <MainWrapper>
         <ContentArea>
-        <Text>Lote: {nombreLote}</Text>
+          <Text>Lote: {nombreLote}</Text>
           <Menu>
             {MenuItems.map((item, index) => (
               <div
@@ -112,7 +109,7 @@ function LoteMenu({ lotId = "" }: Props) {
       </MainWrapper>
     </>
   );
-};
+}
 
 const LinkElement: React.FC<LinkElementProps> = ({ src, text, link }) => (
   <Link to={link} style={{ textDecoration: "none", color: "inherit" }}>
