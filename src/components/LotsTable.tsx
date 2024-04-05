@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Table, TableRow, TableCell } from "../styles/LotsTableStyles";
-import { fetchLotsPerUser, deleteLot } from "../services/lot_s";
+import { fetchLotsPerUser } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
 import { Lot } from "../interfaces/Lot";
@@ -31,16 +31,16 @@ const LotsTable = () => {
   };
 
   const handleDelete = async (lotId: string) => {
-    const success = await deleteLot(backendApiCall, lotId);
-    if (success) {
-      setShowNotification(true); // Mostrar notificación cuando se elimine con éxito
-      // No es recomendable recargar la página después de eliminar un elemento; preferiblemente, actualiza el estado para reflejar los cambios
-      // window.location.reload();
+    const response = await backendApiCall({ method: "DELETE", endpoint: `v1/lot/delete/${lotId}` });
+    if (response.status === "success") {
+      setShowNotification(true);
+      const updatedLots = lots.filter((lot) => lot._id !== lotId);
+      setLots(updatedLots);
     }
   };
 
   const handleNotificationClose = () => {
-    setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
+    setShowNotification(false);
   };
 
   return (
@@ -101,7 +101,7 @@ const LotsTable = () => {
                     </defs>
                   </svg>
                 </button>
-                <button onClick={() => handleDelete((index + 1).toString())}>
+                <button onClick={() => item._id && handleDelete(item._id)}>
                   <svg
                     width="19"
                     height="21"
@@ -146,15 +146,14 @@ const LotsTable = () => {
       <SignBoard>
         ¿Quieres añadir un lote?
         <Link $primary href="/add-lote">
-          Agregar lote
+          ¡Hazlo aquí!
         </Link>
       </SignBoard>
-      {/* Mostrar modal de notificación si showNotification es true */}
       {showNotification && (
         <NotificationModal
           title="Lote eliminado exitosamente"
           description="El lote ha sido eliminado con éxito."
-          imageUrl={checkLogo} // Asegúrate de tener esta variable definida
+          imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
           // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío

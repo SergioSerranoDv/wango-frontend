@@ -18,6 +18,8 @@ import {
 interface FormData {
   nombreLote: string;
   capacidadLote: string;
+  capacidadUso: string;
+  capacidadDisponible: string;
 }
 
 function LoteForm() {
@@ -25,6 +27,8 @@ function LoteForm() {
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
     capacidadLote: "",
+    capacidadUso: "",
+    capacidadDisponible: "",
   });
   const [showNotification, setShowNotification] = useState(false);
 
@@ -33,6 +37,8 @@ function LoteForm() {
     setFormData({
       ...formData,
       [name]: value,
+      capacidadUso: value,
+      capacidadDisponible: value,
     });
   };
 
