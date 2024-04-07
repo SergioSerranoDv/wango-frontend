@@ -7,11 +7,11 @@ interface UseGetResponse {
 }
 
 export const UseGet = (service: any): UseGetResponse => {
-  const { backendApiCall } = useContext(ApiContext);
+  const { backendApiCall, serviceIsReady } = useContext(ApiContext);
   const [data, setData] = useState({});
   const [refetch, setRefetch] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-
+  console.log(serviceIsReady);
   useEffect(() => {
     const fetchData = async () => {
       console.log("Fetching data");
@@ -26,9 +26,8 @@ export const UseGet = (service: any): UseGetResponse => {
         console.error(error);
       }
     };
-
-    fetchData();
-  }, [backendApiCall, refetch]);
+    if (serviceIsReady) fetchData();
+  }, [backendApiCall, serviceIsReady, refetch]);
 
   return {
     data,
