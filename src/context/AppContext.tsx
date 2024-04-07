@@ -13,6 +13,7 @@ interface UserDataI {
   id_number: string;
   user: string;
   email: string;
+  picture: string;
   security: {
     identity_verified: boolean;
   };
@@ -31,6 +32,7 @@ const UserDataInit: UserDataI = {
   id_number: "",
   user: "",
   email: "",
+  picture: "",
   security: {
     identity_verified: false,
   },
@@ -67,7 +69,9 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
       }
     };
     console.log("AppContextProvider");
-    getUserData();
+    if (tokenIsReady) {
+      getUserData();
+    }
   }, [tokenIsReady, refetchData]);
 
   return (

@@ -28,7 +28,6 @@ interface Props {
 function LoteMenu({ lotId = "" }: Props) {
   const { backendApiCall } = useContext(ApiContext);
   const [nombreLote, setNombreLote] = useState<string>("");
-  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadLotDetails() {

@@ -18,6 +18,8 @@ import {
 interface FormData {
   nombreLote: string;
   capacidadLote: string;
+  capacidadUso: string;
+  capacidadDisponible: string;
 }
 
 interface Props {
@@ -29,6 +31,8 @@ function LoteFormEdit({ lotId = "" }: Props) {
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
     capacidadLote: "",
+    capacidadUso: "",
+    capacidadDisponible: "",
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [lot, setLot] = useState<any>(null);
@@ -43,6 +47,8 @@ function LoteFormEdit({ lotId = "" }: Props) {
             setFormData({
               nombreLote: name,
               capacidadLote: capacity.toString(),
+              capacidadUso: capacity.toString(),
+              capacidadDisponible: capacity.toString(),
             });
             setLot(lotDetails);
           }
@@ -56,11 +62,28 @@ function LoteFormEdit({ lotId = "" }: Props) {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  
+    setFormData((prevData) => {
+      let nuevaCapacidadDisponible = prevData.capacidadDisponible;
+  
+      if (name === "capacidadLote") {
+        const nuevaCapacidadLote = parseInt(value);
+        const capacidadPrevDisponible = parseInt(prevData.capacidadDisponible);
+        const cambioEnCapacidad = nuevaCapacidadLote - parseInt(prevData.capacidadLote);
+        nuevaCapacidadDisponible = (capacidadPrevDisponible + cambioEnCapacidad).toString();
+      }
+  
+      return {
+        ...prevData,
+        [name]: value,
+        capacidadDisponible: name === "capacidadLote" ? nuevaCapacidadDisponible : prevData.capacidadDisponible,
+        capacidadUso: name === "capacidadLote" ? value : prevData.capacidadUso,
+      };
+    });
   };
+  
+  
+  
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,7 +111,7 @@ function LoteFormEdit({ lotId = "" }: Props) {
   const handleNotificationClose = () => {
     setShowNotification(false);
     if (lot && lot._id) {
-      window.location.href = `/lote-menu/${lot._id}`;
+      window.location.href = `/lot-menu/${lot._id}`;
     }
   };
 
