@@ -17,7 +17,6 @@ export const NavbarContainer = styled.nav`
   flex-direction: column;
   width: 100%;
   background-color: #ffb032;
-  padding-top: 26px;
   border-bottom: 1px solid #000;
 
   @media (max-width: 768px) {
@@ -47,6 +46,7 @@ export const RightContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding-right: 5%;
+  gap: 2rem;
 `;
 
 export const Logo = styled.img`
