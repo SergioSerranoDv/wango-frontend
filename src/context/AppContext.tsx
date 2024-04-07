@@ -53,7 +53,7 @@ export const AppContext = createContext<ContextData>({
 });
 
 export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
-  const { backendApiCall, tokenIsReady, userToken } = useContext(ApiContext);
+  const { backendApiCall, serviceIsReady } = useContext(ApiContext);
   const [refetchData, setRefetchData] = useState<boolean>(false);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
@@ -68,10 +68,10 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
         setAppContextIsFetching(false);
       }
     };
-    if (tokenIsReady) {
+    if (serviceIsReady) {
       getUserData();
     }
-  }, [tokenIsReady, refetchData]);
+  }, [serviceIsReady, refetchData]);
 
   return (
     <AppContext.Provider value={{ userData, appContextIsFetching, refetchData, setRefetchData }}>
