@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "cross-env env-cmd -f .env.development react-scripts start",
     "dev:prod": "cross-env env-cmd -f .env.production react-scripts start",
-    "build": "react-scripts build",
+    "build": " cross-env NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
