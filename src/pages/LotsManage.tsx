@@ -26,11 +26,11 @@ function LotsManage() {
   };
 
   const handleDelete = async (lotId: string) => {
-    const success = await deleteLot(backendApiCall, lotId);
-    if (success) {
-      setShowNotification(true); // Mostrar notificación cuando se elimine con éxito
-      // No es recomendable recargar la página después de eliminar un elemento; preferiblemente, actualiza el estado para reflejar los cambios
-      // window.location.reload();
+    const response = await backendApiCall({ method: "DELETE", endpoint: `v1/lot/delete/${lotId}` });
+    if (response.status === "success") {
+      setShowNotification(true);
+      // const updatedLots = lots.filter((lot) => lot._id !== lotId);
+      // setLots(updatedLots);
     }
   };
   const handleNotificationClose = () => {
@@ -59,7 +59,7 @@ function LotsManage() {
         <SignBoard>
           ¿Quieres añadir un lote?
           <Link $primary href="/add-lote">
-            Agregar lote
+            ¡Hazlo aquí!
           </Link>
         </SignBoard>
         {/* Mostrar modal de notificación si showNotification es true */}
