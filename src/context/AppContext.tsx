@@ -68,7 +68,6 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
         setAppContextIsFetching(false);
       }
     };
-    console.log("AppContextProvider");
     if (tokenIsReady) {
       getUserData();
     }
