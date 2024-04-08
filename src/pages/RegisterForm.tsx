@@ -19,7 +19,6 @@ import { DivIdentification } from "../styles/FormStyles";
 const RegisterForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { setRefetchData, userData } = useContext(AppContext);
-
   const [formData, setFormData] = useState({
     typeID: "",
     identification: "",
@@ -77,7 +76,7 @@ const RegisterForm: React.FC = () => {
         console.error(response.message);
         return;
       }
-      setRefetchData(true);
+      setRefetchData((prev) => prev + 1);
     } else {
       setIsValidPassword(false);
     }

@@ -1,10 +1,18 @@
-import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  PropsWithChildren,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import { ApiContext } from "./ApiContext";
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;
-  refetchData: boolean;
-  setRefetchData: (value: boolean) => void;
+  refetchData: number;
+  setRefetchData: Dispatch<SetStateAction<number>>;
 }
 interface UserDataI {
   name: string;
@@ -48,19 +56,19 @@ const UserDataInit: UserDataI = {
 export const AppContext = createContext<ContextData>({
   userData: UserDataInit,
   appContextIsFetching: false,
-  refetchData: false,
+  refetchData: 0,
   setRefetchData: () => {},
 });
 
 export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
-  const [refetchData, setRefetchData] = useState<boolean>(false);
+  const [refetchData, setRefetchData] = useState<number>(0);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
-
   useEffect(() => {
     const getUserData = async () => {
       const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+
       if (userData.status === "error") {
         console.error(userData.message);
       } else {
@@ -68,10 +76,8 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
         setAppContextIsFetching(false);
       }
     };
-    if (serviceIsReady) {
-      getUserData();
-    }
-  }, [serviceIsReady, refetchData]);
+    getUserData();
+  }, [backendApiCall, serviceIsReady, refetchData]);
 
   return (
     <AppContext.Provider value={{ userData, appContextIsFetching, refetchData, setRefetchData }}>

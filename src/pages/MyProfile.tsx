@@ -14,7 +14,6 @@ import {
   Input,
   Label,
   FormContainer,
-  Select,
   SignBoard,
   DivIdentification,
 } from "../styles/FormStyles";
@@ -43,7 +42,7 @@ const MyProfile: React.FC = () => {
       return;
     }
     setShowNotification(true);
-    setRefetchData(true);
+    setRefetchData((prevData) => prevData + 1);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
