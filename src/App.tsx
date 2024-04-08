@@ -14,6 +14,7 @@ import "./styles/MainMenuStyles";
 import "./App.css";
 import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
+import LotsCrops from "./pages/LotsCrops";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -37,6 +38,7 @@ function App() {
                   <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
                   <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
                   <Route path="/lots-manage" element={<LotsManage />} />
+                  <Route path="/lots-crops" element={<LotsCrops />} />
                 </>
               ) : (
                 <>
