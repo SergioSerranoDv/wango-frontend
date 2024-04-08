@@ -70,7 +70,7 @@ function LoteForm() {
         <Form onSubmit={handleSubmit}>
           <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader>
           <FormField>
-            <Label htmlFor="nombreLote">Nombre del lote</Label>
+            <Label htmlFor="nombreLote">Nombre del lote*</Label>
             <Input
               id="nombreLote"
               name="nombreLote"
@@ -81,7 +81,7 @@ function LoteForm() {
             />
           </FormField>
           <FormField>
-            <Label htmlFor="capacidadLote">Capacidad</Label>
+            <Label htmlFor="capacidadLote">Capacidad (Ha)*</Label>
             <Input
               id="capacidadLote"
               name="capacidadLote"
