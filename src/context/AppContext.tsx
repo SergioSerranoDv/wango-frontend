@@ -1,10 +1,18 @@
-import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  PropsWithChildren,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import { ApiContext } from "./ApiContext";
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;
-  refetchData: boolean;
-  setRefetchData: (value: boolean) => void;
+  refetchData: number;
+  setRefetchData: Dispatch<SetStateAction<number>>;
 }
 interface UserDataI {
   name: string;
@@ -48,13 +56,13 @@ const UserDataInit: UserDataI = {
 export const AppContext = createContext<ContextData>({
   userData: UserDataInit,
   appContextIsFetching: false,
-  refetchData: false,
+  refetchData: 0,
   setRefetchData: () => {},
 });
 
 export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
-  const [refetchData, setRefetchData] = useState<boolean>(false);
+  const [refetchData, setRefetchData] = useState<number>(0);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
   useEffect(() => {
