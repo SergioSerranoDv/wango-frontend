@@ -23,7 +23,7 @@ export default function LotsCrops() {
     <div>
       <Navbar />
       <RegisterFormContainer>
-        <SignBoard $custom1>Cultivos del lote ‘ExampleName2’</SignBoard>
+        <SignBoard>Cultivos del lote ‘ExampleName2’</SignBoard>
         <InfoContainer>
           <DetailsSign $custom3>
             ID lote: <DetailsItem>24 Example</DetailsItem>
