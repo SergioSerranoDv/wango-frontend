@@ -42,7 +42,7 @@ const VarForm: React.FC = () => {
       return;
     }
     setShowNotification(true);
-    setRefetchData(true);
+    setRefetchData((prevData) => prevData + 1);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
