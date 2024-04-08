@@ -121,7 +121,7 @@ function LoteFormEdit({ lotId = "" }: Props) {
         <Form onSubmit={handleSubmit}>
           <FormHeader>Editar información del lote</FormHeader>
           <FormField>
-            <Label htmlFor="nombreLote">Nombre del lote</Label>
+            <Label htmlFor="nombreLote">Nombre del lote*</Label>
             <Input
               id="nombreLote"
               name="nombreLote"
@@ -132,7 +132,7 @@ function LoteFormEdit({ lotId = "" }: Props) {
             />
           </FormField>
           <FormField>
-            <Label htmlFor="capacidadLote">Capacidad</Label>
+            <Label htmlFor="capacidadLote">Capacidad (Ha)*</Label>
             <Input
               id="capacidadLote"
               name="capacidadLote"
