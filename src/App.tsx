@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { ApiContext } from "./context/ApiContext";
+import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppContextProvider } from "./context/AppContext";
@@ -15,44 +14,42 @@ import "./styles/MainMenuStyles";
 import "./App.css";
 import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
-import VarForm from "./pages/VarForm";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
-  const { serviceIsReady } = useContext(ApiContext);
   if (isLoading) {
-    return <Loading />;
-  }
-  if (!serviceIsReady) {
     return <Loading />;
   }
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          {isAuthenticated ? (
-            <>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/my-profile" element={<MyProfile />} />
-              <Route path="/register-form" element={<RegisterForm />} />
-              <Route path="/lot-menu/:id" element={<DashboardLotes />} />
-              <Route path="/add-lote" element={<LoteForm />} />
-              <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
-              <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
-              <Route path="/lots-manage" element={<LotsManage />} />
-              <Route path="/config-vars" element={<VarForm />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<LoginPage />} />
-              <Route path="/RegisterForm" element={<RegisterForm />} />
-              <Route path="/MyProfile" element={<MyProfile />} />
-              <Route path="/Loading" element={<Loading />} />
-            </>
-          )}
-        </Routes>
-      </BrowserRouter>
+      <ApiContextProvider>
+        <AppContextProvider>
+          <BrowserRouter>
+            <Routes>
+              {isAuthenticated ? (
+                <>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/my-profile" element={<MyProfile />} />
+                  <Route path="/register-form" element={<RegisterForm />} />
+                  <Route path="/lot-menu/:id" element={<DashboardLotes />} />
+                  <Route path="/add-lote" element={<LoteForm />} />
+                  <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
+                  <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
+                  <Route path="/lots-manage" element={<LotsManage />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/" element={<LoginPage />} />
+                  <Route path="/RegisterForm" element={<RegisterForm />} />
+                  <Route path="/MyProfile" element={<MyProfile />} />
+                  <Route path="/Loading" element={<Loading />} />
+                </>
+              )}
+            </Routes>
+          </BrowserRouter>
+        </AppContextProvider>
+      </ApiContextProvider>
     </>
   );
 }
@@ -67,12 +64,4 @@ const LoginPage = () => {
   );
 };
 
-const WrappedApp = () => (
-  <ApiContextProvider>
-    <AppContextProvider>
-      <App />
-    </AppContextProvider>
-  </ApiContextProvider>
-);
-
-export default WrappedApp;
+export default App;
