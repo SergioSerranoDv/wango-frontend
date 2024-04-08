@@ -96,7 +96,6 @@ function App() {
             <Route path="/register-form" element={<RegisterForm />} />
             <Route path="/my-profile" element={<MyProfile />} />
             <Route path="/lots-crops" element={<LotsCrops />} />
-            <Route path="/new-crop" element={<NewCrop />} />
           </>
         )}
       </Routes>
