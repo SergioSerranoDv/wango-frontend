@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 interface apiData {
   userToken: string;
   backendApiCall: (apiData: ApiProps) => Promise<apiResponse>;
-  tokenIsReady: boolean;
+  serviceIsReady: boolean;
 }
 
 export interface ApiProps {
@@ -21,14 +21,14 @@ export const ApiContext = createContext<apiData>({
   backendApiCall: async () => {
     return new Promise(() => {});
   },
-  tokenIsReady: false,
+  serviceIsReady: false,
 });
 export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { getAccessTokenSilently } = useAuth0();
-  const [tokenIsReady, setTokenIsReady] = useState<boolean>(false);
+  const [serviceIsReady, setServiceIsReady] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>("");
   const backendApiCall = async (apiData: ApiProps): Promise<apiResponse> => {
-    if (!tokenIsReady) {
+    if (!serviceIsReady) {
       return { data: null, status: "error", message: "Token not ready yet" };
     }
     try {
@@ -55,12 +55,11 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
     const token = await getAccessTokenSilently();
     return token;
   };
-
   useEffect(() => {
     getToken()
       .then((token) => {
         setUserToken(token);
-        setTokenIsReady(true);
+        setServiceIsReady(true);
       })
       .catch((e) => {
         console.error(e);
@@ -68,7 +67,7 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
   }, []);
 
   return (
-    <ApiContext.Provider value={{ userToken: userToken, backendApiCall, tokenIsReady }}>
+    <ApiContext.Provider value={{ userToken: userToken, backendApiCall, serviceIsReady }}>
       {props.children}
     </ApiContext.Provider>
   );

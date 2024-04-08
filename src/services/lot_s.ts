@@ -27,14 +27,14 @@ export const fetchLotDetails = async (
   return null;
 };
 
-export const fetchLotsPerUser = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>
-): Promise<Lot[] | null> => {
-  const response = await backendApiCall({ method: "GET", endpoint: "v1/lot/user" });
-  if (response.status === "success") {
-    return response.data as Lot[];
-  }
-  return null;
+export const fetchPaginatedLotsPerUser = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  { page: page, limit: limit }: { page: number; limit: number }
+): Promise<any> => {
+  return await backendApiCall({
+    method: "GET",
+    endpoint: `v1/lot/paginated?page=${page}&limit=${limit}`,
+  });
 };
 
 export const deleteLot = async (

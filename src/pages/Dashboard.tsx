@@ -6,9 +6,6 @@ import Loading from "../components/Loading";
 
 export const Dashboard = () => {
   const { userData, appContextIsFetching } = useContext(AppContext);
-
-  console.log(appContextIsFetching);
-
   return (
     <div>
       {appContextIsFetching ? (

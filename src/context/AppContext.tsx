@@ -13,6 +13,7 @@ interface UserDataI {
   id_number: string;
   user: string;
   email: string;
+  picture: string;
   security: {
     identity_verified: boolean;
   };
@@ -31,6 +32,7 @@ const UserDataInit: UserDataI = {
   id_number: "",
   user: "",
   email: "",
+  picture: "",
   security: {
     identity_verified: false,
   },
@@ -51,7 +53,7 @@ export const AppContext = createContext<ContextData>({
 });
 
 export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
-  const { backendApiCall, tokenIsReady, userToken } = useContext(ApiContext);
+  const { backendApiCall, serviceIsReady } = useContext(ApiContext);
   const [refetchData, setRefetchData] = useState<boolean>(false);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
@@ -66,9 +68,10 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
         setAppContextIsFetching(false);
       }
     };
-    console.log("AppContextProvider");
-    getUserData();
-  }, [tokenIsReady, refetchData]);
+    if (serviceIsReady) {
+      getUserData();
+    }
+  }, [serviceIsReady, refetchData]);
 
   return (
     <AppContext.Provider value={{ userData, appContextIsFetching, refetchData, setRefetchData }}>
