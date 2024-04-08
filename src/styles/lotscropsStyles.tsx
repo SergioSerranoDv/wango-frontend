@@ -9,17 +9,14 @@ interface InputProps {
 }
 
 export const RegisterFormContainer = styled.div`
-  max-width: 400px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  padding: 20px;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100vh;
-  position: relative;
-  top: 0;
-  left: 0;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 20px;
 `;
 
 export const Form = styled.form`
