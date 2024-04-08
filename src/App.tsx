@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ApiContext } from "./context/ApiContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppContextProvider } from "./context/AppContext";
@@ -18,8 +19,11 @@ import VarForm from "./pages/VarForm";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
-
+  const { serviceIsReady } = useContext(ApiContext);
   if (isLoading) {
+    return <Loading />;
+  }
+  if (!serviceIsReady) {
     return <Loading />;
   }
 

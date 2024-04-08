@@ -55,7 +55,6 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
     const token = await getAccessTokenSilently();
     return token;
   };
-
   useEffect(() => {
     getToken()
       .then((token) => {
