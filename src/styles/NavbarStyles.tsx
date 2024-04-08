@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 export const Text = styled.div`
   font-family: Inter, sans-serif;
@@ -18,14 +17,12 @@ export const NavbarContainer = styled.nav`
   flex-direction: column;
   width: 100%;
   background-color: #ffb032;
-  padding-top: 26px;
   border-bottom: 1px solid #000;
 
   @media (max-width: 768px) {
     background-color: #fff;
   }
 `;
-
 export const LeftContainer = styled.div`
   flex: 70%;
   display: flex;
@@ -49,6 +46,7 @@ export const RightContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding-right: 5%;
+  gap: 2rem;
 `;
 
 export const Logo = styled.img`

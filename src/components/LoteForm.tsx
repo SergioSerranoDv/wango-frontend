@@ -18,6 +18,8 @@ import {
 interface FormData {
   nombreLote: string;
   capacidadLote: string;
+  capacidadUso: string;
+  capacidadDisponible: string;
 }
 
 function LoteForm() {
@@ -25,6 +27,8 @@ function LoteForm() {
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
     capacidadLote: "",
+    capacidadUso: "",
+    capacidadDisponible: "",
   });
   const [showNotification, setShowNotification] = useState(false);
 
@@ -33,6 +37,8 @@ function LoteForm() {
     setFormData({
       ...formData,
       [name]: value,
+      capacidadUso: value,
+      capacidadDisponible: value,
     });
   };
 
@@ -41,6 +47,7 @@ function LoteForm() {
     try {
       console.log("Form data:", formData);
       const response = await createNewLot(backendApiCall, {
+        available_capacity: parseInt(formData.capacidadLote),
         name: formData.nombreLote,
         capacity: parseInt(formData.capacidadLote),
       });
@@ -63,7 +70,7 @@ function LoteForm() {
         <Form onSubmit={handleSubmit}>
           <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader>
           <FormField>
-            <Label htmlFor="nombreLote">Nombre del lote</Label>
+            <Label htmlFor="nombreLote">Nombre del lote*</Label>
             <Input
               id="nombreLote"
               name="nombreLote"
@@ -74,11 +81,11 @@ function LoteForm() {
             />
           </FormField>
           <FormField>
-            <Label htmlFor="capacidadLote">Capacidad</Label>
+            <Label htmlFor="capacidadLote">Capacidad (Ha)*</Label>
             <Input
               id="capacidadLote"
               name="capacidadLote"
-              type="text"
+              type="number"
               value={formData.capacidadLote}
               onChange={handleChange}
               required
@@ -99,7 +106,7 @@ function LoteForm() {
           imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
-          redirectUrl="/Batch-Manage"
+          redirectUrl="/lots-manage"
         />
       )}
     </>

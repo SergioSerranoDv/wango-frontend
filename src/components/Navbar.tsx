@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import {
@@ -11,7 +12,7 @@ import {
   Text,
 } from "../styles/NavbarStyles";
 import Dropdown from "../components/Dropdown";
-import LogoImg from "../assets/images/logo_navbar.svg";
+import LogoImg from "../assets/images/logoNavbar.svg";
 
 interface NavbarProps {
   id: number;
@@ -24,6 +25,7 @@ interface LinkElementProps {
 
 const Navbar: React.FC = () => {
   const { logout } = useAuth0();
+  const { userData } = useContext(AppContext);
   const NavbarItems: NavbarProps[] = [
     {
       id: 1,
@@ -31,7 +33,7 @@ const Navbar: React.FC = () => {
     },
     {
       id: 2,
-      elementList: <LinkElement text="Configurar variables" link="/variables" />,
+      elementList: <LinkElement text="Configurar variables" link="/config-vars" />,
     },
     {
       id: 3,
@@ -74,6 +76,15 @@ const Navbar: React.FC = () => {
           <Link to="/">
             <Logo src={LogoImg} />
           </Link>
+          <img
+            width={40}
+            height={40}
+            style={{
+              borderRadius: "50%",
+            }}
+            src={userData.picture}
+            alt="User profile"
+          />
         </RightContainer>
       </NavbarInnerContainer>
     </NavbarContainer>

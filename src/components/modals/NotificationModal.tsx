@@ -16,7 +16,7 @@ interface NotificationProps {
   description: string;
   buttonText: string;
   onClose: () => void;
-  redirectUrl: string;
+  redirectUrl?: string;
 }
 
 const NotificationModal: React.FC<NotificationProps> = ({
@@ -25,7 +25,7 @@ const NotificationModal: React.FC<NotificationProps> = ({
   description,
   buttonText,
   onClose,
-  redirectUrl,
+  redirectUrl = "/default-route",
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -44,10 +44,14 @@ const NotificationModal: React.FC<NotificationProps> = ({
               <NotificationTitle>{title}</NotificationTitle>
             </NotificationHeader>
             <NotificationDescription dangerouslySetInnerHTML={{ __html: description }} />
-            {/* Utiliza Link en lugar de button */}
-            <Link to={redirectUrl}>
+            {redirectUrl && (
+              <Link to={redirectUrl}>
+                <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
+              </Link>
+            )}
+            {!redirectUrl && (
               <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
-            </Link>
+            )}
           </ModalContainer>
         </Overlay>
       )}

@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from "react";
 import { ApiContext } from "./ApiContext";
-import { User } from "@auth0/auth0-react";
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;
@@ -14,11 +13,17 @@ interface UserDataI {
   id_number: string;
   user: string;
   email: string;
+  picture: string;
   security: {
     identity_verified: boolean;
   };
   created_at: string;
   updated_at: string;
+  environment_variables: {
+    fraction: number;
+    maximum_quantity: number;
+    natural_amount_chemical: number;
+  };
 }
 const UserDataInit: UserDataI = {
   name: "",
@@ -27,11 +32,17 @@ const UserDataInit: UserDataI = {
   id_number: "",
   user: "",
   email: "",
+  picture: "",
   security: {
     identity_verified: false,
   },
   created_at: "",
   updated_at: "",
+  environment_variables: {
+    fraction: 0,
+    maximum_quantity: 50,
+    natural_amount_chemical: 0.5,
+  },
 };
 
 export const AppContext = createContext<ContextData>({
@@ -42,7 +53,7 @@ export const AppContext = createContext<ContextData>({
 });
 
 export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
-  const { backendApiCall, tokenIsReady, userToken } = useContext(ApiContext);
+  const { backendApiCall, serviceIsReady } = useContext(ApiContext);
   const [refetchData, setRefetchData] = useState<boolean>(false);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
@@ -57,9 +68,10 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
         setAppContextIsFetching(false);
       }
     };
-    console.log("AppContextProvider");
-    getUserData();
-  }, [tokenIsReady, refetchData]);
+    if (serviceIsReady) {
+      getUserData();
+    }
+  }, [serviceIsReady, refetchData]);
 
   return (
     <AppContext.Provider value={{ userData, appContextIsFetching, refetchData, setRefetchData }}>

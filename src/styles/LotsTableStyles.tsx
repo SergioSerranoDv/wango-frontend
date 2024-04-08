@@ -11,7 +11,7 @@ interface InputProps {
 export const Container = styled.div<InputProps>`
   //background-color: ${(props) => (props.$custom ? "#50ab64" : "")};
   display: block;
-  Width: 120%
+  width: 700px;
   margin: auto;
   padding: 0px;
   box-sizing: border-box;
@@ -26,8 +26,7 @@ export const Table = styled.table<InputProps>`
 `;
 
 export const TableRow = styled.tr<{ index: number }>`
-  background-color: ${(props) => (props.index % 2 === 0 ? "#ffffff" : "#fae2d1")};
-  background-color: ${(props) => (props.index === -1 ? "#ffffff" : "")};
+  background-color: ${(props) => (props.index % 2 === 0 ? "#FFFFFF" : "#FFE1CF")};
   font-weight: ${(props) => (props.index === -1 ? "bold" : "")};
   font-size: ${(props) => (props.index === -1 ? "14px" : "12.5px")};
   color: ${(props) => (props.index === -1 ? "#737373" : "#4c443f")};
