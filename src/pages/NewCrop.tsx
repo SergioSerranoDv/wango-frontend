@@ -3,6 +3,8 @@ import { Lot } from "../interfaces/Lot";
 import { useParams } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
+import NotificationModal from "../components/modals/NotificationModal";
+import checkLogo from "../assets/icons/checkLogo.svg";
 import Navbar from "../components/Navbar";
 import {
   Button,
@@ -31,6 +33,7 @@ export default function NewCrop() {
     latitude: "",
     longitude: "",
   });
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -38,6 +41,7 @@ export default function NewCrop() {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -65,7 +69,6 @@ export default function NewCrop() {
         longitude: formData.longitude,
       });
       if (response.status === "success") {
-        alert("Cultivo añadido correctamente");
         setFormData({
           cropName: "",
           area: "",
@@ -73,6 +76,7 @@ export default function NewCrop() {
           longitude: "",
         });
         setRefetch((prev) => prev + 1);
+        setShowNotification(true);
         return;
       }
       alert(response.message);
@@ -80,6 +84,7 @@ export default function NewCrop() {
       console.error(error);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const lot = await fetchLotDetails(backendApiCall, lotId as string);
@@ -90,24 +95,27 @@ export default function NewCrop() {
     fetchData();
   }, [backendApiCall, lotId, refetch]);
 
+  const handleNotificationClose = () => {
+    setShowNotification(false);
+  };
+
   return (
     <div>
       <Navbar />
       <FormContainer>
-        <SignBoard>Agrega un nuevo cultivo al lote ‘MisPruebas01’</SignBoard>
+        <SignBoard>
+          Agrega un nuevo cultivo al lote <DetailsItem>{lotData.name}</DetailsItem>
+        </SignBoard>
         <InfoContainer>
           <DetailsSign>
-            ID lote: <DetailsItem>{lotData._id}</DetailsItem>
+            Área disponible: <DetailsItem>{lotData.available_capacity} Ha</DetailsItem>
           </DetailsSign>
           <DetailsSign>
-            Área disponible: <DetailsItem>{lotData.available_capacity}</DetailsItem>
-          </DetailsSign>
-          <DetailsSign>
-            Área en ocupación: <DetailsItem>{lotData.capacity_in_use}</DetailsItem>
+            Área en ocupación: <DetailsItem>{lotData.capacity_in_use} Ha</DetailsItem>
           </DetailsSign>
         </InfoContainer>
         <Form onSubmit={handleSubmit}>
-          <Label htmlFor="cropName">Nombre del cultivo</Label>
+          <Label htmlFor="cropName">Nombre del cultivo*</Label>
           <Input
             type="text"
             id="cropName"
@@ -117,7 +125,7 @@ export default function NewCrop() {
             required
           />
 
-          <Label htmlFor="area">Área</Label>
+          <Label htmlFor="area">Área (Ha)*</Label>
           <Input
             type="number"
             id="area"
@@ -127,7 +135,7 @@ export default function NewCrop() {
             required
           />
 
-          <Label htmlFor="latitude">Latitud</Label>
+          <Label htmlFor="latitude">Latitud (°)*</Label>
           <Input
             type="number"
             id="latitude"
@@ -137,7 +145,7 @@ export default function NewCrop() {
             required
           />
 
-          <Label htmlFor="longitude">Longitud</Label>
+          <Label htmlFor="longitude">Longitud (°)*</Label>
           <Input
             type="number"
             id="longitude"
@@ -156,6 +164,16 @@ export default function NewCrop() {
           </Description>
         </Form>
       </FormContainer>
+      {showNotification && (
+        <NotificationModal
+          title="Cultivo añadido exitosamente"
+          description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
+          imageUrl={checkLogo}
+          buttonText="Aceptar"
+          onClose={handleNotificationClose}
+          redirectUrl="/lots-crops"
+        />
+      )}
     </div>
   );
 }

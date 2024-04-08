@@ -62,7 +62,7 @@ const LotsTable = () => {
             <TableRow key={index} index={index}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{item.capacity}</TableCell>
+              <TableCell>{item.capacity} Ha</TableCell>
               <TableCell>
                 <button onClick={() => handleEdit(item)}>
                   <svg
