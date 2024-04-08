@@ -11,10 +11,13 @@ interface InputProps {
 export const Container = styled.div<InputProps>`
   //background-color: ${(props) => (props.$custom ? "#50ab64" : "")};
   display: block;
-  width: 700px;
+  max-width: 700px;
   margin: auto;
   padding: 0px;
   box-sizing: border-box;
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 export const Table = styled.table<InputProps>`
