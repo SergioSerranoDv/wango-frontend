@@ -29,31 +29,35 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          {isAuthenticated ? (
-            <>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/my-profile" element={<MyProfile />} />
-              <Route path="/register-form" element={<RegisterForm />} />
-              <Route path="/lot-menu/:id" element={<DashboardLotes />} />
-              <Route path="/add-lote" element={<LoteForm />} />
-              <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
-              <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
-              <Route path="/lots-manage" element={<LotsManage />} />
-              <Route path="/config-vars" element={<VarForm />} />
-              <Route path="/lots-crops" element={<LotsCrops />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<LoginPage />} />
-              <Route path="/RegisterForm" element={<RegisterForm />} />
-              <Route path="/MyProfile" element={<MyProfile />} />
-              <Route path="/Loading" element={<Loading />} />
-            </>
-          )}
-        </Routes>
-      </BrowserRouter>
+      <ApiContextProvider>
+        <AppContextProvider>
+          <BrowserRouter>
+            <Routes>
+              {isAuthenticated ? (
+                <>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/my-profile" element={<MyProfile />} />
+                  <Route path="/register-form" element={<RegisterForm />} />
+                  <Route path="/lot-menu/:id" element={<DashboardLotes />} />
+                  <Route path="/add-lote" element={<LoteForm />} />
+                  <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
+                  <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
+                  <Route path="/lots-manage" element={<LotsManage />} />
+                  <Route path="/config-vars" element={<VarForm />} />
+                  <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/" element={<LoginPage />} />
+                  <Route path="/RegisterForm" element={<RegisterForm />} />
+                  <Route path="/MyProfile" element={<MyProfile />} />
+                  <Route path="/Loading" element={<Loading />} />
+                </>
+              )}
+            </Routes>
+          </BrowserRouter>
+        </AppContextProvider>
+      </ApiContextProvider>
     </>
   );
 }
