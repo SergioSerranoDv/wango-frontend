@@ -57,10 +57,10 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
   const [refetchData, setRefetchData] = useState<boolean>(false);
   const [appContextIsFetching, setAppContextIsFetching] = useState<boolean>(true);
   const [userData, setUserData] = useState(UserDataInit);
-
   useEffect(() => {
     const getUserData = async () => {
       const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+
       if (userData.status === "error") {
         console.error(userData.message);
       } else {
@@ -68,10 +68,8 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
         setAppContextIsFetching(false);
       }
     };
-    if (serviceIsReady) {
-      getUserData();
-    }
-  }, [serviceIsReady, refetchData]);
+    getUserData();
+  }, [backendApiCall, serviceIsReady, refetchData]);
 
   return (
     <AppContext.Provider value={{ userData, appContextIsFetching, refetchData, setRefetchData }}>
