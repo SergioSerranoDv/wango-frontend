@@ -6,10 +6,23 @@ import Loading from "../components/Loading";
 
 export const Dashboard = () => {
   const { userData, appContextIsFetching } = useContext(AppContext);
+  const { email, security } = userData;
   if (appContextIsFetching) {
     return <Loading />;
   }
   return (
-    <div>{userData && userData.security.identity_verified ? <MainMenu /> : <RegisterForm />}</div>
+    <>
+      {userData && security.identity_verified ? (
+        <MainMenu />
+      ) : userData && userData.email !== "" ? (
+        <RegisterForm
+          user={{
+            email: email,
+          }}
+        />
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 };
