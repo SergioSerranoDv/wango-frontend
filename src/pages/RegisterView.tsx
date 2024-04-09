@@ -8,6 +8,7 @@ import checkLogo from "../assets/icons/checkLogo.svg";
 import Navbar from "../components/Navbar";
 import {
   Button,
+  ButtonSubmit,
   Description,
   DetailsItem,
   DetailsSign,
@@ -18,10 +19,11 @@ import {
   FormContainer,
   SignBoard,
 } from "../styles/FormStyles";
+import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 
 import { createNewCrop } from "../services/crop_s";
 
-export default function NewCrop() {
+export default function RegisterView() {
   const { id } = useParams();
   const lotId = id;
   const { backendApiCall } = useContext(ApiContext);
@@ -120,65 +122,100 @@ export default function NewCrop() {
     <div>
       <Navbar />
       <FormContainer>
-        <SignBoard>
-          Agrega un nuevo cultivo al lote <DetailsItem>{lotData.name}</DetailsItem>
+        <SignBoard $custom2>
+          Registros del día hechos en el cultivo ‘Manguito01’{" "}
+          <DetailsItem>{lotData.name}</DetailsItem>
         </SignBoard>
         <InfoContainer>
           <DetailsSign>
-            Área disponible: <DetailsItem>{lotData.available_capacity} Ha</DetailsItem>
+            Nombre del lote: <DetailsItem>{lotData.available_capacity}</DetailsItem>
           </DetailsSign>
           <DetailsSign>
-            Área en ocupación: <DetailsItem>{lotData.capacity_in_use} Ha</DetailsItem>
+            Fecha de inicio de recolección: <DetailsItem>{lotData.capacity_in_use}</DetailsItem>
           </DetailsSign>
         </InfoContainer>
+        <Description>
+          Nota: Siendo administrador puedes ver los registros hechos por los usuarios encargados que
+          has asignado a este cultivo. Incluso puedes hacer uno tu.
+        </Description>
+        <SignBoard $custom2>Parámetros del día para el cultivo</SignBoard>
         <Form onSubmit={handleSubmit}>
-          <Label htmlFor="cropName">Nombre del cultivo*</Label>
+          <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
           <Input
             type="text"
-            id="cropName"
-            name="cropName"
-            value={formData.cropName}
+            id="eto"
+            name="eto"
+            //value={formData.eto}
             onChange={handleChange}
             required
           />
 
-          <Label htmlFor="area">Área (Ha)*</Label>
+          <Label htmlFor="etapaActual">Etapa actual de crecimiento</Label>
           <Input
             type="number"
-            id="area"
-            name="area"
-            value={formData.area}
+            id="etapaActual"
+            name="etapaActual"
+            //value={formData.etapaActual}
             onChange={handleChange}
             required
           />
 
-          <Label htmlFor="latitude">Latitud (°)*</Label>
+          <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
           <Input
             type="number"
-            id="latitude"
-            name="latitude"
-            value={formData.latitude}
+            id="etc"
+            name="etc"
+            //value={formData.etc}
             onChange={handleChange}
             required
           />
 
-          <Label htmlFor="longitude">Longitud (°)*</Label>
-          <Input
-            type="number"
-            id="longitude"
-            name="longitude"
-            value={formData.longitude}
-            onChange={handleChange}
-            required
-          />
+          <ButtonSubmit type="submit" $custom1>
+            Guardar cambios
+          </ButtonSubmit>
+
           <Button type="submit" $custom1>
-            Añadir cultivo
+            Hacer un registro
           </Button>
 
-          <Description $custom1>
-            Podrás añadir un encargado a este cultivo en la sección de ‘Mis cultivos’ en el menú
-            principal.
-          </Description>
+          <SignBoard $custom3>Registros de datos hechos hoy</SignBoard>
+          <Container>
+            <Table $custom1>
+              <thead>
+                <TableRow index={-1}>
+                  <TableCell $custom>ID</TableCell>
+                  <TableCell $custom>Nombres</TableCell>
+                  <TableCell $custom>Acciones</TableCell>
+                </TableRow>
+              </thead>
+              <tbody>
+                <TableRow2 index={1}>
+                  <TableCell $custom1>1</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    <a>Edi </a>
+                    <a> Eli </a>
+                  </TableCell>
+                </TableRow2>
+                <TableRow2 index={2}>
+                  <TableCell $custom1>2</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    <a>Edi </a>
+                    <a> Eli </a>
+                  </TableCell>
+                </TableRow2>
+                <TableRow2 index={3}>
+                  <TableCell $custom1>3</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    <a>Edi </a>
+                    <a> Eli </a>
+                  </TableCell>
+                </TableRow2>
+              </tbody>
+            </Table>
+          </Container>
         </Form>
       </FormContainer>
       {showNotification && (

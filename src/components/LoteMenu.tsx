@@ -50,7 +50,11 @@ function LoteMenu({ lotId = "" }: Props) {
     {
       id: 1,
       elementList: (
-        <LinkElement src={VerCultvos} text="Ver cultivos del lote" link="/verCultivos" />
+        <LinkElement
+          src={VerCultvos}
+          text="Ver cultivos del lote"
+          link={`/lot-menu/lots-crops/${lotId}`}
+        />
       ),
     },
     {
