@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
-
 import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
 import VerCultvos from "../assets/icons/viewCrops.svg";
 import AñadirCultivo from "../assets/icons/addCrop.svg";
@@ -50,7 +49,11 @@ function LoteMenu({ lotId = "" }: Props) {
     {
       id: 1,
       elementList: (
-        <LinkElement src={VerCultvos} text="Ver cultivos del lote" link="/verCultivos" />
+        <LinkElement
+          src={VerCultvos}
+          text="Ver cultivos del lote"
+          link={`/lot-menu/crops/${lotId}`}
+        />
       ),
     },
     {
