@@ -16,7 +16,13 @@ import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
 import { DivIdentification } from "../styles/FormStyles";
 
-const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+  user?: {
+    email: string;
+  };
+}
+const RegisterForm: React.FC<RegisterFormProps> = ({ user }) => {
+  console.log("User:", user);
   const { backendApiCall } = useContext(ApiContext);
   const { setRefetchData, userData } = useContext(AppContext);
   const [formData, setFormData] = useState({
@@ -191,14 +197,7 @@ const RegisterForm: React.FC = () => {
         />
 
         <Label htmlFor="userType">Tipo de usuario*</Label>
-        <Select
-          id="userType"
-          name="userType"
-          value={formData.userType}
-          onChange={handleChange}
-          required
-        >
-          <option value="">--</option>
+        <Select id="userType" name="userType" value="Admin" onChange={handleChange} disabled>
           <option value="Admin">Administrador</option>
         </Select>
 
