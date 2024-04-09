@@ -20,12 +20,10 @@ import LotsCrops from "./pages/LotsCrops";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
-  const { serviceIsReady } = useContext(ApiContext);
 
   if (isLoading) {
     return <Loading />;
   }
-  console.log(serviceIsReady);
 
   return (
     <>
