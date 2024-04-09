@@ -76,6 +76,20 @@ export const Button = styled.button<InputProps>`
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
 `;
 
+export const ButtonSubmit = styled.button<InputProps>`
+  font-size: 14px;
+  font-weight: 550; /*semibold*/
+  padding: 10px;
+  background-color: ${(props) => colors[(props.color as keyof typeof colors) || "green"]};
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid ${(props) => colors[(props.color as keyof typeof colors) || "green"]};
+  margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
+  margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
+  margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
+`;
+
 export const Logo = styled.img`
   max-width: 277px;
   max-height: 90px;
