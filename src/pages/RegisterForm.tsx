@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   Description,
@@ -16,15 +16,10 @@ import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
 import { DivIdentification } from "../styles/FormStyles";
 
-interface RegisterFormProps {
-  user?: {
-    email: string;
-  };
-}
-const RegisterForm: React.FC<RegisterFormProps> = ({ user }) => {
-  console.log("User:", user);
+const RegisterForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { setRefetchData, userData } = useContext(AppContext);
+  const [emailNewUser, setEmailNewUser] = useState(userData.email);
   const [formData, setFormData] = useState({
     typeID: "",
     identification: "",
@@ -34,10 +29,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ user }) => {
     userType: "",
     password: "",
   });
-
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -125,6 +118,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ user }) => {
     console.log("Contraseña válida:", isValid);
   };
   console.log("Email:", userData.email);
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+      setEmailNewUser(userData.data.email);
+    };
+    getUserData();
+  }, []);
   return (
     <FormContainer>
       <Logo src={logo} alt="Logo" />
@@ -191,7 +191,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ user }) => {
           type="email"
           id="email"
           name="email"
-          value={userData.email}
+          value={userData.email ? userData.email : emailNewUser}
           onChange={handleChange}
           disabled
         />
