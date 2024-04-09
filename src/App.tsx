@@ -16,16 +16,16 @@ import "./App.css";
 import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
 import VarForm from "./pages/VarForm";
+import LotsCrops from "./pages/LotsCrops";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
   const { serviceIsReady } = useContext(ApiContext);
+
   if (isLoading) {
     return <Loading />;
   }
-  if (!serviceIsReady) {
-    return <Loading />;
-  }
+  console.log(serviceIsReady);
 
   return (
     <>
@@ -42,6 +42,7 @@ function App() {
               <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
               <Route path="/lots-manage" element={<LotsManage />} />
               <Route path="/config-vars" element={<VarForm />} />
+              <Route path="/lots-crops" element={<LotsCrops />} />
             </>
           ) : (
             <>
@@ -67,12 +68,4 @@ const LoginPage = () => {
   );
 };
 
-const WrappedApp = () => (
-  <ApiContextProvider>
-    <AppContextProvider>
-      <App />
-    </AppContextProvider>
-  </ApiContextProvider>
-);
-
-export default WrappedApp;
+export default App;

@@ -1,6 +1,9 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import ReactDOM from "react-dom/client";
+import { ApiContextProvider } from "./context/ApiContext";
+import { AppContextProvider } from "./context/AppContext";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -17,7 +20,11 @@ root.render(
     }}
   >
     <React.StrictMode>
-      <App />
+      <ApiContextProvider>
+        <AppContextProvider>
+          <App />
+        </AppContextProvider>
+      </ApiContextProvider>
     </React.StrictMode>
   </Auth0Provider>
 );
