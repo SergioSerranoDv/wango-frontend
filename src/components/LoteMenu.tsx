@@ -53,7 +53,7 @@ function LoteMenu({ lotId = "" }: Props) {
         <LinkElement
           src={VerCultvos}
           text="Ver cultivos del lote"
-          link={`/lot-menu/lots-crops/${lotId}`}
+          link={`/lot-menu/crops/${lotId}`}
         />
       ),
     },

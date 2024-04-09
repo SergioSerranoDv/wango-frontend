@@ -43,7 +43,7 @@ function App() {
               <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
               <Route path="/lots-manage" element={<LotsManage />} />
               <Route path="/config-vars" element={<VarForm />} />
-              <Route path="/lots-crops" element={<LotsCrops />} />
+              <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
               <Route path="/lot-menu/register-view" element={<RegisterView />} />
             </>
           ) : (
