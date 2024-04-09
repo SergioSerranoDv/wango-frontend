@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   Description,
@@ -19,6 +19,7 @@ import { DivIdentification } from "../styles/FormStyles";
 const RegisterForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { setRefetchData, userData } = useContext(AppContext);
+  const [emailNewUser, setEmailNewUser] = useState(userData.email);
   const [formData, setFormData] = useState({
     typeID: "",
     identification: "",
@@ -28,10 +29,8 @@ const RegisterForm: React.FC = () => {
     userType: "",
     password: "",
   });
-
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -119,6 +118,13 @@ const RegisterForm: React.FC = () => {
     console.log("Contraseña válida:", isValid);
   };
   console.log("Email:", userData.email);
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+      setEmailNewUser(userData.data.email);
+    };
+    getUserData();
+  }, []);
   return (
     <FormContainer>
       <Logo src={logo} alt="Logo" />
@@ -185,20 +191,13 @@ const RegisterForm: React.FC = () => {
           type="email"
           id="email"
           name="email"
-          value={userData.email}
+          value={userData.email ? userData.email : emailNewUser}
           onChange={handleChange}
           disabled
         />
 
         <Label htmlFor="userType">Tipo de usuario*</Label>
-        <Select
-          id="userType"
-          name="userType"
-          value={formData.userType}
-          onChange={handleChange}
-          required
-        >
-          <option value="">--</option>
+        <Select id="userType" name="userType" value="Admin" onChange={handleChange} disabled>
           <option value="Admin">Administrador</option>
         </Select>
 

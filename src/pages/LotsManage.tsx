@@ -1,8 +1,7 @@
-import Navbar from "../components/Navbar";
 import React, { useState, useContext } from "react";
 import { TableV1 } from "../components/TableV1";
+import { MainLayout } from "../layouts/MainLayout";
 import { UseGet } from "../hooks/UseGet";
-import { Container } from "../styles/LotsTableStyles";
 import { fetchPaginatedLotsPerUser, deleteLot } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
@@ -10,6 +9,7 @@ import { Lot } from "../interfaces/Lot";
 import { SignBoard, Link } from "../styles/FormStyles";
 import { Text } from "../styles/MainMenuStyles";
 import checkLogo from "../assets/icons/checkLogo.svg";
+import { Container } from "../styles/GlobalStyles";
 import NotificationModal from "../components/modals/NotificationModal";
 
 function LotsManage() {
@@ -37,8 +37,7 @@ function LotsManage() {
     setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
   };
   return (
-    <div>
-      <Navbar />
+    <MainLayout>
       <Container>
         <Text>Estos son tus lotes, {userData.name}!</Text>
         <br />
@@ -75,7 +74,7 @@ function LotsManage() {
           />
         )}
       </Container>
-    </div>
+    </MainLayout>
   );
 }
 
