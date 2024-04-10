@@ -79,7 +79,7 @@ export const TableV1: React.FC<TableV1Props> = ({ data, columns, options, pagina
                       </defs>
                     </svg>
                   </button>
-                  <button onClick={() => options.delete(item)}>
+                  <button onClick={() => options.delete(item._id)}>
                     <svg
                       width="19"
                       height="21"
