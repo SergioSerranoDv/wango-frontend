@@ -59,7 +59,7 @@ export default function LotsCrops() {
     };
     fetchData();
   }, [lotId]);
-  console.log(Lot);
+
   return (
     <div>
       <Navbar />

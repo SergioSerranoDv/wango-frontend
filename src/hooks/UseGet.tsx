@@ -11,13 +11,10 @@ export const UseGet = (service: any): UseGetResponse => {
   const [data, setData] = useState({});
   const [refetch, setRefetch] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  console.log(serviceIsReady);
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching data");
       try {
         const response = await service;
-        console.log(response);
         if (response.status === "success") {
           setData(response.data);
           setLoading(false);

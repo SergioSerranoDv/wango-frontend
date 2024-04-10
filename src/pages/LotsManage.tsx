@@ -29,8 +29,7 @@ function LotsManage() {
     const response = await backendApiCall({ method: "DELETE", endpoint: `v1/lot/delete/${lotId}` });
     if (response.status === "success") {
       setShowNotification(true);
-      // const updatedLots = lots.filter((lot) => lot._id !== lotId);
-      // setLots(updatedLots);
+      setRefetch((prev) => prev + 1);
     }
   };
   const handleNotificationClose = () => {

@@ -16,6 +16,7 @@ import NewCrop from "./pages/NewCrop";
 import Loading from "./components/Loading";
 import VarForm from "./pages/VarForm";
 import LotsCrops from "./pages/LotsCrops";
+import RegisterView from "./pages/RegisterView";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -42,6 +43,7 @@ function App() {
                   <Route path="/lots-manage" element={<LotsManage />} />
                   <Route path="/config-vars" element={<VarForm />} />
                   <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
+                  <Route path="/lot-menu/register-view" element={<RegisterView />} />
                 </>
               ) : (
                 <>
