@@ -51,6 +51,10 @@ function LotsManage() {
               totalPages: data.meta.total_pages,
             }}
             columns={["ID", "Lote", "Capacidad", "Acciones"]}
+            columnMapping={{
+              Lote: "name",
+              Capacidad: "capacity",
+            }}
             options={{ edit: handleEdit, delete: handleDelete }}
           />
         )}

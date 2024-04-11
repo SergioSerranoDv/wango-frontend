@@ -4,8 +4,10 @@ import { redirect, useParams } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import NotificationModal from "../components/modals/NotificationModal";
+import errorLogo from "../assets/icons/errorLogo.svg";
 import checkLogo from "../assets/icons/checkLogo.svg";
 import Navbar from "../components/Navbar";
+import Calendar from "../components/modals/Calendar";
 import {
   Button,
   ButtonSubmit,
@@ -16,8 +18,12 @@ import {
   InfoContainer,
   Input,
   Label,
+  Select,
   FormContainer,
   SignBoard,
+  CalendarLogo,
+  CalendarContainer,
+  SelectedDate,
 } from "../styles/FormStyles";
 import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 
@@ -34,11 +40,13 @@ export default function RegisterView() {
     area: "",
     latitude: "",
     longitude: "",
+    selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [notificationDetails, setNotificationDetails] = useState({
     title: "",
     description: "",
+    imageUrl: "",
     redirectUrl: "",
   });
 
@@ -49,8 +57,20 @@ export default function RegisterView() {
     });
   };
 
-  const handleNotification = (title: string, description: string, redirectUrl: string) => {
-    setNotificationDetails({ title, description, redirectUrl });
+  const handleDateChange = (date: Date) => {
+    setFormData({
+      ...formData,
+      selectedDate: date, // Actualiza el estado con la nueva fecha seleccionada
+    });
+  };
+
+  const handleNotification = (
+    title: string,
+    description: string,
+    imageUrl: string,
+    redirectUrl: string
+  ) => {
+    setNotificationDetails({ title, description, imageUrl, redirectUrl });
     setShowNotification(true);
   };
 
@@ -58,19 +78,7 @@ export default function RegisterView() {
     e.preventDefault();
     try {
       if (!lotId) {
-        handleNotification("Error", "No se ha encontrado el ID del lote", "");
-        return;
-      }
-      if (lotData.available_capacity === 0) {
-        handleNotification("Error", "El lote no tiene capacidad disponible", "");
-        return;
-      }
-      if (parseInt(formData.area) > lotData.available_capacity) {
-        handleNotification("Error", "El área debe ser menor o igual a la capacidad disponible", "");
-        return;
-      }
-      if (parseInt(formData.area) <= 0) {
-        handleNotification("Error", "El área debe ser mayor a 0", "");
+        handleNotification("Error", "No se ha encontrado el ID del lote", errorLogo, "");
         return;
       }
 
@@ -82,23 +90,24 @@ export default function RegisterView() {
         longitude: formData.longitude,
       });
       if (response.status === "success") {
-        setFormData({
-          cropName: "",
-          area: "",
-          latitude: "",
-          longitude: "",
-        });
-        setRefetch((prev) => prev + 1);
+        //setFormData({
+        //cropName: "",
+        //area: "",
+        //latitude: "",
+        //longitude: "",
+        //});
+        //setRefetch((prev) => prev + 1);
         setShowNotification(true);
         setNotificationDetails({
-          title: "Cultivo añadido exitosamente",
+          title: "Estás cambiando un parámetro",
           description:
-            "¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’.",
-          redirectUrl: "/lots-crops",
+            "Si cambias la etapa de crecimiento en la que <br />  está el día, los registros de este también lo <br /> harán.",
+          imageUrl: errorLogo,
+          redirectUrl: "",
         });
         return;
       }
-      handleNotification("Error", response.message, "");
+      throw new Error("Server responded with status other than success.");
     } catch (error) {
       console.error(error);
     }
@@ -134,10 +143,11 @@ export default function RegisterView() {
             Fecha de inicio de recolección: <DetailsItem>{lotData.capacity_in_use}</DetailsItem>
           </DetailsSign>
         </InfoContainer>
-        <Description>
+        <Description className="customDescription">
           Nota: Siendo administrador puedes ver los registros hechos por los usuarios encargados que
           has asignado a este cultivo. Incluso puedes hacer uno tu.
         </Description>
+          <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
         <SignBoard $custom2>Parámetros del día para el cultivo</SignBoard>
         <Form onSubmit={handleSubmit}>
           <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
@@ -148,17 +158,22 @@ export default function RegisterView() {
             //value={formData.eto}
             onChange={handleChange}
             required
+            disabled
           />
 
           <Label htmlFor="etapaActual">Etapa actual de crecimiento</Label>
-          <Input
-            type="number"
+          <Select
             id="etapaActual"
             name="etapaActual"
             //value={formData.etapaActual}
-            onChange={handleChange}
+            //onChange={handleChange}
             required
-          />
+          >
+            <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
+            <option value="1.35">Floración (Kc = 1.35)</option>
+            <option value="1.75">Frutificación (Kc = 1.75)</option>
+            <option value="1.5">Promedio (Kc = 1.5)</option>
+          </Select>
 
           <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
           <Input
@@ -168,6 +183,7 @@ export default function RegisterView() {
             //value={formData.etc}
             onChange={handleChange}
             required
+            disabled
           />
 
           <ButtonSubmit type="submit" $custom1>
