@@ -81,6 +81,10 @@ export default function LotsCrops() {
           {!loading && data.crops.length > 0 && (
             <TableV1
               columns={["ID", "Cultivos", "Área", "Acciones"]}
+              columnMapping={{
+                Cultivos: "name",
+                Área: "area",
+              }}
               data={data.crops}
               pagination={{
                 currentPage,
