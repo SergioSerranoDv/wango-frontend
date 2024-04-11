@@ -14,6 +14,9 @@ interface TableV1Props {
     totalPages: number;
   };
   columns: string[];
+  columnMapping: {
+    [key: string]: string;
+  };
   options: {
     edit: (item: any) => void;
     delete: (item: any) => void;
@@ -50,8 +53,11 @@ export const TableV1: React.FC<TableV1Props> = ({ data, columns, options, pagina
             data.map((item: any, index: number) => (
               <TableRow key={index} index={index}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.capacity}</TableCell>
+                {columns.map((column, colIndex) => {
+                  if (columnMapping[column]) {
+                    return <TableCell key={colIndex}>{item[columnMapping[column]]}</TableCell>;
+                  }
+                })}
                 <TableCell>
                   <button onClick={() => options.edit(item)}>
                     <svg
