@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useContext, useEffect } from "react";
 import NotificationModal from "./modals/NotificationModal";
+import errorLogo from "../assets/icons/errorLogo.svg";
 import checkLogo from "../assets/icons/checkLogo.svg";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails, saveLot } from "../services/lot_s";
@@ -35,7 +36,23 @@ function LoteFormEdit({ lotId = "" }: Props) {
     capacidadDisponible: "",
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [notificationDetails, setNotificationDetails] = useState({
+    title: "",
+    description: "",
+    imageUrl: "",
+    redirectUrl: "",
+  });
   const [lot, setLot] = useState<any>(null);
+
+  const handleNotification = (
+    title: string,
+    description: string,
+    imageUrl: string,
+    redirectUrl: string
+  ) => {
+    setNotificationDetails({ title, description, imageUrl, redirectUrl });
+    setShowNotification(true);
+  };
 
   useEffect(() => {
     async function loadLotDetails() {
@@ -62,31 +79,35 @@ function LoteFormEdit({ lotId = "" }: Props) {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-  
+
     setFormData((prevData) => {
       let nuevaCapacidadDisponible = prevData.capacidadDisponible;
-  
+
       if (name === "capacidadLote") {
         const nuevaCapacidadLote = parseInt(value);
         const capacidadPrevDisponible = parseInt(prevData.capacidadDisponible);
         const cambioEnCapacidad = nuevaCapacidadLote - parseInt(prevData.capacidadLote);
         nuevaCapacidadDisponible = (capacidadPrevDisponible + cambioEnCapacidad).toString();
       }
-  
+
       return {
         ...prevData,
         [name]: value,
-        capacidadDisponible: name === "capacidadLote" ? nuevaCapacidadDisponible : prevData.capacidadDisponible,
+        capacidadDisponible:
+          name === "capacidadLote" ? nuevaCapacidadDisponible : prevData.capacidadDisponible,
         capacidadUso: name === "capacidadLote" ? value : prevData.capacidadUso,
       };
     });
   };
-  
-  
-  
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const newCapacity = parseInt(formData.capacidadLote);
+  
+    if (newCapacity < 0) {
+      handleNotification("Error", "La capacidad debe ser mayor a 0.", errorLogo, "");
+      return;
+    }
     try {
       const response = await saveLot(
         backendApiCall,
@@ -102,16 +123,23 @@ function LoteFormEdit({ lotId = "" }: Props) {
         alert(response.message);
       } else {
         setShowNotification(true);
+        setNotificationDetails({
+          title: "Lote editado exitosamente",
+          description:
+            "¡Excelente! El lote ha sido editado exitosamente.",
+          imageUrl: checkLogo,
+          redirectUrl: `/lot-menu/${lot._id}`,
+        });
       }
     } catch (error) {
       console.error("Error updating lot:", error);
     }
   };
+  
 
   const handleNotificationClose = () => {
     setShowNotification(false);
     if (lot && lot._id) {
-      window.location.href = `/lot-menu/${lot._id}`;
     }
   };
 
@@ -149,11 +177,12 @@ function LoteFormEdit({ lotId = "" }: Props) {
       </FormWrapper>
       {showNotification && (
         <NotificationModal
-          title="Lote editado exitosamente"
-          description="Los cambios en el lote han sido guardados <br /> correctamente."
-          imageUrl={checkLogo}
+          title={notificationDetails.title}
+          description={notificationDetails.description}
+          imageUrl={notificationDetails.imageUrl}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
+          redirectUrl={notificationDetails.redirectUrl}
         />
       )}
     </>
