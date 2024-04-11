@@ -40,7 +40,7 @@ export const TableV1: React.FC<TableV1Props> = ({ data, columns, options, pagina
               <TableRow key={index} index={index}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>{item.capacity}</TableCell>
+                <TableCell>{item.area}</TableCell>
                 <TableCell>
                   <button onClick={() => options.edit(item)}>
                     <svg
@@ -79,7 +79,11 @@ export const TableV1: React.FC<TableV1Props> = ({ data, columns, options, pagina
                       </defs>
                     </svg>
                   </button>
-                  <button onClick={() => options.delete(item)}>
+                  <button
+                    onClick={() => {
+                      options.delete(item._id);
+                    }}
+                  >
                     <svg
                       width="19"
                       height="21"

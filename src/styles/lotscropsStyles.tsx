@@ -59,6 +59,7 @@ export const Button = styled.button<InputProps>`
   cursor: pointer;
   border-radius: 6px;
   border: 1px #ff670f;
+  width: ${(props) => (props.$custom1 ? "100%" : "")};
   margin-bottom: ${(props) => (props.$custom1 ? "20px" : "")};
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
