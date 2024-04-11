@@ -23,6 +23,7 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://wango.pro/",
   "scripts": {
     "dev": "cross-env env-cmd -f .env.development react-scripts start",
     "dev:prod": "cross-env env-cmd -f .env.production react-scripts start",
