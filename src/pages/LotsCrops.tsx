@@ -23,10 +23,11 @@ export default function LotsCrops() {
   const lotId = id || "";
   const { backendApiCall } = useContext(ApiContext);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const { data, loading, setRefetch } = UseGet(
     fetchPaginatedCropsByLotId(backendApiCall, {
       page: currentPage,
-      limit: 5,
+      limit: rowsPerPage,
       lotId: lotId,
     })
   );
@@ -85,6 +86,8 @@ export default function LotsCrops() {
               pagination={{
                 currentPage,
                 setCurrentPage,
+                rowsPerPage,
+                setRowsPerPage,
                 setRefetch,
                 totalPages: data.meta.total_pages,
               }}
