@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Lot } from "../interfaces/Lot";
-import { redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import NotificationModal from "../components/modals/NotificationModal";
@@ -147,7 +147,7 @@ export default function RegisterView() {
           Nota: Siendo administrador puedes ver los registros hechos por los usuarios encargados que
           has asignado a este cultivo. Incluso puedes hacer uno tu.
         </Description>
-          <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
+        <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
         <SignBoard $custom2>Parámetros del día para el cultivo</SignBoard>
         <Form onSubmit={handleSubmit}>
           <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
@@ -209,24 +209,24 @@ export default function RegisterView() {
                   <TableCell $custom1>1</TableCell>
                   <TableCell></TableCell>
                   <TableCell>
-                    <a>Edi </a>
-                    <a> Eli </a>
+                    <a href="#">Edi </a>
+                    <a href="#"> Eli </a>
                   </TableCell>
                 </TableRow2>
                 <TableRow2 index={2}>
                   <TableCell $custom1>2</TableCell>
                   <TableCell></TableCell>
                   <TableCell>
-                    <a>Edi </a>
-                    <a> Eli </a>
+                    <a href="#">Edi </a>
+                    <a href="#"> Eli </a>
                   </TableCell>
                 </TableRow2>
                 <TableRow2 index={3}>
                   <TableCell $custom1>3</TableCell>
                   <TableCell></TableCell>
                   <TableCell>
-                    <a>Edi </a>
-                    <a> Eli </a>
+                    <a href="#">Edi </a>
+                    <a href="#"> Eli </a>
                   </TableCell>
                 </TableRow2>
               </tbody>
