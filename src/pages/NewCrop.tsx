@@ -5,6 +5,7 @@ import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import NotificationModal from "../components/modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import {
   Button,
@@ -27,6 +28,7 @@ export default function NewCrop() {
   const { backendApiCall } = useContext(ApiContext);
   const [refetch, setRefetch] = useState<number>(0);
   const [lotData, setLotData] = useState({} as Lot);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     cropName: "",
     area: "",
@@ -92,7 +94,7 @@ export default function NewCrop() {
           title: "Cultivo añadido exitosamente",
           description:
             "¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’.",
-          redirectUrl: "/lots-crops",
+          redirectUrl: `/lot-menu/crops/${lotId}`,
         });
         return;
       }
@@ -114,6 +116,7 @@ export default function NewCrop() {
 
   const handleNotificationClose = () => {
     setShowNotification(false);
+    navigate(`/lot-menu/crops/${lotId}`);
   };
 
   return (
@@ -122,6 +125,8 @@ export default function NewCrop() {
       <FormContainer>
         <SignBoard>
           Agrega un nuevo cultivo al lote <DetailsItem>{lotData.name}</DetailsItem>
+          <br />
+          <br /> <br />{" "}
         </SignBoard>
         <InfoContainer>
           <DetailsSign>
