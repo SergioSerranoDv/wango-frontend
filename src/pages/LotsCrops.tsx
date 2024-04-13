@@ -133,7 +133,6 @@ export default function LotsCrops() {
                 setRefetch,
                 totalPages: data.meta.total_pages,
               }}
-              columns={["ID", "Cultivo", "Área", "Acciones"]}
               options={{ edit: handleEdit, delete: handleDelete }}
             />
           )}
@@ -163,24 +162,24 @@ export default function LotsCrops() {
                   <TableCell $custom1>1</TableCell>
                   <TableCell></TableCell>
                   <TableCell>
-                    <a>Edi </a>
-                    <a> Eli </a>
+                    <a href="#">Edi </a>
+                    <a href="#"> Eli </a>
                   </TableCell>
                 </TableRow2>
                 <TableRow2 index={2}>
                   <TableCell $custom1>2</TableCell>
                   <TableCell></TableCell>
                   <TableCell>
-                    <a>Edi </a>
-                    <a> Eli </a>
+                    <a href="#">Edi </a>
+                    <a href="#"> Eli </a>
                   </TableCell>
                 </TableRow2>
                 <TableRow2 index={3}>
                   <TableCell $custom1>3</TableCell>
                   <TableCell></TableCell>
                   <TableCell>
-                    <a>Edi </a>
-                    <a> Eli </a>
+                    <a href="#">Edi </a>
+                    <a href="#"> Eli </a>
                   </TableCell>
                 </TableRow2>
               </tbody>
