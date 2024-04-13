@@ -35,6 +35,7 @@ function LotsManage() {
       setRefetch((prev) => prev + 1);
     }
   };
+
   const handleNotificationClose = () => {
     setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
   };
@@ -48,59 +49,47 @@ function LotsManage() {
   }, []);
 
   return (
-    <>
-      {showLoading && <Loading />}
-      {!showLoading && (
-        <MainLayout>
-          <Container>
-            <>
-              <Text>Estos son tus lotes, {userData.name}!</Text>
-              <br />
-              <br />
-              {!loading && data.lots.length > 0 ? (
-                <TableV1
-                  data={data.lots}
-                  pagination={{
-                    currentPage,
-                    setCurrentPage,
-                    rowsPerPage,
-                    setRowsPerPage,
-                    setRefetch,
-                    totalPages: data.meta.total_pages,
-                  }}
-                  columns={["ID", "Lote", "Capacidad", "Acciones"]}
-                  columnMapping={{
-                    Lote: "name",
-                    Capacidad: "capacity",
-                  }}
-                  options={{ edit: handleEdit, delete: handleDelete }}
-                />
-              ) : (
-                <Text>No hay lotes disponibles.</Text>
-              )}
-              <SignBoard>
-                ¿Quieres añadir un lote?
-                <Link $primary href="/add-lote">
-                  ¡Hazlo aquí!
-                </Link>
-              </SignBoard>
-            </>
-            {/* Mostrar modal de notificación si showNotification es true */}
-            {showNotification && (
-              <NotificationModal
-                title="Lote eliminado exitosamente"
-                description="El lote ha sido eliminado con éxito."
-                imageUrl={checkLogo} // Asegúrate de tener esta variable definida
-                buttonText="Aceptar"
-                onClose={handleNotificationClose}
-                // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
-                redirectUrl=""
-              />
-            )}
-          </Container>
-        </MainLayout>
-      )}
-    </>
+    <MainLayout>
+      <Container>
+        <Text>Estos son tus lotes, {userData.name}!</Text>
+        <br />
+        {!loading && data.lots.length > 0 && (
+          <TableV1
+            data={data.lots}
+            pagination={{
+              currentPage,
+              setCurrentPage,
+              setRefetch,
+              totalPages: data.meta.total_pages,
+            }}
+            columns={["ID", "Lote", "Capacidad", "Acciones"]}
+            columnMapping={{
+              Lote: "name",
+              Capacidad: "capacity",
+            }}
+            options={{ edit: handleEdit, delete: handleDelete }}
+          />
+        )}
+        <SignBoard>
+          ¿Quieres añadir un lote?
+          <Link $primary href="/add-lote">
+            ¡Hazlo aquí!
+          </Link>
+        </SignBoard>
+        {/* Mostrar modal de notificación si showNotification es true */}
+        {showNotification && (
+          <NotificationModal
+            title="Lote eliminado exitosamente"
+            description="El lote ha sido eliminado con éxito."
+            imageUrl={checkLogo} // Asegúrate de tener esta variable definida
+            buttonText="Aceptar"
+            onClose={handleNotificationClose}
+            // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
+            redirectUrl=""
+          />
+        )}
+      </Container>
+    </MainLayout>
   );
 }
 
