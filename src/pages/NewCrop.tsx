@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Lot } from "../interfaces/Lot";
-import { useParams } from "react-router-dom";
+import { redirect, useParams } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import NotificationModal from "../components/modals/NotificationModal";
@@ -36,6 +36,11 @@ export default function NewCrop() {
     longitude: "",
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [notificationDetails, setNotificationDetails] = useState({
+    title: "",
+    description: "",
+    redirectUrl: "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -44,25 +49,31 @@ export default function NewCrop() {
     });
   };
 
+  const handleNotification = (title: string, description: string, redirectUrl: string) => {
+    setNotificationDetails({ title, description, redirectUrl });
+    setShowNotification(true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (!lotId) {
-        throw new Error("No se ha encontrado el ID del lote");
+        handleNotification("Error", "No se ha encontrado el ID del lote", "");
+        return;
       }
       if (lotData.available_capacity === 0) {
-        alert("El lote no tiene capacidad disponible");
+        handleNotification("Error", "El lote no tiene capacidad disponible", "");
         return;
       }
       if (parseInt(formData.area) > lotData.available_capacity) {
-        console.log("Area:", formData.area);
-        alert("El área debe ser menor o igual a la capacidad disponible");
+        handleNotification("Error", "El área debe ser menor o igual a la capacidad disponible", "");
         return;
       }
       if (parseInt(formData.area) <= 0) {
-        alert("El área debe ser mayor a 0");
+        handleNotification("Error", "El área debe ser mayor a 0", "");
         return;
       }
+
       const response: any = await createNewCrop(backendApiCall, {
         area: parseInt(formData.area),
         lot_id: lotId,
@@ -79,9 +90,15 @@ export default function NewCrop() {
         });
         setRefetch((prev) => prev + 1);
         setShowNotification(true);
+        setNotificationDetails({
+          title: "Cultivo añadido exitosamente",
+          description:
+            "¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’.",
+          redirectUrl: `/lot-menu/crops/${lotId}`,
+        });
         return;
       }
-      alert(response.message);
+      handleNotification("Error", response.message, "");
     } catch (error) {
       console.error(error);
     }
@@ -171,12 +188,12 @@ export default function NewCrop() {
       </FormContainer>
       {showNotification && (
         <NotificationModal
-          title="Cultivo añadido exitosamente"
-          description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
+          title={notificationDetails.title}
+          description={notificationDetails.description}
           imageUrl={checkLogo}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
-          redirectUrl={`/lot-menu/crops/${lotId}`}
+          redirectUrl={notificationDetails.redirectUrl}
         />
       )}
     </div>

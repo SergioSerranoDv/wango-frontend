@@ -82,12 +82,9 @@ export default function LotsCrops() {
     };
     fetchData();
   }, [lotId]);
-  console.log(Lot);
-
   const handleEdit = (crop: Crop) => {
     window.open(`/edit-crop/${crop._id}`, "_self");
   };
-
   const handleDelete = async (cropId: string) => {
     const response = await backendApiCall({
       method: "DELETE",
@@ -124,6 +121,11 @@ export default function LotsCrops() {
           </RegisterFormContainer>
           {!loading && data.crops.length > 0 && (
             <TableV1
+              columns={["ID", "Cultivos", "Área", "Acciones"]}
+              columnMapping={{
+                Cultivos: "name",
+                Área: "area",
+              }}
               data={data.crops}
               pagination={{
                 currentPage,
