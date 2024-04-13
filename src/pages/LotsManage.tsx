@@ -32,6 +32,7 @@ function LotsManage() {
       setRefetch((prev) => prev + 1);
     }
   };
+
   const handleNotificationClose = () => {
     setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
   };
@@ -40,7 +41,6 @@ function LotsManage() {
       <Container>
         <Text>Estos son tus lotes, {userData.name}!</Text>
         <br />
-        <br />{" "}
         {!loading && data.lots.length > 0 && (
           <TableV1
             data={data.lots}
@@ -51,6 +51,10 @@ function LotsManage() {
               totalPages: data.meta.total_pages,
             }}
             columns={["ID", "Lote", "Capacidad", "Acciones"]}
+            columnMapping={{
+              Lote: "name",
+              Capacidad: "capacity",
+            }}
             options={{ edit: handleEdit, delete: handleDelete }}
           />
         )}
