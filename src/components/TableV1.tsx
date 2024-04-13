@@ -1,10 +1,15 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Table, TableRow, TableCell } from "../styles/LotsTableStyles";
+import arrowheadLeft from "../assets/icons/arrowheadLeft.svg";
+import arrowheadRight from "../assets/icons/arrowheadRight.svg";
+import { DivIdentification } from "../styles/FormStyles";
 interface TableV1Props {
   data: any[];
   pagination: {
     currentPage: number;
     setCurrentPage: Dispatch<SetStateAction<number>>;
+    rowsPerPage: number;
+    setRowsPerPage: Dispatch<SetStateAction<number>>;
     setRefetch: Dispatch<SetStateAction<number>>;
     totalPages: number;
   };
@@ -24,6 +29,12 @@ export const TableV1: React.FC<TableV1Props> = ({
   options,
   pagination,
 }) => {
+  const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    pagination.setRowsPerPage(parseInt(event.target.value));
+    pagination.setCurrentPage(1);
+    pagination.setRefetch((prev) => prev + 1);
+  };
+
   const handleNextPage = async () => {
     pagination.setCurrentPage((prev: number) => prev + 1);
     pagination.setRefetch((prev: number) => prev + 1);
@@ -133,21 +144,58 @@ export const TableV1: React.FC<TableV1Props> = ({
             ))}
         </tbody>
       </Table>
-      <div>
-        <>
-          <button onClick={handlePreviousPage} disabled={pagination.currentPage === 1}>
-            Anterior
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={pagination.currentPage === pagination.totalPages}
-          >
-            Siguiente
-          </button>
+      <div
+        style={{
+          display: "flex",
+          paddingTop: 12,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <select value={pagination.rowsPerPage} onChange={handleLimitChange}>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", paddingRight: 16 }}>
+            <button
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "none",
+                background: "none",
+                padding: 0,
+              }}
+              onClick={handlePreviousPage}
+              disabled={pagination.currentPage === 1}
+            >
+              <img src={arrowheadLeft} style={{ width: 16, height: 16 }} alt="Previous" />
+            </button>
+            <button
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "none",
+                background: "none",
+                padding: 0,
+              }}
+              onClick={handleNextPage}
+              disabled={pagination.currentPage === pagination.totalPages}
+            >
+              <img src={arrowheadRight} style={{ width: 16, height: 16 }} alt="Previous" />
+            </button>
+          </div>
           <span>
             {pagination.currentPage} of {pagination.totalPages}
           </span>
-        </>
+        </div>
       </div>
     </div>
   );
