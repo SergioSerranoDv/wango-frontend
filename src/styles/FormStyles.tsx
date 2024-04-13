@@ -182,25 +182,3 @@ export const Link = styled.a<InputProps>`
   color: ${(props) => (props.$primary ? "#548af7" : "#4d4d4d")};
   cursor: pointer;
 `;
-
-export const CalendarLogo = styled.img`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-`;
-
-
-export const CalendarContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-export const SelectedDate = styled.span`
-  margin-left: 10px; /* Espacio a la izquierda del texto para separarlo del logo */
-  font-size: 16px; /* Tamaño de fuente */
-  font-weight: bold; /* Texto en negrita */
-  color: #333; /* Color del texto */
-`;
-

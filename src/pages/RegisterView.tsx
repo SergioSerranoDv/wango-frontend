@@ -21,9 +21,6 @@ import {
   Select,
   FormContainer,
   SignBoard,
-  CalendarLogo,
-  CalendarContainer,
-  SelectedDate,
 } from "../styles/FormStyles";
 import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 
@@ -168,7 +165,9 @@ export default function RegisterView() {
             //value={formData.etapaActual}
             //onChange={handleChange}
             required
+            disabled
           >
+            <option value="1.75">Frutificación (Kc = 1.75)</option> {/* Está por default, pero el orden correcto es como está abajo */}
             <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
             <option value="1.35">Floración (Kc = 1.35)</option>
             <option value="1.75">Frutificación (Kc = 1.75)</option>

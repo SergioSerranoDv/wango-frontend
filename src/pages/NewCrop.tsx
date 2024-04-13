@@ -5,7 +5,7 @@ import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import NotificationModal from "../components/modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
-import { useNavigate } from "react-router-dom";
+import errorLogo  from "../assets/icons/errorLogo.svg";
 import Navbar from "../components/Navbar";
 import {
   Button,
@@ -39,6 +39,7 @@ export default function NewCrop() {
   const [notificationDetails, setNotificationDetails] = useState({
     title: "",
     description: "",
+    imageUrl: "",
     redirectUrl: "",
   });
 
@@ -49,8 +50,8 @@ export default function NewCrop() {
     });
   };
 
-  const handleNotification = (title: string, description: string, redirectUrl: string) => {
-    setNotificationDetails({ title, description, redirectUrl });
+  const handleNotification = (title: string, description: string, imageUrl: string, redirectUrl: string) => {
+    setNotificationDetails({ title, description, imageUrl, redirectUrl });
     setShowNotification(true);
   };
 
@@ -58,19 +59,27 @@ export default function NewCrop() {
     e.preventDefault();
     try {
       if (!lotId) {
-        handleNotification("Error", "No se ha encontrado el ID del lote", "");
+        handleNotification("Error", "No se ha encontrado el ID del lote", errorLogo, "");
         return;
       }
       if (lotData.available_capacity === 0) {
-        handleNotification("Error", "El lote no tiene capacidad disponible", "");
+        handleNotification("Error", "El lote no tiene capacidad disponible", errorLogo, "");
         return;
       }
       if (parseInt(formData.area) > lotData.available_capacity) {
-        handleNotification("Error", "El área debe ser menor o igual a la capacidad disponible", "");
+        handleNotification("Error", "El área debe ser menor o igual a la capacidad disponible", errorLogo, "");
         return;
       }
       if (parseInt(formData.area) <= 0) {
-        handleNotification("Error", "El área debe ser mayor a 0", "");
+        handleNotification("Error", "El área debe ser mayor a 0", errorLogo, "");
+        return;
+      }
+      if ((parseInt(formData.latitude) < -90) || ((parseInt(formData.latitude) > 90))) {
+        handleNotification("Error", "La latitud debe estar en un rango <br /> entre -90° y 90°", errorLogo, "");
+        return;
+      }
+      if ((parseInt(formData.longitude) < -90) || ((parseInt(formData.longitude) > 90))) {
+        handleNotification("Error", "La longitud debe estar en un rango <br /> entre -90° y 90°", errorLogo, "");
         return;
       }
 
@@ -94,11 +103,12 @@ export default function NewCrop() {
           title: "Cultivo añadido exitosamente",
           description:
             "¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’.",
+          imageUrl: errorLogo,
           redirectUrl: `/lot-menu/crops/${lotId}`,
         });
         return;
       }
-      handleNotification("Error", response.message, "");
+      handleNotification("Error", response.message, "", "");
     } catch (error) {
       console.error(error);
     }
