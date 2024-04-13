@@ -58,6 +58,8 @@ function LotsManage() {
             data={data.lots}
             pagination={{
               currentPage,
+              rowsPerPage,
+              setRowsPerPage,
               setCurrentPage,
               setRefetch,
               totalPages: data.meta.total_pages,
