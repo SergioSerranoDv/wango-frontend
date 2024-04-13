@@ -28,6 +28,7 @@ export default function LotsCrops() {
   //const { userData } = useContext(AppContext);
   const lotId = id || "";
   const { backendApiCall } = useContext(ApiContext);
+  const [refetchLotDetails, setRefetchLotDetails] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showNotification, setShowNotification] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
@@ -70,7 +71,6 @@ export default function LotsCrops() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetchLotDetails(backendApiCall, lotId);
-      console.log("Response: ", response);
       if (response) {
         setLot({
           id: response._id,
@@ -81,7 +81,7 @@ export default function LotsCrops() {
       }
     };
     fetchData();
-  }, [lotId]);
+  }, [lotId, refetchLotDetails]);
   const handleEdit = (crop: Crop) => {
     window.open(`/edit-crop/${crop._id}`, "_self");
   };
@@ -89,10 +89,14 @@ export default function LotsCrops() {
     const response = await backendApiCall({
       method: "DELETE",
       endpoint: `v1/crop/delete/${cropId}`,
+      body: {
+        lot_id: lotId,
+      },
     });
     if (response.status === "success") {
       setShowNotification(true);
       setRefetch((prev) => prev + 1);
+      setRefetchLotDetails((prev) => prev + 1);
     }
   };
   const handleNotificationClose = () => {
