@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Lot } from "../interfaces/Lot";
-import { redirect, useParams } from "react-router-dom";
+import { redirect, useParams, useNavigate } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
 import NotificationModal from "../components/modals/NotificationModal";
 import checkLogo from "../assets/icons/checkLogo.svg";
-import errorLogo  from "../assets/icons/errorLogo.svg";
+import errorLogo from "../assets/icons/errorLogo.svg";
 import Navbar from "../components/Navbar";
 import {
   Button,
@@ -50,7 +50,12 @@ export default function NewCrop() {
     });
   };
 
-  const handleNotification = (title: string, description: string, imageUrl: string, redirectUrl: string) => {
+  const handleNotification = (
+    title: string,
+    description: string,
+    imageUrl: string,
+    redirectUrl: string
+  ) => {
     setNotificationDetails({ title, description, imageUrl, redirectUrl });
     setShowNotification(true);
   };
@@ -67,19 +72,34 @@ export default function NewCrop() {
         return;
       }
       if (parseInt(formData.area) > lotData.available_capacity) {
-        handleNotification("Error", "El área debe ser menor o igual a la capacidad disponible", errorLogo, "");
+        handleNotification(
+          "Error",
+          "El área debe ser menor o igual a la capacidad disponible",
+          errorLogo,
+          ""
+        );
         return;
       }
       if (parseInt(formData.area) <= 0) {
         handleNotification("Error", "El área debe ser mayor a 0", errorLogo, "");
         return;
       }
-      if ((parseInt(formData.latitude) < -90) || ((parseInt(formData.latitude) > 90))) {
-        handleNotification("Error", "La latitud debe estar en un rango <br /> entre -90° y 90°", errorLogo, "");
+      if (parseInt(formData.latitude) < -90 || parseInt(formData.latitude) > 90) {
+        handleNotification(
+          "Error",
+          "La latitud debe estar en un rango <br /> entre -90° y 90°",
+          errorLogo,
+          ""
+        );
         return;
       }
-      if ((parseInt(formData.longitude) < -90) || ((parseInt(formData.longitude) > 90))) {
-        handleNotification("Error", "La longitud debe estar en un rango <br /> entre -90° y 90°", errorLogo, "");
+      if (parseInt(formData.longitude) < -90 || parseInt(formData.longitude) > 90) {
+        handleNotification(
+          "Error",
+          "La longitud debe estar en un rango <br /> entre -90° y 90°",
+          errorLogo,
+          ""
+        );
         return;
       }
 
