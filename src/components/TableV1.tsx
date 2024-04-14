@@ -64,7 +64,13 @@ export const TableV1: React.FC<TableV1Props> = ({
                   }
                 })}
                 <TableCell>
-                  <button onClick={() => options.edit(item)}>
+                  <button
+                    style={{
+                      background: "none",
+                      border: "none",
+                    }}
+                    onClick={() => options.edit(item)}
+                  >
                     <svg
                       width="19"
                       height="20"
@@ -101,7 +107,13 @@ export const TableV1: React.FC<TableV1Props> = ({
                       </defs>
                     </svg>
                   </button>
-                  <button onClick={() => options.delete(item._id)}>
+                  <button
+                    style={{
+                      background: "none",
+                      border: "none",
+                    }}
+                    onClick={() => options.delete(item._id)}
+                  >
                     <svg
                       width="19"
                       height="21"
