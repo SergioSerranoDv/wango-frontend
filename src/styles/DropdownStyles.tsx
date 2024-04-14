@@ -1,11 +1,5 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 export const Text = styled.div`
   font-family: Inter, sans-serif;
   margin: 10px;
@@ -35,12 +29,14 @@ type DropdownContentProps = {
 };
 
 export const DropdownContent = styled.div<DropdownContentProps>`
+  right: 0;
   display: ${({ open }) => (open ? "block" : "none")};
   position: absolute;
   background-color: #ffb032;
   width: 100%;
   margin-top: 17px;
   padding-right: 5%;
+  z-index: 1; /* Ensure the dropdown is above other content */
 
   @media (min-width: 768px) {
     display: none;

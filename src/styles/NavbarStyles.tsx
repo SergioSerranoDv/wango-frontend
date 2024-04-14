@@ -28,6 +28,7 @@ export const LeftContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5%;
+  justify-content: space-between;
 
   @media (max-width: 768px) {
     padding-left: 0px;

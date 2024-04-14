@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
@@ -53,41 +53,45 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <NavbarContainer>
-      <NavbarInnerContainer>
-        <LeftContainer>
-          <NavbarLinkContainer>
-            <Dropdown></Dropdown>
-            {NavbarItems.map((item, index) => (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                key={index}
-              >
-                {item.elementList}
-              </div>
-            ))}
-          </NavbarLinkContainer>
-        </LeftContainer>
-        <RightContainer>
-          <Link to="/">
-            <Logo src={LogoImg} />
-          </Link>
-          <img
-            width={40}
-            height={40}
-            style={{
-              borderRadius: "50%",
-            }}
-            src={userData.picture}
-            alt="User profile"
-          />
-        </RightContainer>
-      </NavbarInnerContainer>
-    </NavbarContainer>
+    <>
+      <NavbarContainer>
+        <NavbarInnerContainer>
+          <LeftContainer>
+            <Link to="/">
+              <Logo src={LogoImg} />
+            </Link>
+            <NavbarLinkContainer>
+              {NavbarItems.map((item, index) => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  key={index}
+                >
+                  {item.elementList}
+                </div>
+              ))}
+            </NavbarLinkContainer>
+          </LeftContainer>
+          <RightContainer>
+            <img
+              width={40}
+              height={40}
+              style={{
+                borderRadius: "50%",
+              }}
+              src={userData.picture}
+              alt="User profile"
+            />
+            <div style={{ position: "relative" }}>
+              <Dropdown></Dropdown>
+            </div>
+          </RightContainer>
+        </NavbarInnerContainer>
+      </NavbarContainer>
+    </>
   );
 };
 
