@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import { LoadingAnimation } from "./components/Loading";
-import { LotForm } from "./components/LotForm";
+import { AddLot } from "./pages/AddLot";
 import { Profile } from "./pages/Profile";
 import { DashboardLots } from "./pages/DashboardLots";
 import { Dashboard } from "./pages/Dashboard";
@@ -38,7 +38,7 @@ export const App: React.FC = () => {
                   <Route path="/my-profile" element={<Profile />} />
                   <Route path="/register-form" element={<RegisterForm />} />
                   <Route path="/lot-menu/:id" element={<DashboardLots />} />
-                  <Route path="/add-lote" element={<LotForm />} />
+                  <Route path="/add-lote" element={<AddLot />} />
                   <Route path="/edit-lote/:id" element={<EditLot />} />
                   <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
                   <Route path="/lots-manage" element={<LotsManage />} />
