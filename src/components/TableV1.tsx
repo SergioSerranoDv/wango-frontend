@@ -22,7 +22,13 @@ interface TableV1Props {
     delete: (item: any) => void;
   };
 }
-export const TableV1: React.FC<TableV1Props> = ({ data, columns, options, pagination }) => {
+export const TableV1: React.FC<TableV1Props> = ({
+  data,
+  columns,
+  columnMapping,
+  options,
+  pagination,
+}) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     pagination.setRowsPerPage(parseInt(event.target.value));
     pagination.setCurrentPage(1);
