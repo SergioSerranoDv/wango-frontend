@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import errorLogo from "../../assets/icons/errorLogo.svg";
+import checkLogo from "../../assets/icons/checkLogo.svg";
 import {
   Overlay,
   ModalContainer,
@@ -11,16 +13,19 @@ import {
 } from "../../styles/components/NotificationModalStyles";
 
 interface NotificationProps {
-  imageUrl: string;
+  status: string;
   title: string;
   description: string;
   buttonText: string;
   onClose: () => void;
   redirectUrl?: string;
 }
-
-const NotificationModal: React.FC<NotificationProps> = ({
-  imageUrl,
+enum NotificationType {
+  ERROR = "error",
+  SUCCESS = "success",
+}
+export const NotificationModal: React.FC<NotificationProps> = ({
+  status,
   title,
   description,
   buttonText,
@@ -40,7 +45,11 @@ const NotificationModal: React.FC<NotificationProps> = ({
         <Overlay>
           <ModalContainer>
             <NotificationHeader>
-              <NotificationImage loading="lazy" src={imageUrl} alt="Notification icon" />
+              <NotificationImage
+                loading="lazy"
+                src={status === NotificationType.SUCCESS ? checkLogo : errorLogo}
+                alt="Notification icon"
+              />
               <NotificationTitle>{title}</NotificationTitle>
             </NotificationHeader>
             <NotificationDescription dangerouslySetInnerHTML={{ __html: description }} />
@@ -49,14 +58,10 @@ const NotificationModal: React.FC<NotificationProps> = ({
                 <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
               </Link>
             )}
-            {!redirectUrl && (
-              <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
-            )}
+            {!redirectUrl && <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>}
           </ModalContainer>
         </Overlay>
       )}
     </>
   );
 };
-
-export default NotificationModal;

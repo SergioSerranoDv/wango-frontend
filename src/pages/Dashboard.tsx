@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import MainMenu from "./MainMenu";
 import RegisterForm from "./RegisterForm";
-import Loading from "../components/Loading";
+import { LoadingAnimation } from "../components/Loading";
 
-export const Dashboard = () => {
+export const Dashboard: React.FC = () => {
   const { userData, appContextIsFetching } = useContext(AppContext);
   if (appContextIsFetching) {
-    return <Loading />;
+    return <LoadingAnimation />;
   }
   return (
     <>

@@ -1,12 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import NotificationModal from "../components/modals/NotificationModal";
-import checkLogo from "../assets/icons/checkLogo.svg";
-import errorLogo from "../assets/icons/errorLogo.svg";
 import { Link } from "react-router-dom";
+import { NotificationModal } from "../components/modals/NotificationModal";
+import { MainLayout } from "../layouts/MainLayout";
 import { AppContext } from "../context/AppContext";
 import { ApiContext } from "../context/ApiContext";
-import Navbar from "../components/Navbar";
-
+import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import {
   ButtonContainer,
   Button,
@@ -24,12 +22,8 @@ const VarForm: React.FC = () => {
   const { userData, setRefetchData } = useContext(AppContext);
   const [editedData, setEditedData] = useState(userData);
   const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [notificationDetails, setNotificationDetails] = useState({
-    title: "",
-    description: "",
-    imageUrl: "",
-    redirectUrl: "",
-  });
+  const [notificationDetails, setNotificationDetails] =
+    useState<NotificationI>(NotificationDataInit);
 
   useEffect(() => {
     setEditedData(userData);
@@ -38,10 +32,10 @@ const VarForm: React.FC = () => {
   const handleNotification = (
     title: string,
     description: string,
-    imageUrl: string,
+    status: string,
     redirectUrl: string
   ) => {
-    setNotificationDetails({ title, description, imageUrl, redirectUrl });
+    setNotificationDetails({ title, description, status, redirectUrl });
     setShowNotification(true);
   };
 
@@ -53,7 +47,7 @@ const VarForm: React.FC = () => {
       handleNotification(
         "Error",
         "La fracción de lixiviación-escorrentia superficial <br /> debe ser mayor a 0",
-        errorLogo,
+        "error",
         ""
       );
       return;
@@ -63,7 +57,7 @@ const VarForm: React.FC = () => {
       handleNotification(
         "Error",
         "La cantidad máxima permitida <br /> debe ser mayor a 0",
-        errorLogo,
+        "error",
         ""
       );
       return;
@@ -74,7 +68,7 @@ const VarForm: React.FC = () => {
       handleNotification(
         "Error",
         "La cantidad natural del químico <br /> debe ser mayor a 0",
-        errorLogo,
+        "error",
         ""
       );
       return;
@@ -94,7 +88,7 @@ const VarForm: React.FC = () => {
     setNotificationDetails({
       title: "Valores cambiados exitosamente",
       description: "¡Excelente! Podrás ver los cambios en la sección de <br /> la configuración.",
-      imageUrl: checkLogo,
+      status: "success",
       redirectUrl: "/",
     });
   };
@@ -115,8 +109,7 @@ const VarForm: React.FC = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <MainLayout>
       <FormContainer>
         <SignBoard $custom2>Configuración del sistema</SignBoard>
         <Description>
@@ -176,14 +169,14 @@ const VarForm: React.FC = () => {
           <NotificationModal
             title={notificationDetails.title}
             description={notificationDetails.description}
-            imageUrl={notificationDetails.imageUrl}
+            status={notificationDetails.status}
             buttonText="Aceptar"
             onClose={handleNotificationClose}
             redirectUrl={notificationDetails.redirectUrl}
           />
         )}
       </FormContainer>
-    </>
+    </MainLayout>
   );
 };
 

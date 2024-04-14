@@ -15,13 +15,10 @@ interface CustomDatePickerProps {
   onChange: (date: Date) => void;
 }
 
-const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ selected, onChange }) => {
+export const Calendar: React.FC<CustomDatePickerProps> = ({ selected, onChange }) => {
   return (
     <DatePickerContainer>
-      <CalendarIcon
-        src={calendarIcon}
-        alt="Calendar Icon"
-      />
+      <CalendarIcon src={calendarIcon} alt="Calendar Icon" />
       <DatePicker
         selected={selected}
         onChange={onChange}
@@ -32,5 +29,3 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ selected, onChange 
     </DatePickerContainer>
   );
 };
-
-export default CustomDatePicker;
