@@ -1,11 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-import NotificationModal from "../components/modals/NotificationModal";
-import checkLogo from "../assets/icons/checkLogo.svg";
 import { Link } from "react-router-dom";
+import { NotificationModal } from "../components/modals/NotificationModal";
+import { MainLayout } from "../layouts/MainLayout";
 import { AppContext } from "../context/AppContext";
 import { ApiContext } from "../context/ApiContext";
-import Navbar from "../components/Navbar";
-
 import {
   ButtonContainer,
   Button,
@@ -18,7 +16,7 @@ import {
   DivIdentification,
 } from "../styles/FormStyles";
 
-const MyProfile: React.FC = () => {
+export const Profile: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { userData, setRefetchData } = useContext(AppContext);
   const [editedData, setEditedData] = useState(userData);
@@ -58,8 +56,7 @@ const MyProfile: React.FC = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <MainLayout>
       <FormContainer>
         <SignBoard $custom2>Información de usuario</SignBoard>
         <Form onSubmit={handleSubmit}>
@@ -156,15 +153,13 @@ const MyProfile: React.FC = () => {
           <NotificationModal
             title="Cambios guardados"
             description="¡Cambios guardados correctamente!"
-            imageUrl={checkLogo}
+            status={"success"}
             buttonText="Aceptar"
             onClose={handleNotificationClose}
             redirectUrl="/"
           />
         )}
       </FormContainer>
-    </>
+    </MainLayout>
   );
 };
-
-export default MyProfile;

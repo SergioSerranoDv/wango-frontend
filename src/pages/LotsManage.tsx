@@ -1,30 +1,26 @@
 import React, { useState, useContext, useEffect } from "react";
+import { NotificationModal } from "../components/modals/NotificationModal";
 import { TableV1 } from "../components/TableV1";
 import { MainLayout } from "../layouts/MainLayout";
-import { UseGet } from "../hooks/UseGet";
-import { fetchPaginatedLotsPerUser, deleteLot } from "../services/lot_s";
+import { useGetById } from "../hooks/useGetById";
 import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
-import { Lot } from "../interfaces/Lot";
+import { LotI } from "../interfaces/Lot";
 import { SignBoard, Link } from "../styles/FormStyles";
 import { Text } from "../styles/MainMenuStyles";
-import checkLogo from "../assets/icons/checkLogo.svg";
 import { Container } from "../styles/GlobalStyles";
-import NotificationModal from "../components/modals/NotificationModal";
-import Loading from "../components/Loading";
 
-function LotsManage() {
+export const LotsManage = () => {
   const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
-  const [showLoading, setShowLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [showNotification, setShowNotification] = useState(false);
-  const { data, loading, setRefetch } = UseGet(
-    fetchPaginatedLotsPerUser(backendApiCall, { page: currentPage, limit: rowsPerPage })
-  );
-
-  const handleEdit = (lot: Lot) => {
+  const { data, loading, setRefetch } = useGetById({
+    endpoint: `v1/lot/paginated?page=${currentPage}&limit=${rowsPerPage}`,
+  });
+  console.log(data);
+  const handleEdit = (lot: LotI) => {
     window.open(`/lot-menu/${lot._id}`, "_self");
   };
 
@@ -40,24 +36,26 @@ function LotsManage() {
     setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false);
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowLoading(false);
+  //   }, 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <MainLayout>
       <Container>
         <Text>Estos son tus lotes, {userData.name}!</Text>
         <br />
-        {!loading && data.lots.length > 0 && (
+        {!loading && data && (
           <TableV1
             data={data.lots}
             pagination={{
               currentPage,
+              rowsPerPage,
+              setRowsPerPage,
               setCurrentPage,
               setRefetch,
               totalPages: data.meta.total_pages,
@@ -81,7 +79,7 @@ function LotsManage() {
           <NotificationModal
             title="Lote eliminado exitosamente"
             description="El lote ha sido eliminado con éxito."
-            imageUrl={checkLogo} // Asegúrate de tener esta variable definida
+            status="success"
             buttonText="Aceptar"
             onClose={handleNotificationClose}
             // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
@@ -91,6 +89,4 @@ function LotsManage() {
       </Container>
     </MainLayout>
   );
-}
-
-export default LotsManage;
+};

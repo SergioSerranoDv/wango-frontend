@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { ApiContext } from "../context/ApiContext";
-import { fetchLotDetails } from "../services/lot_s";
-import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
+import { useGetById } from "../hooks/useGetById";
 import VerCultvos from "../assets/icons/viewCrops.svg";
 import AñadirCultivo from "../assets/icons/addCrop.svg";
 import HuellaHidrica from "../assets/icons/waterFootprint.svg";
 import AnalisisIA from "../assets/icons/analysisAI.svg";
 import EditarLote from "../assets/icons/editBatch.svg";
 import VerUsuarios from "../assets/icons/viewUsers.svg";
+import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/LoteMenuStyles";
 
 interface MenuProps {
   id: number;
@@ -25,26 +24,9 @@ interface Props {
 }
 
 function LoteMenu({ lotId = "" }: Props) {
-  const { backendApiCall } = useContext(ApiContext);
-  const [nombreLote, setNombreLote] = useState<string>("");
-
-  useEffect(() => {
-    async function loadLotDetails() {
-      if (lotId) {
-        try {
-          const lot = await fetchLotDetails(backendApiCall, lotId);
-          if (lot) {
-            const { name } = lot;
-            setNombreLote(name);
-          }
-        } catch (error) {
-          console.error("Error fetching lot details:", error);
-        }
-      }
-    }
-    loadLotDetails();
-  }, [backendApiCall, lotId]);
-
+  const { data } = useGetById({
+    endpoint: `v1/lot/info/${lotId}`,
+  });
   const MenuItems: MenuProps[] = [
     {
       id: 1,
@@ -92,7 +74,7 @@ function LoteMenu({ lotId = "" }: Props) {
     <>
       <MainWrapper>
         <ContentArea>
-          <Text>Lote: {nombreLote}</Text>
+          <Text>Lote: {data && data.name}</Text>
           <Menu>
             {MenuItems.map((item, index) => (
               <div

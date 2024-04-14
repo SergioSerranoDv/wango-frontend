@@ -1,16 +1,16 @@
 import { ApiProps, apiResponse } from "../context/ApiContext";
-import { Lot } from "../interfaces/Lot";
+import { LotI } from "../interfaces/Lot";
 
 export const createNewLot = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
-  data: Lot
+  data: LotI
 ) => {
   return await backendApiCall({ method: "POST", endpoint: "v1/lot/new", body: data });
 };
 
-export const saveLot = async (
+export const updateLot = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
-  data: Lot,
+  data: LotI,
   lotId: string
 ) => {
   return await backendApiCall({ method: "PUT", endpoint: `v1/lot/update/${lotId}`, body: data });
@@ -19,12 +19,8 @@ export const saveLot = async (
 export const fetchLotDetails = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
   lotId: string
-): Promise<Lot | null> => {
-  const response = await backendApiCall({ method: "GET", endpoint: `v1/lot/info/${lotId}` });
-  if (response.status === "success" && response.data) {
-    return response.data as Lot;
-  }
-  return null;
+): Promise<apiResponse> => {
+  return await backendApiCall({ method: "GET", endpoint: `v1/lot/info/${lotId}` });
 };
 
 export const fetchPaginatedLotsPerUser = async (
