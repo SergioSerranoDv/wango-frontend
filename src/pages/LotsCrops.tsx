@@ -4,7 +4,7 @@ import { LotDataInit } from "../interfaces/Lot";
 import { NotificationModal } from "../components/modals/NotificationModal";
 import { MainLayout } from "../layouts/MainLayout";
 import { TableV1 } from "../components/TableV1";
-import { useGetById } from "../hooks/useGetById";
+import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
 import { Crop } from "../interfaces/crop";
@@ -29,10 +29,9 @@ export const LotsCrops: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showNotification, setShowNotification] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const { data, loading, setRefetch } = useGetById({
+  const { data, loading, setRefetch } = UseGet({
     endpoint: `v1/crop/paginated?page=${currentPage}&limit=${rowsPerPage}&lot_id=${lotId}`,
   });
-
   const [Lot, setLot] = useState(LotDataInit);
   // const [Crop, setCrop] = useState<{
   //   id: string | undefined;
