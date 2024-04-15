@@ -1,7 +1,14 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { Table, TableRow, TableCell } from "../styles/LotsTableStyles";
-import arrowheadLeft from "../assets/icons/arrowheadLeft.svg";
 import arrowheadRight from "../assets/icons/arrowheadRight.svg";
+import arrowheadLeft from "../assets/icons/arrowheadLeft.svg";
+import {
+  ContainerNavigationControls,
+  NextArrow,
+  PrevArrow,
+  Table,
+  TableRow,
+  TableCell,
+} from "../styles/LotsTableStyles";
 interface TableV1Props {
   data: any[];
   pagination: {
@@ -173,36 +180,29 @@ export const TableV1: React.FC<TableV1Props> = ({
           </select>
         </div>
         <div style={{ display: "flex" }}>
-          <div style={{ display: "flex", paddingRight: 16 }}>
-            <button
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "none",
-                background: "none",
-                padding: 0,
-              }}
-              onClick={handlePreviousPage}
-              disabled={pagination.currentPage === 1}
-            >
-              <img src={arrowheadLeft} style={{ width: 16, height: 16 }} alt="Previous" />
-            </button>
-            <button
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "none",
-                background: "none",
-                padding: 0,
-              }}
+          <ContainerNavigationControls>
+            <PrevArrow onClick={handlePreviousPage} disabled={pagination.currentPage === 1}>
+              <img
+                src={arrowheadLeft}
+                width={16}
+                height={16}
+                style={{ width: 16, height: 16 }}
+                alt="Previous"
+              />
+            </PrevArrow>
+            <NextArrow
               onClick={handleNextPage}
               disabled={pagination.currentPage === pagination.totalPages}
             >
-              <img src={arrowheadRight} style={{ width: 16, height: 16 }} alt="Previous" />
-            </button>
-          </div>
+              <img
+                src={arrowheadRight}
+                width={16}
+                height={16}
+                style={{ width: 16, height: 16 }}
+                alt="Next"
+              />
+            </NextArrow>
+          </ContainerNavigationControls>
           <span>
             {pagination.currentPage} of {pagination.totalPages}
           </span>
