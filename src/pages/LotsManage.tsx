@@ -1,25 +1,25 @@
-import React, { useState, useContext, useEffect } from "react";
-import { NotificationModal } from "../components/modals/NotificationModal";
+import React, { useState, useContext } from "react";
 import { TableV1 } from "../components/TableV1";
 import { MainLayout } from "../layouts/MainLayout";
-import { useGetById } from "../hooks/useGetById";
+import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
 import { LotI } from "../interfaces/Lot";
 import { SignBoard, Link } from "../styles/FormStyles";
 import { Text } from "../styles/MainMenuStyles";
 import { Container } from "../styles/GlobalStyles";
+import { NotificationModal } from "../components/modals/NotificationModal";
 
-export const LotsManage = () => {
+export const LotsManage: React.FC = () => {
   const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [showNotification, setShowNotification] = useState(false);
-  const { data, loading, setRefetch } = useGetById({
+  const { data, loading, setRefetch } = UseGet({
     endpoint: `v1/lot/paginated?page=${currentPage}&limit=${rowsPerPage}`,
   });
-  console.log(data);
+
   const handleEdit = (lot: LotI) => {
     window.open(`/lot-menu/${lot._id}`, "_self");
   };
@@ -31,12 +31,11 @@ export const LotsManage = () => {
       setRefetch((prev) => prev + 1);
     }
   };
-
   const handleNotificationClose = () => {
-    setShowNotification(false); // Cierra la notificación cuando el usuario hace clic en el botón Aceptar
+    setShowNotification(false);
   };
 
-  // useEffect(() => {
+  //  useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setShowLoading(false);
   //   }, 1000);
@@ -49,13 +48,14 @@ export const LotsManage = () => {
       <Container>
         <Text>Estos son tus lotes, {userData.name}!</Text>
         <br />
-        {!loading && data && (
+        <br />{" "}
+        {!loading && data.lots.length > 0 && (
           <TableV1
             data={data.lots}
             pagination={{
-              currentPage,
               rowsPerPage,
               setRowsPerPage,
+              currentPage,
               setCurrentPage,
               setRefetch,
               totalPages: data.meta.total_pages,
@@ -79,7 +79,7 @@ export const LotsManage = () => {
           <NotificationModal
             title="Lote eliminado exitosamente"
             description="El lote ha sido eliminado con éxito."
-            status="success"
+            status="success" // Asegúrate de tener esta variable definida
             buttonText="Aceptar"
             onClose={handleNotificationClose}
             // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío

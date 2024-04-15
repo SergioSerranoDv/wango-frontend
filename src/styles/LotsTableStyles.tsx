@@ -48,3 +48,21 @@ export const TableCell = styled.td<InputProps>`
   padding: ${(props) => (props.$custom ? "4px 8px 4px 8px" : "11px")};
   border-bottom: 1px solid #000000;
 `;
+export const PrevArrow = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+export const NextArrow = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+export const ContainerNavigationControls = styled.div`
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  padding-right: 1rem;
+`;

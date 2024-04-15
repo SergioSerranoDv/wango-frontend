@@ -34,7 +34,7 @@ export const useGetById = (props: GetByIdProps) => {
       };
       fetchData();
     }
-  }, [backendApiCall, serviceIsReady, props.endpoint]);
+  }, [backendApiCall, serviceIsReady, refetch]);
 
   return { data, loading, setRefetch, error };
 };

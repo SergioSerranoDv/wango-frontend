@@ -7,7 +7,6 @@ import { TableV1 } from "../components/TableV1";
 import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
-import { fetchPaginatedCropsByLotId } from "../services/crop_s";
 import { Crop } from "../interfaces/crop";
 import { Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 import { Container } from "../styles/GlobalStyles";
@@ -30,15 +29,10 @@ export const LotsCrops: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showNotification, setShowNotification] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const { data, loading, setRefetch } = UseGet(
-    fetchPaginatedCropsByLotId(backendApiCall, {
-      page: currentPage,
-      limit: rowsPerPage,
-      lotId: lotId,
-    })
-  );
+  const { data, loading, setRefetch } = UseGet({
+    endpoint: `v1/crop/paginated?page=${currentPage}&limit=${rowsPerPage}&lot_id=${lotId}`,
+  });
   const [Lot, setLot] = useState(LotDataInit);
-
   // const [Crop, setCrop] = useState<{
   //   id: string | undefined;
   //   area: number;
@@ -60,7 +54,7 @@ export const LotsCrops: React.FC = () => {
       const response = await fetchLotDetails(backendApiCall, lotId);
       if (response.status === "success" && response.data !== undefined) {
         setLot({
-          _id: data._id,
+          _id: response.data._id,
           capacity: response.data.capacity,
           name: response.data.name,
           available_capacity: response.data.available_capacity,
@@ -119,7 +113,7 @@ export const LotsCrops: React.FC = () => {
               <DetailsSign $custom3>Cultivos:</DetailsSign>
             </InfoContainer>
           </RegisterFormContainer>
-          {!loading && data.crops.length > 0 && (
+          {!loading && data && data.crops.length > 0 && (
             <TableV1
               columns={["ID", "Cultivos", "Área", "Acciones"]}
               columnMapping={{
