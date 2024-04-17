@@ -7,6 +7,7 @@ import { ApiContext } from "../context/ApiContext";
 import { LotI } from "../interfaces/Lot";
 import { createNewCrop } from "../services/crop_s";
 import { NotificationDataInit, NotificationI } from "../interfaces/notification";
+import { fetchWeatherApi } from "openmeteo";
 import {
   Button,
   ButtonSubmit,
@@ -24,7 +25,7 @@ import {
 import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 import { MainLayout } from "../layouts/MainLayout";
 
-export const Records = () => {
+export const RegisterView = () => {
   const { id } = useParams();
   const lotId = id;
   const { backendApiCall } = useContext(ApiContext);
@@ -36,6 +37,9 @@ export const Records = () => {
     latitude: "",
     longitude: "",
     selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
+    etapaActual: "",
+    eto: "", // Agrega la propiedad eto para ET0
+    etc: "", // Agrega la propiedad etc para ETc
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [notificationDetails, setNotificationDetails] =
@@ -107,6 +111,26 @@ export const Records = () => {
       if (response.status === "success" && response.data !== undefined) {
         setLotData(response.data);
       }
+
+      // Obtener los valores de ET0 y ETc del clima
+      const params = {
+        latitude: 15.9273,
+        longitude: -75.2819,
+        hourly: ["evapotranspiration", "et0_fao_evapotranspiration"],
+        forecast_days: 1,
+      };
+      const url = "https://api.open-meteo.com/v1/forecast";
+      const weatherResponse = await fetchWeatherApi(url, params);
+      const weatherData = weatherResponse[0].hourly()!;
+      const et0 = weatherData.variables(1)!.valuesArray()![23]; // Primer valor de ET0
+      const etc = weatherData.variables(0)!.valuesArray()![23]; // Primer valor de ETc
+      //Hacer un promedio
+      // Actualizar el estado de formData con los valores de ET0 y ETc
+      setFormData((prevState) => ({
+        ...prevState,
+        eto: et0.toString(), // Convertir el valor numérico a cadena
+        etc: etc.toString(), // Convertir el valor numérico a cadena
+      }));
     };
     fetchData();
   }, [backendApiCall, lotId, refetch]);
@@ -118,14 +142,8 @@ export const Records = () => {
   return (
     <MainLayout>
       <FormContainer>
-        <SignBoard $custom2>
-          Registros del día hechos en el cultivo ‘Manguito01’{" "}
-          <DetailsItem>{lotData.name}</DetailsItem>
-        </SignBoard>
+        <SignBoard $custom2>Registros del día hechos en el cultivo {lotData.name}</SignBoard>
         <InfoContainer>
-          <DetailsSign>
-            Nombre del lote: <DetailsItem>{lotData.available_capacity}</DetailsItem>
-          </DetailsSign>
           <DetailsSign>
             Fecha de inicio de recolección: <DetailsItem>{lotData.capacity_in_use}</DetailsItem>
           </DetailsSign>
@@ -142,7 +160,7 @@ export const Records = () => {
             type="text"
             id="eto"
             name="eto"
-            //value={formData.eto}
+            value={formData.eto} // Mostrar el valor de ET0
             onChange={handleChange}
             required
             disabled
@@ -152,8 +170,7 @@ export const Records = () => {
           <Select
             id="etapaActual"
             name="etapaActual"
-            //value={formData.etapaActual}
-            //onChange={handleChange}
+            value={formData.etapaActual}
             required
             disabled
           >
@@ -170,7 +187,7 @@ export const Records = () => {
             type="number"
             id="etc"
             name="etc"
-            //value={formData.etc}
+            value={formData.etc} // Mostrar el valor de ETc
             onChange={handleChange}
             required
             disabled
