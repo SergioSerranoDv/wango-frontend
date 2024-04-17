@@ -1,13 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Lot } from "../interfaces/Lot";
+import { Calendar } from "../components/modals/Calendar";
+import { NotificationModal } from "../components/modals/NotificationModal";
 import { useParams } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
-import NotificationModal from "../components/modals/NotificationModal";
-import errorLogo from "../assets/icons/errorLogo.svg";
-import checkLogo from "../assets/icons/checkLogo.svg";
-import Navbar from "../components/Navbar";
-import Calendar from "../components/modals/Calendar";
+import { LotI } from "../interfaces/Lot";
+import { createNewCrop } from "../services/crop_s";
+import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import {
   Button,
   ButtonSubmit,
@@ -23,15 +22,14 @@ import {
   SignBoard,
 } from "../styles/FormStyles";
 import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
+import { MainLayout } from "../layouts/MainLayout";
 
-import { createNewCrop } from "../services/crop_s";
-
-export default function RegisterView() {
+export const Records = () => {
   const { id } = useParams();
   const lotId = id;
   const { backendApiCall } = useContext(ApiContext);
   const [refetch, setRefetch] = useState<number>(0);
-  const [lotData, setLotData] = useState({} as Lot);
+  const [lotData, setLotData] = useState({} as LotI);
   const [formData, setFormData] = useState({
     cropName: "",
     area: "",
@@ -40,20 +38,14 @@ export default function RegisterView() {
     selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [notificationDetails, setNotificationDetails] = useState({
-    title: "",
-    description: "",
-    imageUrl: "",
-    redirectUrl: "",
-  });
-
+  const [notificationDetails, setNotificationDetails] =
+    useState<NotificationI>(NotificationDataInit);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleDateChange = (date: Date) => {
     setFormData({
       ...formData,
@@ -64,10 +56,10 @@ export default function RegisterView() {
   const handleNotification = (
     title: string,
     description: string,
-    imageUrl: string,
+    status: string,
     redirectUrl: string
   ) => {
-    setNotificationDetails({ title, description, imageUrl, redirectUrl });
+    setNotificationDetails({ title, description, status, redirectUrl });
     setShowNotification(true);
   };
 
@@ -75,10 +67,9 @@ export default function RegisterView() {
     e.preventDefault();
     try {
       if (!lotId) {
-        handleNotification("Error", "No se ha encontrado el ID del lote", errorLogo, "");
+        handleNotification("Error", "No se ha encontrado el ID del lote", "error", "");
         return;
       }
-
       const response: any = await createNewCrop(backendApiCall, {
         area: parseInt(formData.area),
         lot_id: lotId,
@@ -87,19 +78,19 @@ export default function RegisterView() {
         longitude: formData.longitude,
       });
       if (response.status === "success") {
-        //setFormData({
-        //cropName: "",
-        //area: "",
-        //latitude: "",
-        //longitude: "",
-        //});
-        //setRefetch((prev) => prev + 1);
+        // setFormData({
+        //   cropName: "",
+        //   area: "",
+        //   latitude: "",
+        //   longitude: "",
+        // });
+        setRefetch((prev) => prev + 1);
         setShowNotification(true);
         setNotificationDetails({
           title: "Estás cambiando un parámetro",
           description:
             "Si cambias la etapa de crecimiento en la que <br />  está el día, los registros de este también lo <br /> harán.",
-          imageUrl: errorLogo,
+          status: "error",
           redirectUrl: "",
         });
         return;
@@ -112,9 +103,9 @@ export default function RegisterView() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const lot = await fetchLotDetails(backendApiCall, lotId as string);
-      if (lot) {
-        setLotData(lot);
+      const response = await fetchLotDetails(backendApiCall, lotId as string);
+      if (response.status === "success" && response.data !== undefined) {
+        setLotData(response.data);
       }
     };
     fetchData();
@@ -125,8 +116,7 @@ export default function RegisterView() {
   };
 
   return (
-    <div>
-      <Navbar />
+    <MainLayout>
       <FormContainer>
         <SignBoard $custom2>
           Registros del día hechos en el cultivo ‘Manguito01’{" "}
@@ -167,7 +157,8 @@ export default function RegisterView() {
             required
             disabled
           >
-            <option value="1.75">Frutificación (Kc = 1.75)</option> {/* Está por default, pero el orden correcto es como está abajo */}
+            <option value="1.75">Frutificación (Kc = 1.75)</option>{" "}
+            {/* Está por default, pero el orden correcto es como está abajo */}
             <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
             <option value="1.35">Floración (Kc = 1.35)</option>
             <option value="1.75">Frutificación (Kc = 1.75)</option>
@@ -237,12 +228,12 @@ export default function RegisterView() {
         <NotificationModal
           title={notificationDetails.title}
           description={notificationDetails.description}
-          imageUrl={checkLogo}
+          status={notificationDetails.status}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
           redirectUrl={notificationDetails.redirectUrl}
         />
       )}
-    </div>
+    </MainLayout>
   );
-}
+};

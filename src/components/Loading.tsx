@@ -1,12 +1,10 @@
 import logoLoading from "../assets/images/loading.gif";
 import { LogoContainer, LogoImage } from "../styles/LoadingStyles";
 
-const LogoLoadingAnimation = () => {
+export const LoadingAnimation = () => {
   return (
     <LogoContainer>
       <LogoImage src={logoLoading} alt="Loading..." />
     </LogoContainer>
   );
 };
-
-export default LogoLoadingAnimation;

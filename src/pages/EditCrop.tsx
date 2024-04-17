@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import LoteFormEdit from "../components/LoteFormEdit";
+// import LoteFormEdit from "../components/LotFormEdit";
 
 export default function EditCrop() {
   const { id } = useParams();
