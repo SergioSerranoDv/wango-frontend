@@ -81,7 +81,7 @@ export default function LotsCrops() {
       }
     };
     fetchData();
-  }, [lotId]);
+  }, []);
   console.log(Lot);
 
   const handleEdit = (crop: Crop) => {
@@ -108,10 +108,11 @@ export default function LotsCrops() {
           <Text>Cultivos del lote '{Lot.name}'</Text>
           <RegisterFormContainer>
             <br />
-            <br />{" "}
+            <br />
+            {""}
             <InfoContainer>
               <DetailsSign $custom3>
-                ID lote: <DetailsItem>{id?.slice(0, 4)}...</DetailsItem>
+                ID lote: <DetailsItem>{id}</DetailsItem>
               </DetailsSign>
               <DetailsSign $custom3>
                 Área disponible: <DetailsItem>{Lot.available_capacity} Ha</DetailsItem>

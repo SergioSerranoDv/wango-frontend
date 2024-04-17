@@ -107,7 +107,7 @@ export default function NewCrop() {
       <Navbar />
       <FormContainer>
         <SignBoard>
-          Agrega un nuevo cultivo al lote <DetailsItem>{lotData.name}</DetailsItem>
+          Agrega un nuevo cultivo al lote {lotData.name}
           <br />
           <br /> <br />{" "}
         </SignBoard>

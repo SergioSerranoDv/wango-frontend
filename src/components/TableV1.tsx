@@ -38,7 +38,7 @@ export const TableV1: React.FC<TableV1Props> = ({ data, columns, options, pagina
           {data &&
             data.map((item: any, index: number) => (
               <TableRow key={index} index={index}>
-                <TableCell>{index + 1}</TableCell>
+                <TableCell>{item._id?.slice(0, 3)}...</TableCell>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.area}</TableCell>
                 <TableCell>
