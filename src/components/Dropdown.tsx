@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { DropdownButton, DropdownContent, DropdownItem, Text } from "../styles/DropdownStyles";
+import {
+  DropdownButton,
+  DropdownContent,
+  DropdownItem,
+  Container,
+  Text,
+} from "../styles/DropdownStyles";
 
 interface DropdownProps {
   id: number;
@@ -70,14 +76,16 @@ const Dropdown: React.FC = () => {
   ];
 
   return (
-    <>
-      <DropdownButton onClick={toggleDropdown}>{isOpen ? "×" : "≡"}</DropdownButton>
-      <DropdownContent open={isOpen}>
-        {DropdownItems.map((item, index) => (
-          <DropdownItem key={index}>{item.elementList}</DropdownItem>
-        ))}
-      </DropdownContent>
-    </>
+    <Container>
+      <div>
+        <DropdownButton onClick={toggleDropdown}>{isOpen ? "×" : "≡"}</DropdownButton>
+        <DropdownContent open={isOpen}>
+          {DropdownItems.map((item, index) => (
+            <DropdownItem key={index}>{item.elementList}</DropdownItem>
+          ))}
+        </DropdownContent>
+      </div>
+    </Container>
   );
 };
 
