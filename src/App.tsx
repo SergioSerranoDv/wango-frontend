@@ -50,8 +50,6 @@ export const App: React.FC = () => {
               ) : (
                 <>
                   <Route path="/" element={<LoginPage />} />
-                  <Route path="/RegisterForm" element={<RegisterForm />} />
-                  <Route path="/MyProfile" element={<Profile />} />
                   <Route path="/Loading" element={<LoadingAnimation />} />
                 </>
               )}
