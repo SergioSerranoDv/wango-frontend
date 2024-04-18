@@ -61,6 +61,11 @@ export const ButtonContainer = styled.div`
   justify-content: space-evenly;
   margin-top: 15px;
 `;
+export const ButtonContainer2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 4%;
+`;
 
 export const Button = styled.button<InputProps>`
   font-size: 14px;
@@ -111,6 +116,12 @@ export const SignBoard = styled.p<InputProps>`
   font-weight: ${(props) => (props.$custom ? "450" : "")};
   color: ${(props) => (props.$custom ? "#D80000" : "")};
   opacity: 0.95;
+`;
+export const SignBoard2 = styled.p<InputProps>`
+  color: ${(props) => (props.$custom1 ? "#3DAC17" : "#D80000")};
+  text-align: center;
+  font-weight: 300;
+  font-size: 13px;
 `;
 
 export const Description = styled.p<InputProps>`
