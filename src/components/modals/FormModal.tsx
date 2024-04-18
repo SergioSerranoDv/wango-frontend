@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useParams } from "react-router-dom";
+import { createNewRecords } from "../../services/record_s";
+import { AppContext } from "../../context/AppContext";
+import { ApiContext } from "../../context/ApiContext";
 import { Calendar } from "../../components/modals/Calendar";
 import { NotificationModal } from "../../components/modals/NotificationModal";
 import {
@@ -19,36 +23,37 @@ import {
 import { NotificationDataInit, NotificationI } from "../../interfaces/notification";
 
 interface AddRegistryProps {
-  name: string;
-  available_capacity: string;
-  capacity_in_use: string;
   cropname: string;
-  eto: string;
+  initialCollectionDate: Date;
+  eto: number;
   currentGrowth: string;
-  etc: string;
-  ar: string;
+  etc: number;
   selectedDate: Date;
   onClose: () => void;
 }
 
 export const AddRegistry: React.FC<AddRegistryProps> = ({
-  name,
-  available_capacity,
-  capacity_in_use,
-  selectedDate,
   cropname,
+  initialCollectionDate,
+  selectedDate,
   eto,
   currentGrowth,
   etc,
-  ar,
   onClose,
 }) => {
+  const { id } = useParams();
+  const collectionId = id;
+  const { userData } = useContext(AppContext);
+  const { backendApiCall } = useContext(ApiContext);
+  const [refetch, setRefetch] = useState<number>(0);
   const [isVisible, setIsVisible] = useState(true);
   const [formData, setFormData] = useState({
-    cropName: "",
-    area: "",
-    latitude: "",
-    longitude: "",
+    nameRecord: "",
+    eto: eto,
+    performance: "",
+    currentGrowth: currentGrowth,
+    etc: etc,
+    ar: "",
     selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
@@ -69,7 +74,40 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {};
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (!collectionId) {
+        handleNotification("Error", "No se ha encontrado el ID del cultivo", "error", "");
+        return;
+      }
+      const response: any = await createNewRecords(backendApiCall, {
+        amount_chemical_used: parseFloat(formData.ar),
+        actual_crop_evapotranspiration: etc,
+        collection_id: collectionId,
+        current_stage: parseFloat(formData.currentGrowth),
+        daily_performance: parseFloat(formData.performance),
+        name: formData.nameRecord,
+        reference_evapotranspiration: eto,
+        user: userData.user,
+      });
+      if (response.status === "success") {
+        setRefetch((prev) => prev + 1);
+        setShowNotification(true);
+        setNotificationDetails({
+          title: "Estás cambiando un parámetro",
+          description:
+            "Si cambias la etapa de crecimiento en la que <br />  está el día, los registros de este también lo <br /> harán.",
+          status: "error",
+          redirectUrl: "",
+        });
+        return;
+      }
+      throw new Error("Server responded with status other than success.");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleNotification = (
     title: string,
@@ -96,36 +134,32 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
         <Overlay>
           <ModalContainer>
             <SignBoard $custom2>
-              Haz tu registro diario para el cultivo ‘Manguito01’ <DetailsItem>{name}</DetailsItem>
+              Haz tu registro diario para el cultivo <DetailsItem>{cropname}</DetailsItem>
             </SignBoard>
             <InfoContainer>
               <DetailsSign>
-                Nombre del lote: <DetailsItem>{available_capacity}</DetailsItem>
-              </DetailsSign>
-              <DetailsSign>
-                Fecha de inicio de recolección: <DetailsItem>{capacity_in_use}</DetailsItem>
+                Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
               </DetailsSign>
             </InfoContainer>
             <div style={{ paddingBottom: "32px" }}>
               <Calendar selected={selectedDate} onChange={handleDateChange} />
             </div>
-            <Form onSubmit={handleSubmit}>
-              <Label htmlFor="cropname">Nombre del cultivo</Label>
+            <Form>
+              <Label htmlFor="nameRecord">Nombre del registro</Label>
               <Input
                 type="text"
-                id="cropname"
-                name="cropname"
-                //value={formData.cropname}
+                id="nameRecord"
+                name="nameRecord"
+                value={formData.nameRecord}
                 onChange={handleChange}
                 required
-                disabled
               />
               <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
               <Input
                 type="text"
                 id="eto"
                 name="eto"
-                //value={formData.eto}
+                value={eto}
                 onChange={handleChange}
                 required
                 disabled
@@ -135,34 +169,26 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
                 type="text"
                 id="performance"
                 name="performance"
-                //value={formData.eto}
                 onChange={handleChange}
                 required
-                disabled
               />
               <Label htmlFor="currentGrowth">Etapa actual de crecimiento</Label>
-              <Select
+              <Input
+                type="text"
                 id="currentGrowth"
                 name="currentGrowth"
-                //value={formData.currentGrowth}
+                value={formData.currentGrowth}
                 //onChange={handleChange}
                 required
                 disabled
-              >
-                <option value="1.75">Frutificación (Kc = 1.75)</option>{" "}
-                {/* Está por default, pero el orden correcto es como está abajo */}
-                <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
-                <option value="1.35">Floración (Kc = 1.35)</option>
-                <option value="1.75">Frutificación (Kc = 1.75)</option>
-                <option value="1.5">Promedio (Kc = 1.5)</option>
-              </Select>
+              ></Input>
 
               <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
               <Input
                 type="number"
                 id="etc"
                 name="etc"
-                //value={formData.etc}
+                value={etc}
                 onChange={handleChange}
                 required
                 disabled
@@ -175,16 +201,15 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
                 Incluyendo fertilizantes, pesticidas, y otros aditivos.
               </Description>
               <Input
-                type="text"
+                type="number"
                 id="ar"
                 name="ar"
-                //value={formData.ar}
                 onChange={handleChange}
+                value={formData.ar}
                 required
-                disabled
               />
               <ButtonContainer>
-                <Button type="submit" color="green">
+                <Button type="submit" color="green" onClick={handleSubmit}>
                   Aceptar
                 </Button>
                 <Button type="button" color="red" onClick={handleClose}>

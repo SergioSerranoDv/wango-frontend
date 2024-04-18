@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
+import { AppContext } from "../context/AppContext";
 import { Calendar } from "../components/modals/Calendar";
 import { AddRegistry } from "../components/modals/FormModal";
 import { NotificationModal } from "../components/modals/NotificationModal";
 import { useParams } from "react-router-dom";
-import { fetchLotDetails } from "../services/lot_s";
 import { ApiContext } from "../context/ApiContext";
-import { LotI } from "../interfaces/Lot";
-import { createNewCrop } from "../services/crop_s";
+import { Crop } from "../interfaces/crop";
+import { fetchCropDetails } from "../services/crop_s";
+import { createNewCollection } from "../services/collection_s";
 import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import { fetchWeatherApi } from "openmeteo";
 import {
@@ -28,18 +29,20 @@ import { MainLayout } from "../layouts/MainLayout";
 
 export const RegisterView = () => {
   const { id } = useParams();
-  const lotId = id;
+  const cropId = id;
+  const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
   const [refetch, setRefetch] = useState<number>(0);
-  const [lotData, setLotData] = useState({} as LotI);
+  const [cropData, setCropData] = useState({} as Crop);
   const [formData, setFormData] = useState({
+    nameCollection: "",
     cropName: "",
-    area: "",
+    initialCollectionDate: "",
+    selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
     latitude: "",
     longitude: "",
-    selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
-    etapaActual: "",
     eto: "", // Agrega la propiedad eto para ET0
+    currentStage: "",
     etc: "", // Agrega la propiedad etc para ETc
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
@@ -71,24 +74,18 @@ export const RegisterView = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (!lotId) {
-        handleNotification("Error", "No se ha encontrado el ID del lote", "error", "");
+      if (!cropId) {
+        handleNotification("Error", "No se ha encontrado el ID del cultivo", "error", "");
         return;
       }
-      const response: any = await createNewCrop(backendApiCall, {
-        area: parseInt(formData.area),
-        lot_id: lotId,
-        name: formData.cropName,
-        latitude: formData.latitude,
-        longitude: formData.longitude,
+      const response: any = await createNewCollection(backendApiCall, {
+        crop_id: cropId as string,
+        final_date: formData.selectedDate,
+        name: formData.nameCollection,
+        status: "in_progress",
+        user: userData.user,
       });
       if (response.status === "success") {
-        // setFormData({
-        //   cropName: "",
-        //   area: "",
-        //   latitude: "",
-        //   longitude: "",
-        // });
         setRefetch((prev) => prev + 1);
         setShowNotification(true);
         setNotificationDetails({
@@ -108,9 +105,9 @@ export const RegisterView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetchLotDetails(backendApiCall, lotId as string);
+      const response = await fetchCropDetails(backendApiCall, cropId as string);
       if (response.status === "success" && response.data !== undefined) {
-        setLotData(response.data);
+        setCropData(response.data);
       }
 
       // Obtener los valores de ET0 y ETc del clima
@@ -147,7 +144,7 @@ export const RegisterView = () => {
       }));
     };
     fetchData();
-  }, [backendApiCall, lotId, refetch]);
+  }, [backendApiCall, cropId, refetch]);
 
   const handleNotificationClose = () => {
     setShowNotification(false);
@@ -166,10 +163,10 @@ export const RegisterView = () => {
   return (
     <MainLayout>
       <FormContainer>
-        <SignBoard $custom2>Registros del día hechos en el cultivo {lotData.name}</SignBoard>
+        <SignBoard $custom2>Registros del día hechos en el cultivo {cropData.name}</SignBoard>
         <InfoContainer>
           <DetailsSign>
-            Fecha de inicio de recolección: <DetailsItem>{lotData.capacity_in_use}</DetailsItem>
+            Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
           </DetailsSign>
         </InfoContainer>
         <Description className="customDescription">
@@ -179,9 +176,18 @@ export const RegisterView = () => {
         <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
         <SignBoard $custom2>Parámetros del día para el cultivo</SignBoard>
         <Form onSubmit={handleSubmit}>
-          <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
+          <Label htmlFor="nameCollection">Nombre de la recolección</Label>
           <Input
             type="text"
+            id="nameCollection"
+            name="nameCollection"
+            value={formData.nameCollection}
+            onChange={handleChange}
+            required
+          />
+          <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
+          <Input
+            type="number"
             id="eto"
             name="eto"
             value={formData.eto} // Mostrar el valor de ET0
@@ -190,21 +196,21 @@ export const RegisterView = () => {
             disabled
           />
 
-          <Label htmlFor="etapaActual">Etapa actual de crecimiento</Label>
-          <Select
-            id="etapaActual"
-            name="etapaActual"
-            value={formData.etapaActual}
+          <Label htmlFor="currentStage">Etapa actual de crecimiento</Label>
+          <Input
+            type="text"
+            id="currentStage"
+            name="currentStage"
+            defaultValue="Frutificación (Kc = 1.75)"
             required
             disabled
           >
-            <option value="1.75">Frutificación (Kc = 1.75)</option>{" "}
-            {/* Está por default, pero el orden correcto es como está abajo */}
-            <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
+            {/* Está por default, pero el orden correcto es como está abajo */
+            /* <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
             <option value="1.35">Floración (Kc = 1.35)</option>
             <option value="1.75">Frutificación (Kc = 1.75)</option>
-            <option value="1.5">Promedio (Kc = 1.5)</option>
-          </Select>
+            <option value="1.5">Promedio (Kc = 1.5)</option> */}
+          </Input>
 
           <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
           <Input
@@ -267,15 +273,12 @@ export const RegisterView = () => {
       </FormContainer>
       {showFormModal && (
         <AddRegistry
-          name="Lote1"
-          available_capacity="32"
-          capacity_in_use="32"
+          cropname={cropData.name}
+          initialCollectionDate={formData.selectedDate}
           selectedDate={formData.selectedDate}
-          cropname="cultivo"
-          eto="21"
+          eto={parseFloat(formData.eto)}
           currentGrowth="Frutificación (Kc = 1.75)"
-          etc="32"
-          ar="432"
+          etc={parseFloat(formData.etc)}
           onClose={handleFormModalClose}
         />
       )}
