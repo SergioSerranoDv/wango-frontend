@@ -59,7 +59,7 @@ export const LotFormEdit: React.FC<LotFormEditProps> = ({ lotId = "" }) => {
         backendApiCall,
         {
           _id: lotId,
-          available_capacity: formData.capacity,
+          available_capacity: formData.capacity - data.capacity_in_use,
           capacity: formData.capacity,
           name: formData.name,
         },
