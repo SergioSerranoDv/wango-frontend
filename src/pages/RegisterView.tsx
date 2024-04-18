@@ -114,22 +114,35 @@ export const RegisterView = () => {
 
       // Obtener los valores de ET0 y ETc del clima
       const params = {
-        latitude: 15.9273,
+        latitude: 2.9273,
         longitude: -75.2819,
         hourly: ["evapotranspiration", "et0_fao_evapotranspiration"],
+        timezone: "auto",
         forecast_days: 1,
       };
       const url = "https://api.open-meteo.com/v1/forecast";
       const weatherResponse = await fetchWeatherApi(url, params);
       const weatherData = weatherResponse[0].hourly()!;
-      const et0 = weatherData.variables(1)!.valuesArray()![23]; // Primer valor de ET0
-      const etc = weatherData.variables(0)!.valuesArray()![23]; // Primer valor de ETc
-      //Hacer un promedio
+      const et0Array = weatherData.variables(1)!.valuesArray()!;
+      const etcArray = weatherData.variables(0)!.valuesArray()!;
+
+      // Calcular la suma de los valores de ET0 y ETc
+      const et0Sum = et0Array.reduce((acc, value) => acc + Number(value), 0);
+      const etcSum = etcArray.reduce((acc, value) => acc + Number(value), 0);
+
+      // Calcular el promedio de ET0 y ETc
+      //const et0Average = et0Sum / et0Array.length;
+      //const etcAverage = etcSum / etcArray.length;
+
+      // Redondear los promedios a dos decimales
+      //const roundedEt0Average = et0Average.toFixed(2);
+      //const roundedEtcAverage = etcAverage.toFixed(2);
+
       // Actualizar el estado de formData con los valores de ET0 y ETc
       setFormData((prevState) => ({
         ...prevState,
-        eto: et0.toString(), // Convertir el valor numérico a cadena
-        etc: etc.toString(), // Convertir el valor numérico a cadena
+        eto: et0Sum.toFixed(2), // Promedio de ET0
+        etc: etcSum.toFixed(2), // Promedio de ETc
       }));
     };
     fetchData();
