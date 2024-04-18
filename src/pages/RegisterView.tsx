@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Calendar } from "../components/modals/Calendar";
+import { AddRegistry } from "../components/modals/FormModal";
 import { NotificationModal } from "../components/modals/NotificationModal";
 import { useParams } from "react-router-dom";
 import { fetchLotDetails } from "../services/lot_s";
@@ -115,6 +116,16 @@ export const Records = () => {
     setShowNotification(false);
   };
 
+  const [showFormModal, setShowFormModal] = useState<boolean>(false);
+
+  const handleShowFormModal = () => {
+    setShowFormModal(true);
+  };
+
+  const handleFormModalClose = () => {
+    setShowFormModal(false);
+  };
+
   return (
     <MainLayout>
       <FormContainer>
@@ -180,7 +191,7 @@ export const Records = () => {
             Guardar cambios
           </ButtonSubmit>
 
-          <Button type="submit" $custom1>
+          <Button onClick={handleShowFormModal} $custom1>
             Hacer un registro
           </Button>
 
@@ -224,6 +235,20 @@ export const Records = () => {
           </Container>
         </Form>
       </FormContainer>
+      {showFormModal && (
+        <AddRegistry
+          name="Lote1"
+          available_capacity="32"
+          capacity_in_use="32"
+          selectedDate={formData.selectedDate}
+          cropname="cultivo"
+          eto="21"
+          currentGrowth="Frutificación (Kc = 1.75)"
+          etc="32"
+          ar="432"
+          onClose={handleFormModalClose}
+        />
+      )}
       {showNotification && (
         <NotificationModal
           title={notificationDetails.title}
