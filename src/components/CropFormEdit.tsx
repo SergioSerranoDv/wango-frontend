@@ -71,14 +71,14 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
       if (cropId) {
         try {
           const cropDetails = await fetchCropDetails(backendApiCall, cropId);
-          if (cropDetails) {
-            setCrop(cropDetails);
+          if (cropDetails && cropDetails.data) {
+            setCrop(cropDetails.data);
             setFormData((prevData) => ({
               ...prevData,
-              cropName: cropDetails.name,
-              area: cropDetails.area,
-              latitude: cropDetails.latitude,
-              longitude: cropDetails.longitude,
+              cropName: cropDetails.data.name,
+              area: cropDetails.data.area,
+              latitude: cropDetails.data.latitude,
+              longitude: cropDetails.data.longitude,
             }));
           }
         } catch (error) {
