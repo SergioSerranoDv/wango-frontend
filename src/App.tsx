@@ -14,7 +14,7 @@ import { EditLot } from "./pages/EditLot";
 import NewCrop from "./pages/NewCrop";
 import VarForm from "./pages/VarForm";
 import { LotsCrops } from "./pages/LotsCrops";
-import EditCrop from "./pages/EditCrop";
+import { EditCrop } from "./pages/EditCrop";
 import { Records } from "./pages/RegisterView";
 import "./App.css";
 import "./styles/MainMenuStyles";
