@@ -1,13 +1,14 @@
 import React, { useState, useContext, useEffect, ChangeEvent, FormEvent } from "react";
-import { Lot } from "../interfaces/Lot";
-import { Crop } from "../interfaces/crop";
-import { useParams } from "react-router-dom";
-import { fetchCropDetails, saveCrop } from "../services/crop_s";
-import { ApiContext } from "../context/ApiContext";
-import NotificationModal from "../components/modals/NotificationModal";
-import checkLogo from "../assets/icons/checkLogo.svg";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { ApiContext } from "../context/ApiContext";
+import { NotificationModal } from "./modals/NotificationModal";
+import { CollectionModal } from "./modals/CollectionModal";
+import { createNewCollection } from "../services/collection_s";
+import { fetchLotDetails } from "../services/lot_s";
+import { fetchCropDetails, updateCrop } from "../services/crop_s";
+import { NotificationI, NotificationDataInit } from "../interfaces/notification";
+import { Crop } from "../interfaces/crop";
+import { LotI } from "../interfaces/Lot";
 import {
   Button,
   DetailsItem,
@@ -21,7 +22,6 @@ import {
   ButtonContainer2,
   SignBoard2,
 } from "../styles/FormStyles";
-import { fetchLotDetails } from "../services/lot_s";
 
 interface FormData {
   cropName: string;
@@ -29,13 +29,19 @@ interface FormData {
   latitude: string;
   longitude: string;
 }
-interface Props {
+interface CropFormEditProps {
   cropId?: string;
 }
 
-function CropFormEdit({ cropId = "" }: Props) {
+export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
   const navigate = useNavigate();
+  const [showCollectionModal, setShowCollectionModal] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationDetails, setNotificationDetails] = useState({
+    content: <></>,
+    status: "",
+    title: "",
+  });
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState({
     cropName: "",
@@ -44,24 +50,35 @@ function CropFormEdit({ cropId = "" }: Props) {
     longitude: "",
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [crop, setCrop] = useState<any>(null);
-  const [lot, setLot] = useState<any>(null);
-  console.log("CropId: ", cropId);
-
+  const [crop, setCrop] = useState<Crop>({
+    _id: "",
+    area: 0,
+    lot_id: "",
+    name: "",
+    latitude: "",
+    longitude: "",
+  });
+  const [lot, setLot] = useState<LotI>({
+    _id: "",
+    capacity: 0,
+    name: "",
+    available_capacity: 0,
+    capacity_in_use: 0,
+  });
+  // Fetch crop details when the component mounts
   useEffect(() => {
     async function loadCropDetails() {
       if (cropId) {
         try {
           const cropDetails = await fetchCropDetails(backendApiCall, cropId);
-          if (cropDetails) {
-            console.log("Crop details loaded: ", cropDetails);
-            setCrop(cropDetails);
+          if (cropDetails && cropDetails.data) {
+            setCrop(cropDetails.data);
             setFormData((prevData) => ({
               ...prevData,
-              cropName: cropDetails.name,
-              area: cropDetails.area, // Asegúrate de que 'area' tenga el valor correcto
-              latitude: cropDetails.latitude, // Asegúrate de que 'latitude' tenga el valor correcto
-              longitude: cropDetails.longitude, //
+              cropName: cropDetails.data.name,
+              area: cropDetails.data.area,
+              latitude: cropDetails.data.latitude,
+              longitude: cropDetails.data.longitude,
             }));
           }
         } catch (error) {
@@ -70,17 +87,15 @@ function CropFormEdit({ cropId = "" }: Props) {
       }
     }
     loadCropDetails();
-    console.log("Crop2 ", crop);
   }, [backendApiCall, cropId]);
-
+  // Fetch lot details when the component mounts
   useEffect(() => {
     async function loadLotDetails() {
       if (crop) {
         try {
-          const lotDetails = await fetchLotDetails(backendApiCall, crop.lot_id);
-          if (lotDetails) {
-            console.log("Lot details loaded: ", lotDetails);
-            setLot(lotDetails);
+          const response = await fetchLotDetails(backendApiCall, crop.lot_id);
+          if (response.status === "success" && response.data) {
+            setLot(response.data);
           }
         } catch (error) {
           console.log("Error fetching lot details:", error);
@@ -89,10 +104,8 @@ function CropFormEdit({ cropId = "" }: Props) {
     }
     loadLotDetails();
   }, [backendApiCall, crop]);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: value, // Esto actualiza el valor del campo correspondiente
@@ -102,13 +115,16 @@ function CropFormEdit({ cropId = "" }: Props) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await saveCrop(
+      if (!lot._id) {
+        return;
+      }
+      const response = await updateCrop(
         backendApiCall,
         {
           _id: cropId,
           name: formData.cropName,
           area: formData.area,
-          lot_id: lot.lot_id, // Assuming 'lot' is the state variable holding the lot details
+          lot_id: lot._id,
           latitude: formData.latitude,
           longitude: formData.longitude,
         },
@@ -117,10 +133,9 @@ function CropFormEdit({ cropId = "" }: Props) {
       if (response.status === "error") {
         setNotificationMessage("Hubo un error editando el cultivo");
       } else {
-        setNotificationMessage("Cambios guardados exitosamente");
+        setNotificationMessage("Cultivo editado exitosamente");
       }
       setShowNotification(true);
-      // Oculta el mensaje después de 3 segundos
       setTimeout(() => {
         setShowNotification(false);
         navigate(`/lot-menu/crops/${crop.lot_id}`);
@@ -134,14 +149,15 @@ function CropFormEdit({ cropId = "" }: Props) {
       }, 3000);
     }
   };
+  const handleNotificationClose = () => {
+    setShowNotification(false);
+  };
 
   return (
-    <div>
-      <Navbar />
+    <>
       <FormContainer>
         <SignBoard>Información del cultivo</SignBoard>
         {showNotification && <SignBoard2 $custom1>{notificationMessage}</SignBoard2>}
-
         <InfoContainer>
           <br />
           <DetailsSign $custom3>
@@ -164,50 +180,69 @@ function CropFormEdit({ cropId = "" }: Props) {
             onChange={handleChange}
             required
           />
-
           <Label htmlFor="area">Área (Ha)*</Label>
           <Input
             type="number"
             id="area"
             name="area"
             value={formData.area}
-            //onChange={handleChange}
+            onChange={handleChange}
             disabled
           />
-
           <Label htmlFor="latitude">Latitud (°)*</Label>
-          <Input type="number" id="latitude" name="latitude" value={crop?.latitude} disabled />
-
+          <Input
+            type="number"
+            id="latitude"
+            name="latitude"
+            value={crop?.latitude}
+            onChange={handleChange}
+          />
           <Label htmlFor="longitude">Longitud (°)*</Label>
           <Input
             type="number"
             id="longitude"
             name="longitude"
             value={formData.longitude}
-            //onChange={handleChange}
-            disabled
+            onChange={handleChange}
           />
-
           <ButtonContainer2>
-            <Button $custom1>Registros</Button>
+            <Button
+              type="button"
+              $custom1
+              onClick={() => {
+                setShowCollectionModal(true);
+              }}
+            >
+              Registros
+            </Button>
             <Button type="submit" color="green" $custom1>
               Guardar cambios
             </Button>
           </ButtonContainer2>
         </Form>
       </FormContainer>
-      {/*{showNotification && (
+      {showNotification && (
         <NotificationModal
-          title="Cultivo añadido exitosamente"
+          title={"Cultivo editado exitosamente"}
           description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
-          imageUrl={checkLogo}
+          status="success"
           buttonText="Aceptar"
-          //onClose={handleNotificationClose}
-          redirectUrl={`/lot-menu/crops/${lotId}`}
+          onClose={handleNotificationClose}
+          redirectUrl={`/lot-menu/crops/${cropId}`}
         />
-      )}*/}
-    </div>
+      )}
+      {showCollectionModal && (
+        <CollectionModal
+          data={{
+            crop_id: cropId,
+          }}
+          status="success"
+          title="Deseas realizar una nueva recolección?"
+          description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
+          buttonText="Aceptar"
+          onClose={() => setShowCollectionModal(false)}
+        />
+      )}
+    </>
   );
-}
-
-export default CropFormEdit;
+};

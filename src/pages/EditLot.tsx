@@ -1,14 +1,15 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { LotFormEdit } from "../components/LotFormEdit";
 import { MainLayout } from "../layouts/MainLayout";
-import { CropFormEdit } from "../components/CropFormEdit";
 
-export const EditCrop: React.FC = () => {
+export const EditLot: React.FC = () => {
   const { id } = useParams();
-  const cropId = id;
+  const lotId = id;
+
   return (
     <MainLayout>
-      <CropFormEdit cropId={cropId} />{" "}
+      <LotFormEdit lotId={lotId} />
     </MainLayout>
   );
 };

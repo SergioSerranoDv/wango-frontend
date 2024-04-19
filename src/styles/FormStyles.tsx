@@ -62,6 +62,11 @@ export const ButtonContainer = styled.div`
   justify-content: space-evenly;
   margin-top: 15px;
 `;
+export const ButtonContainer2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 4%;
+`;
 
 export const ButtonContainer2 = styled.div`
   display: flex;
@@ -82,6 +87,20 @@ export const Button = styled.button<InputProps>`
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
   width: ${(props) => (props.$custom1 ? "50%" : "")};
+`;
+
+export const ButtonSubmit = styled.button<InputProps>`
+  font-size: 14px;
+  font-weight: 550; /*semibold*/
+  padding: 10px;
+  background-color: ${(props) => colors[(props.color as keyof typeof colors) || "green"]};
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid ${(props) => colors[(props.color as keyof typeof colors) || "green"]};
+  margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
+  margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
+  margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
 `;
 
 export const Logo = styled.img`
@@ -106,6 +125,12 @@ export const SignBoard = styled.p<InputProps>`
   color: ${(props) => (props.$custom ? "#D80000" : "")};
   opacity: 0.95;
 `;
+export const SignBoard2 = styled.p<InputProps>`
+  color: ${(props) => (props.$custom1 ? "#3DAC17" : "#D80000")};
+  text-align: center;
+  font-weight: 300;
+  font-size: 13px;
+`;
 
 export const SignBoard2 = styled.p<InputProps>`
   color: ${(props) => (props.$custom1 ? "#3DAC17" : "#D80000")};
@@ -124,6 +149,10 @@ export const Description = styled.p<InputProps>`
   color: #4d4d4d;
   opacity: 0.95;
   border: 0px;
+
+  &.customDescription {
+    margin-top: -10px; /* Ajusta este valor según sea necesario */
+  }
 `;
 
 export const InputContainer = styled.div`

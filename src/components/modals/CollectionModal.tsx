@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { ApiContext } from "../../context/ApiContext";
 import errorLogo from "../../assets/icons/errorLogo.svg";
 import checkLogo from "../../assets/icons/checkLogo.svg";
+import { Input } from "../../styles/FormStyles";
 import {
   Overlay,
   ModalContainer,
@@ -12,7 +14,11 @@ import {
   AcceptButton,
 } from "../../styles/components/NotificationModalStyles";
 
-interface NotificationProps {
+interface CollectionModalProps {
+  children?: React.ReactNode;
+  data: {
+    crop_id: string;
+  };
   status: string;
   title: string;
   description: string;
@@ -24,14 +30,18 @@ enum NotificationType {
   ERROR = "error",
   SUCCESS = "success",
 }
-export const NotificationModal: React.FC<NotificationProps> = ({
+export const CollectionModal: React.FC<CollectionModalProps> = ({
+  children,
   status,
   title,
+  data,
   description,
   buttonText,
   onClose,
-  redirectUrl = "/default-route",
 }) => {
+  const navigate = useNavigate();
+  const { backendApiCall } = useContext(ApiContext);
+  const [name, setName] = useState("");
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
@@ -53,12 +63,24 @@ export const NotificationModal: React.FC<NotificationProps> = ({
               <NotificationTitle>{title}</NotificationTitle>
             </NotificationHeader>
             <NotificationDescription dangerouslySetInnerHTML={{ __html: description }} />
-            {redirectUrl && (
-              <Link to={redirectUrl}>
-                <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
-              </Link>
-            )}
-            {!redirectUrl && <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>}
+            <Input placeholder="Nombre de la colección" onChange={(e) => setName(e.target.value)} />
+            <AcceptButton
+              onClick={async () => {
+                if (!name) return;
+                await backendApiCall({
+                  method: "POST",
+                  endpoint: "v1/collection/new",
+                  body: {
+                    crop_id: data.crop_id,
+                    name: name,
+                  },
+                });
+                navigate(`/lot-menu/edit-crop/register-view/${data.crop_id}`);
+                handleClose();
+              }}
+            >
+              {buttonText}
+            </AcceptButton>
           </ModalContainer>
         </Overlay>
       )}
