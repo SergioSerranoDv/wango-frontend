@@ -1,11 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
-// import LoteFormEdit from "../components/LotFormEdit";
+import { MainLayout } from "../layouts/MainLayout";
+import { CropFormEdit } from "../components/CropFormEdit";
 
-export default function EditCrop() {
+export const EditCrop: React.FC = () => {
   const { id } = useParams();
   const cropId = id;
-
-  return <div>{/* <CropFormEdit cropId={cropId} /> */}</div>;
-}
+  return (
+    <MainLayout>
+      <CropFormEdit cropId={cropId} />{" "}
+    </MainLayout>
+  );
+};

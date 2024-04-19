@@ -33,3 +33,10 @@ export const fetchCropDetails = async (
 ): Promise<apiResponse> => {
   return await backendApiCall({ method: "GET", endpoint: `v1/crop/info/${cropId}` });
 };
+export const updateCrop = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  data: Crop,
+  cropId: string
+) => {
+  return await backendApiCall({ method: "PUT", endpoint: `v1/crop/update/${cropId}`, body: data });
+};
