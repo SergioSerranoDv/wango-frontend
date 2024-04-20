@@ -3,28 +3,29 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
-import MyProfile from "./pages/MyProfile";
-import DashboardLotes from "./pages/DashboardLotes";
+import { LoadingAnimation } from "./components/Loading";
+import { AddLot } from "./pages/AddLot";
+import { Profile } from "./pages/Profile";
+import { DashboardLots } from "./pages/DashboardLots";
 import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
-import LotsManage from "./pages/LotsManage";
-import LoteForm from "./pages/AddLote";
-import LoteFormEdit from "./pages/EditLote";
-import "./styles/MainMenuStyles";
-import "./App.css";
+import { LotsManage } from "./pages/LotsManage";
+import { EditLot } from "./pages/EditLot";
 import NewCrop from "./pages/NewCrop";
-import Loading from "./components/Loading";
 import VarForm from "./pages/VarForm";
-import LotsCrops from "./pages/LotsCrops";
-import RegisterView from "./pages/RegisterView";
-// Testing the new workflow
-function App() {
+import { LotsCrops } from "./pages/LotsCrops";
+import { EditCrop } from "./pages/EditCrop";
+import { RegisterView } from "./pages/RegisterView";
+import "./App.css";
+import "./styles/MainMenuStyles";
+
+export const App: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingAnimation />;
   }
-
+  //Testing workflow to see if it works 2
   return (
     <>
       <ApiContextProvider>
@@ -34,23 +35,22 @@ function App() {
               {isAuthenticated ? (
                 <>
                   <Route path="/" element={<Dashboard />} />
-                  <Route path="/my-profile" element={<MyProfile />} />
+                  <Route path="/my-profile" element={<Profile />} />
                   <Route path="/register-form" element={<RegisterForm />} />
-                  <Route path="/lot-menu/:id" element={<DashboardLotes />} />
-                  <Route path="/add-lote" element={<LoteForm />} />
-                  <Route path="/edit-lote/:id" element={<LoteFormEdit />} />
+                  <Route path="/lot-menu/:id" element={<DashboardLots />} />
+                  <Route path="/add-lote" element={<AddLot />} />
+                  <Route path="/edit-lote/:id" element={<EditLot />} />
                   <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
                   <Route path="/lots-manage" element={<LotsManage />} />
                   <Route path="/config-vars" element={<VarForm />} />
                   <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
-                  <Route path="/lot-menu/register-view" element={<RegisterView />} />
+                  <Route path="/edit-crop/:id" element={<EditCrop />} />
+                  <Route path="/lot-menu/edit-crop/register-view/:id" element={<RegisterView />} />
                 </>
               ) : (
                 <>
                   <Route path="/" element={<LoginPage />} />
-                  <Route path="/RegisterForm" element={<RegisterForm />} />
-                  <Route path="/MyProfile" element={<MyProfile />} />
-                  <Route path="/Loading" element={<Loading />} />
+                  <Route path="/Loading" element={<LoadingAnimation />} />
                 </>
               )}
             </Routes>
@@ -59,16 +59,10 @@ function App() {
       </ApiContextProvider>
     </>
   );
-}
+};
 
 const LoginPage = () => {
   const { loginWithRedirect } = useAuth0();
   loginWithRedirect();
-  return (
-    <div>
-      <Loading />
-    </div>
-  );
+  return <LoadingAnimation />;
 };
-
-export default App;

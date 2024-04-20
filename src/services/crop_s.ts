@@ -15,3 +15,28 @@ export const fetchPaginatedCropsByLotId = async (
     endpoint: `v1/crop/paginated?page=${page}&limit=${limit}&lot_id=${lotId}`,
   });
 };
+
+export const deleteCrop = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  cropId: string
+): Promise<boolean> => {
+  const response = await backendApiCall({ method: "DELETE", endpoint: "v1/crop/delete/${cropId}" });
+  if (response.status === "success") {
+    return true;
+  }
+  return false;
+};
+
+export const fetchCropDetails = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  cropId: string
+): Promise<apiResponse> => {
+  return await backendApiCall({ method: "GET", endpoint: `v1/crop/info/${cropId}` });
+};
+export const updateCrop = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  data: Crop,
+  cropId: string
+) => {
+  return await backendApiCall({ method: "PUT", endpoint: `v1/crop/update/${cropId}`, body: data });
+};

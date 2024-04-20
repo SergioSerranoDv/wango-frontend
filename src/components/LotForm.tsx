@@ -1,9 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
-import NotificationModal from "./modals/NotificationModal";
-import checkLogo from "../assets/icons/checkLogo.svg";
+import { NotificationModal } from "./modals/NotificationModal";
+import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import { ApiContext } from "../context/ApiContext";
 import { createNewLot } from "../services/lot_s";
-
 import {
   FormWrapper,
   Form,
@@ -22,7 +21,7 @@ interface FormData {
   capacidadDisponible: string;
 }
 
-function LoteForm() {
+export const LotForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState<FormData>({
     nombreLote: "",
@@ -30,7 +29,19 @@ function LoteForm() {
     capacidadUso: "",
     capacidadDisponible: "",
   });
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [notificationDetails, setNotificationDetails] =
+    useState<NotificationI>(NotificationDataInit);
+
+  const handleNotification = (
+    title: string,
+    description: string,
+    status: string,
+    redirectUrl: string
+  ) => {
+    setNotificationDetails({ title, description, status, redirectUrl });
+    setShowNotification(true);
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,15 +57,29 @@ function LoteForm() {
     e.preventDefault();
     try {
       console.log("Form data:", formData);
+      const area = parseInt(formData.capacidadLote);
+      if (area <= 0) {
+        handleNotification("Error", "La capacidad debe ser mayor a 0", "error", "");
+        return;
+      }
+
       const response = await createNewLot(backendApiCall, {
-        available_capacity: parseInt(formData.capacidadLote),
+        available_capacity: area,
         name: formData.nombreLote,
-        capacity: parseInt(formData.capacidadLote),
+        capacity: area,
       });
-      if (response.status == "error") {
+
+      if (response.status === "error") {
         alert(response.message);
       }
       setShowNotification(true);
+      setNotificationDetails({
+        title: "Lote añadido exitosamente",
+        description:
+          "¡Excelente! Podrás ver tu nuevo lote en la sección de <br />  ‘Ver mis lotes’.",
+        status: "success",
+        redirectUrl: "/lots-manage",
+      });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -101,16 +126,14 @@ function LoteForm() {
       </FormWrapper>
       {showNotification && (
         <NotificationModal
-          title="Lote añadido exitosamente"
-          description="Excelente! Podrás ver tu nuevo lote en la sección <br /> de ‘Mis lotes’."
-          imageUrl={checkLogo}
+          title={notificationDetails.title}
+          description={notificationDetails.description}
+          status={notificationDetails.status}
           buttonText="Aceptar"
           onClose={handleNotificationClose}
-          redirectUrl="/lots-manage"
+          redirectUrl={notificationDetails.redirectUrl}
         />
       )}
     </>
   );
-}
-
-export default LoteForm;
+};
