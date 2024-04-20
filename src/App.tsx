@@ -25,7 +25,7 @@ export const App: React.FC = () => {
   if (isLoading) {
     return <LoadingAnimation />;
   }
-
+  //Testing workflow to see if it works
   return (
     <>
       <ApiContextProvider>
