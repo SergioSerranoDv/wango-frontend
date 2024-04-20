@@ -17,7 +17,7 @@ import Loading from "./components/Loading";
 import VarForm from "./pages/VarForm";
 import LotsCrops from "./pages/LotsCrops";
 import RegisterView from "./pages/RegisterView";
-
+// Testing the new workflow
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
 
