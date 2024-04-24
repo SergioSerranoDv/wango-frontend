@@ -92,7 +92,8 @@ export const LotsCrops: React.FC = () => {
           <Text>Cultivos del lote '{Lot.name}'</Text>
           <RegisterFormContainer>
             <br />
-            <br />{" "}
+            <br />
+            {""}
             <InfoContainer>
               <DetailsSign $custom3>
                 ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>

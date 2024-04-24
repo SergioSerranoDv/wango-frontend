@@ -53,7 +53,7 @@ export const NotificationDescription = styled.div`
   font:
     400 11px Inter,
     sans-serif;
-  display: flex;
+
   align-items: center;
   margin-left: calc(20px + 10px);
 `;

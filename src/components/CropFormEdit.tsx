@@ -5,10 +5,11 @@ import { NotificationModal } from "./modals/NotificationModal";
 import { CollectionModal } from "./modals/CollectionModal";
 import { createNewCollection } from "../services/collection_s";
 import { fetchLotDetails } from "../services/lot_s";
-import { fetchCropDetails, updateCrop } from "../services/crop_s";
+import { fetchCropDetails, updateCrop, getCropStatus } from "../services/crop_s";
 import { NotificationI, NotificationDataInit } from "../interfaces/notification";
 import { Crop } from "../interfaces/crop";
 import { LotI } from "../interfaces/Lot";
+import { LastCollectionModal } from "./modals/LastCollectionModal";
 import {
   Button,
   DetailsItem,
@@ -36,6 +37,9 @@ interface CropFormEditProps {
 export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
   const navigate = useNavigate();
   const [showCollectionModal, setShowCollectionModal] = useState(false);
+  const [showLastCollectionModal, setShowLastCollectionModal] = useState(false);
+  const [cropStatus, setCropStatus] = useState(null);
+  const [lastCollection, setLastCollection] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [notificationDetails, setNotificationDetails] = useState({
     content: <></>,
@@ -104,6 +108,28 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
     }
     loadLotDetails();
   }, [backendApiCall, crop]);
+  //load crop status
+  useEffect(() => {
+    console.log("CropId: ", cropId);
+    async function loadCropstatus() {
+      if (cropId) {
+        try {
+          const cropStatus = await getCropStatus(backendApiCall, cropId);
+          setCropStatus(cropStatus.data.status);
+          if (cropStatus) {
+            //console.log("Estado del crop: ", cropStatus.data.status);
+            setCropStatus(cropStatus.data.status);
+            setLastCollection(cropStatus.data);
+          }
+        } catch (error) {
+          console.log("Error getting crop status:", error);
+        }
+      }
+    }
+    loadCropstatus();
+    console.log("CropStatus Mira: ", cropStatus);
+  }, [backendApiCall, cropId, cropStatus]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -139,18 +165,31 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
       setTimeout(() => {
         setShowNotification(false);
         navigate(`/lot-menu/crops/${crop.lot_id}`);
-      }, 1500);
+      }, 4000);
     } catch (error) {
       console.error("Error updating crop:", error);
       setNotificationMessage("Hubo un error editando el cultivo");
       setShowNotification(true);
       setTimeout(() => {
         setShowNotification(false);
-      }, 3000);
+      }, 4000);
     }
   };
   const handleNotificationClose = () => {
     setShowNotification(false);
+  };
+
+  const handleRegisterButton = () => {
+    if (cropStatus == "in_progress") {
+      // console.log("Efectivamente está en progreso");
+      // console.log("CropId: ", cropId);
+      if (lastCollection) {
+        console.log("Latest collection: ", lastCollection);
+        setShowLastCollectionModal(true);
+      }
+    } else {
+      setShowCollectionModal(true);
+    }
   };
 
   return (
@@ -206,13 +245,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
             onChange={handleChange}
           />
           <ButtonContainer2>
-            <Button
-              type="button"
-              $custom1
-              onClick={() => {
-                setShowCollectionModal(true);
-              }}
-            >
+            <Button type="button" $custom1 onClick={handleRegisterButton}>
               Registros
             </Button>
             <Button type="submit" color="green" $custom1>
@@ -223,7 +256,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
       </FormContainer>
       {showNotification && (
         <NotificationModal
-          title={"Cultivo editado exitosamente"}
+          title={"Cultivo editado exitosamente Modal"}
           description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
           status="success"
           buttonText="Aceptar"
@@ -241,6 +274,18 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
           description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
           buttonText="Aceptar"
           onClose={() => setShowCollectionModal(false)}
+        />
+      )}
+      {showLastCollectionModal && (
+        <LastCollectionModal
+          data={{
+            crop_id: cropId,
+          }}
+          title="Cultivo en estado de recolección "
+          description="¡Hey! Ya es†ás en estado de recolección justo ahora.  <br />  ¿Quieres ver echar un vistazo?"
+          status="success"
+          buttonText="Registros"
+          onClose={() => setShowLastCollectionModal(false)}
         />
       )}
     </>
