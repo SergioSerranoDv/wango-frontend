@@ -11,16 +11,9 @@ import { createNewCollection } from "../services/collection_s";
 import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import { fetchWeatherApi } from "openmeteo";
 import {
+  ButtonContainer,
   Button,
-  ButtonSubmit,
   Description,
-  DetailsItem,
-  DetailsSign,
-  Form,
-  InfoContainer,
-  Input,
-  Label,
-  Select,
   FormContainer,
   SignBoard,
 } from "../styles/FormStyles";
@@ -163,113 +156,54 @@ export const RegisterView = () => {
   return (
     <MainLayout>
       <FormContainer>
-        <SignBoard $custom2>Registros del día hechos en el cultivo {cropData.name}</SignBoard>
-        <InfoContainer>
-          <DetailsSign>
-            Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
-          </DetailsSign>
-        </InfoContainer>
+        <SignBoard $custom2>Registros del cultivo {cropData.name}</SignBoard>
         <Description className="customDescription">
           Nota: Siendo administrador puedes ver los registros hechos por los usuarios encargados que
           has asignado a este cultivo. Incluso puedes hacer uno tu.
         </Description>
-        <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
-        <SignBoard $custom2>Parámetros del día para el cultivo</SignBoard>
-        <Form onSubmit={handleSubmit}>
-          <Label htmlFor="nameCollection">Nombre de la recolección</Label>
-          <Input
-            type="text"
-            id="nameCollection"
-            name="nameCollection"
-            value={formData.nameCollection}
-            onChange={handleChange}
-            required
-          />
-          <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
-          <Input
-            type="number"
-            id="eto"
-            name="eto"
-            value={formData.eto} // Mostrar el valor de ET0
-            onChange={handleChange}
-            required
-            disabled
-          />
-
-          <Label htmlFor="currentStage">Etapa actual de crecimiento</Label>
-          <Input
-            type="text"
-            id="currentStage"
-            name="currentStage"
-            defaultValue="Frutificación (Kc = 1.75)"
-            required
-            disabled
-          >
-            {/* Está por default, pero el orden correcto es como está abajo */
-            /* <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
-            <option value="1.35">Floración (Kc = 1.35)</option>
-            <option value="1.75">Frutificación (Kc = 1.75)</option>
-            <option value="1.5">Promedio (Kc = 1.5)</option> */}
-          </Input>
-
-          <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
-          <Input
-            type="number"
-            id="etc"
-            name="etc"
-            value={formData.etc} // Mostrar el valor de ETc
-            onChange={handleChange}
-            required
-            disabled
-          />
-
-          <ButtonSubmit type="submit" $custom1>
-            Guardar cambios
-          </ButtonSubmit>
-
-          <Button onClick={handleShowFormModal} $custom1>
+        <Table $custom1>
+          <thead>
+            <TableRow index={-1}>
+              <TableCell $custom>ID</TableCell>
+              <TableCell $custom>Nombres</TableCell>
+              <TableCell $custom>Acciones</TableCell>
+            </TableRow>
+          </thead>
+          <tbody>
+            <TableRow2 index={1}>
+              <TableCell $custom1>1</TableCell>
+              <TableCell></TableCell>
+              <TableCell>
+                <a href="#">Edi </a>
+                <a href="#"> Eli </a>
+              </TableCell>
+            </TableRow2>
+            <TableRow2 index={2}>
+              <TableCell $custom1>2</TableCell>
+              <TableCell></TableCell>
+              <TableCell>
+                <a href="#">Edi </a>
+                <a href="#"> Eli </a>
+              </TableCell>
+            </TableRow2>
+            <TableRow2 index={3}>
+              <TableCell $custom1>3</TableCell>
+              <TableCell></TableCell>
+              <TableCell>
+                <a href="#">Edi </a>
+                <a href="#"> Eli </a>
+              </TableCell>
+            </TableRow2>
+          </tbody>
+        </Table>
+        <ButtonContainer style={{ alignItems: "center" }}>
+          <div style={{ maxHeight: "20px" }}>
+            <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
+          </div>
+          <Button style={{ margin: "0" }} onClick={handleShowFormModal} $custom1>
             Hacer un registro
           </Button>
-
-          <SignBoard $custom3>Registros de datos hechos hoy</SignBoard>
-          <Container>
-            <Table $custom1>
-              <thead>
-                <TableRow index={-1}>
-                  <TableCell $custom>ID</TableCell>
-                  <TableCell $custom>Nombres</TableCell>
-                  <TableCell $custom>Acciones</TableCell>
-                </TableRow>
-              </thead>
-              <tbody>
-                <TableRow2 index={1}>
-                  <TableCell $custom1>1</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <a href="#">Edi </a>
-                    <a href="#"> Eli </a>
-                  </TableCell>
-                </TableRow2>
-                <TableRow2 index={2}>
-                  <TableCell $custom1>2</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <a href="#">Edi </a>
-                    <a href="#"> Eli </a>
-                  </TableCell>
-                </TableRow2>
-                <TableRow2 index={3}>
-                  <TableCell $custom1>3</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <a href="#">Edi </a>
-                    <a href="#"> Eli </a>
-                  </TableCell>
-                </TableRow2>
-              </tbody>
-            </Table>
-          </Container>
-        </Form>
+        </ButtonContainer>
       </FormContainer>
       {showFormModal && (
         <AddRegistry
