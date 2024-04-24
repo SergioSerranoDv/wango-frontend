@@ -6,7 +6,7 @@ import { NotificationModal } from "../components/modals/NotificationModal";
 import { useParams } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { Crop } from "../interfaces/crop";
-import { fetchCropDetails } from "../services/crop_s";
+import { fetchCropDetails, getCropStatus } from "../services/crop_s";
 import { createNewCollection } from "../services/collection_s";
 import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import { fetchWeatherApi } from "openmeteo";
@@ -16,16 +16,24 @@ import {
   Description,
   FormContainer,
   SignBoard,
+  SignBoard2,
 } from "../styles/FormStyles";
 import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 import { MainLayout } from "../layouts/MainLayout";
+interface LastCollection {
+  name: string;
+  // Define aquí otras propiedades si las hay
+}
 
 export const RegisterView = () => {
   const { id } = useParams();
   const cropId = id;
   const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
+  const [cropStatus, setCropStatus] = useState(null);
   const [refetch, setRefetch] = useState<number>(0);
+  const [lastCollection, setLastCollection] = useState<LastCollection | null>(null);
+
   const [cropData, setCropData] = useState({} as Crop);
   const [formData, setFormData] = useState({
     nameCollection: "",
@@ -97,6 +105,39 @@ export const RegisterView = () => {
   };
 
   useEffect(() => {
+    console.log("CropId: ", cropId);
+    async function loadCropstatus() {
+      if (cropId) {
+        try {
+          const cropStatus = await getCropStatus(backendApiCall, cropId);
+          setCropStatus(cropStatus.data.status);
+          if (cropStatus) {
+            //console.log("Estado del crop: ", cropStatus.data.status);
+            setCropStatus(cropStatus.data.status);
+            setLastCollection(cropStatus.data);
+          }
+        } catch (error) {
+          console.log("Error getting crop status:", error);
+        }
+      }
+    }
+    loadCropstatus();
+    console.log("CropStatus Mira: ", cropStatus);
+  }, [backendApiCall, cropId, cropStatus]);
+
+  const handleRegisterButton = () => {
+    if (cropStatus == "in_progress") {
+      if (lastCollection) {
+        console.log("Latest collection: ", lastCollection);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleRegisterButton();
+  }, [backendApiCall, cropId, cropStatus]);
+
+  useEffect(() => {
     const fetchData = async () => {
       const response = await fetchCropDetails(backendApiCall, cropId as string);
       if (response.status === "success" && response.data !== undefined) {
@@ -144,6 +185,8 @@ export const RegisterView = () => {
   };
 
   const [showFormModal, setShowFormModal] = useState<boolean>(false);
+  const [showNotificationSign, setShowNotificationSign] = useState<boolean>(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const handleShowFormModal = () => {
     setShowFormModal(true);

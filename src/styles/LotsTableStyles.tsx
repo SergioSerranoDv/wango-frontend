@@ -12,6 +12,7 @@ export const Container = styled.div<InputProps>`
   //background-color: ${(props) => (props.$custom ? "#50ab64" : "")};
   display: block;
   max-width: 700px;
+  background-color: #000;
   margin: auto;
   padding: 0px;
   box-sizing: border-box;
