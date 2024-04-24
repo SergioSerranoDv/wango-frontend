@@ -62,11 +62,6 @@ export const ButtonContainer = styled.div`
   justify-content: space-evenly;
   margin-top: 15px;
 `;
-export const ButtonContainer2 = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 4%;
-`;
 
 export const ButtonContainer2 = styled.div`
   display: flex;
@@ -86,7 +81,9 @@ export const Button = styled.button<InputProps>`
   margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
+  margin-top: ${(props) => (props.$custom2 ? "10px" : "")};
   width: ${(props) => (props.$custom1 ? "50%" : "")};
+  width: ${(props) => (props.$custom2 ? "100%" : "")};
 `;
 
 export const ButtonSubmit = styled.button<InputProps>`
@@ -127,13 +124,9 @@ export const SignBoard = styled.p<InputProps>`
 `;
 export const SignBoard2 = styled.p<InputProps>`
   color: ${(props) => (props.$custom1 ? "#3DAC17" : "#D80000")};
+  margin-top: ${(props) => (props.$custom2 ? "-5px" : "")};
+  margin-bottom: ${(props) => (props.$custom2 ? "25px" : "")};
   text-align: center;
-  font-weight: 300;
-  font-size: 13px;
-`;
-
-export const SignBoard2 = styled.p<InputProps>`
-  color: ${(props) => (props.$custom1 ? "#3DAC17" : "#D80000")};
   text-align: center;
   font-weight: 300;
   font-size: 13px;

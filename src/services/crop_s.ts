@@ -27,6 +27,13 @@ export const deleteCrop = async (
   return false;
 };
 
+export const getCropStatus = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  cropId: string
+): Promise<apiResponse> => {
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/crop/${cropId}` });
+};
+
 export const fetchCropDetails = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
   cropId: string

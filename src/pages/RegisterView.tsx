@@ -6,7 +6,7 @@ import { NotificationModal } from "../components/modals/NotificationModal";
 import { useParams } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { Crop } from "../interfaces/crop";
-import { fetchCropDetails } from "../services/crop_s";
+import { fetchCropDetails, getCropStatus } from "../services/crop_s";
 import { createNewCollection } from "../services/collection_s";
 import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import { fetchWeatherApi } from "openmeteo";
@@ -23,16 +23,24 @@ import {
   Select,
   FormContainer,
   SignBoard,
+  SignBoard2,
 } from "../styles/FormStyles";
 import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 import { MainLayout } from "../layouts/MainLayout";
+interface LastCollection {
+  name: string;
+  // Define aquí otras propiedades si las hay
+}
 
 export const RegisterView = () => {
   const { id } = useParams();
   const cropId = id;
   const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
+  const [cropStatus, setCropStatus] = useState(null);
   const [refetch, setRefetch] = useState<number>(0);
+  const [lastCollection, setLastCollection] = useState<LastCollection | null>(null);
+
   const [cropData, setCropData] = useState({} as Crop);
   const [formData, setFormData] = useState({
     nameCollection: "",
@@ -104,6 +112,39 @@ export const RegisterView = () => {
   };
 
   useEffect(() => {
+    console.log("CropId: ", cropId);
+    async function loadCropstatus() {
+      if (cropId) {
+        try {
+          const cropStatus = await getCropStatus(backendApiCall, cropId);
+          setCropStatus(cropStatus.data.status);
+          if (cropStatus) {
+            //console.log("Estado del crop: ", cropStatus.data.status);
+            setCropStatus(cropStatus.data.status);
+            setLastCollection(cropStatus.data);
+          }
+        } catch (error) {
+          console.log("Error getting crop status:", error);
+        }
+      }
+    }
+    loadCropstatus();
+    console.log("CropStatus Mira: ", cropStatus);
+  }, [backendApiCall, cropId, cropStatus]);
+
+  const handleRegisterButton = () => {
+    if (cropStatus == "in_progress") {
+      if (lastCollection) {
+        console.log("Latest collection: ", lastCollection);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleRegisterButton();
+  }, [backendApiCall, cropId, cropStatus]);
+
+  useEffect(() => {
     const fetchData = async () => {
       const response = await fetchCropDetails(backendApiCall, cropId as string);
       if (response.status === "success" && response.data !== undefined) {
@@ -151,6 +192,8 @@ export const RegisterView = () => {
   };
 
   const [showFormModal, setShowFormModal] = useState<boolean>(false);
+  const [showNotificationSign, setShowNotificationSign] = useState<boolean>(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const handleShowFormModal = () => {
     setShowFormModal(true);
@@ -164,6 +207,9 @@ export const RegisterView = () => {
     <MainLayout>
       <FormContainer>
         <SignBoard $custom2>Registros del día hechos en el cultivo {cropData.name}</SignBoard>
+        {/* {cropStatus === "in_progress" && (
+          <SignBoard2 $custom2>Estado de recolección en progreso</SignBoard2>
+        )} */}
         <InfoContainer>
           <DetailsSign>
             Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
@@ -181,11 +227,11 @@ export const RegisterView = () => {
             type="text"
             id="nameCollection"
             name="nameCollection"
-            value={formData.nameCollection}
+            value={lastCollection?.name || ""}
             onChange={handleChange}
             required
           />
-          <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
+          {/* <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
           <Input
             type="number"
             id="eto"
@@ -206,10 +252,10 @@ export const RegisterView = () => {
             disabled
           >
             {/* Está por default, pero el orden correcto es como está abajo */
-            /* <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
+          /* <option value="0.9">Crecimiento vegetativo (Kc = 0.9)</option>
             <option value="1.35">Floración (Kc = 1.35)</option>
             <option value="1.75">Frutificación (Kc = 1.75)</option>
-            <option value="1.5">Promedio (Kc = 1.5)</option> */}
+            <option value="1.5">Promedio (Kc = 1.5)</option> 
           </Input>
 
           <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
@@ -221,13 +267,17 @@ export const RegisterView = () => {
             onChange={handleChange}
             required
             disabled
-          />
+          /> */}
 
           <ButtonSubmit type="submit" $custom1>
             Guardar cambios
           </ButtonSubmit>
 
-          <Button onClick={handleShowFormModal} $custom1>
+          <Button
+            onClick={handleShowFormModal}
+            $custom2
+            // disabled={cropStatus === "in_progress"} // Desactivar el botón si cropStatus es 'in_progress'
+          >
             Hacer un registro
           </Button>
 
