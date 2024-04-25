@@ -12,11 +12,7 @@ export const createNewRecords = async (
 };
 export const fetchPaginatedRecordPerCollection = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
-  {
-    page: page,
-    limit: limit,
-    collection_id: collection_id,
-  }: { page: number; limit: number; collection_id: string }
+  { page, limit, collection_id }: { page: number; limit: number; collection_id: string }
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
