@@ -51,6 +51,8 @@ export const LotsManage: React.FC = () => {
         <br />{" "}
         {!loading && data.lots.length > 0 && (
           <TableV1
+            evencolor="#FFFFFF"
+            oddcolor="rgb(255, 103, 15, 0.2)"
             data={data.lots}
             pagination={{
               rowsPerPage,
