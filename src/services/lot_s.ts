@@ -25,7 +25,7 @@ export const fetchLotDetails = async (
 
 export const fetchPaginatedLotsPerUser = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
-  { page: page, limit: limit }: { page: number; limit: number }
+  { page, limit }: { page: number; limit: number }
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
@@ -37,7 +37,7 @@ export const deleteLot = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
   lotId: string
 ): Promise<boolean> => {
-  const response = await backendApiCall({ method: "DELETE", endpoint: "v1/lot/delete/${lotId}" });
+  const response = await backendApiCall({ method: "DELETE", endpoint: `v1/lot/delete/${lotId}` });
   if (response.status === "success") {
     return true;
   }
