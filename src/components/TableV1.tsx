@@ -8,8 +8,10 @@ import {
   Table,
   TableRow,
   TableCell,
-} from "../styles/LotsTableStyles";
+} from "../styles/TableStyles";
 interface TableV1Props {
+  evencolor: string;
+  oddcolor: string;
   data: any[];
   pagination: {
     currentPage: number;
@@ -29,6 +31,8 @@ interface TableV1Props {
   };
 }
 export const TableV1: React.FC<TableV1Props> = ({
+  evencolor,
+  oddcolor,
   data,
   columns,
   columnMapping,
@@ -54,7 +58,7 @@ export const TableV1: React.FC<TableV1Props> = ({
     <div>
       <Table>
         <thead>
-          <TableRow index={-1}>
+          <TableRow index={-1} evenColor={evencolor} oddColor={oddcolor}>
             {columns.map((column: string, index: number) => (
               <TableCell key={index}>{column}</TableCell>
             ))}
@@ -63,7 +67,7 @@ export const TableV1: React.FC<TableV1Props> = ({
         <tbody>
           {data &&
             data.map((item: any, index: number) => (
-              <TableRow key={index} index={index}>
+              <TableRow key={index} index={index} evenColor={evencolor} oddColor={oddcolor}>
                 <TableCell>{index + 1}</TableCell>
                 {columns.map((column, colIndex) => {
                   if (columnMapping[column]) {
