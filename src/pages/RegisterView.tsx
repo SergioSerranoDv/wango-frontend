@@ -1,14 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AppContext } from "../context/AppContext";
+import { useState, useContext, useEffect } from "react";
+import { UseGet } from "../hooks/UseGet";
 import { Calendar } from "../components/modals/Calendar";
 import { AddRegistry } from "../components/modals/FormModal";
-import { NotificationModal } from "../components/modals/NotificationModal";
 import { useParams } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { Crop } from "../interfaces/crop";
 import { fetchCropDetails, getCropStatus } from "../services/crop_s";
-import { createNewCollection } from "../services/collection_s";
-import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 import { fetchWeatherApi } from "openmeteo";
 import {
   ButtonContainer,
@@ -16,24 +13,27 @@ import {
   Description,
   FormContainer,
   SignBoard,
-  SignBoard2,
 } from "../styles/FormStyles";
-import { Container, Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
 import { MainLayout } from "../layouts/MainLayout";
+import { TableV1 } from "../components/TableV1";
 interface LastCollection {
+  _id: string;
   name: string;
-  // Define aquí otras propiedades si las hay
 }
 
 export const RegisterView = () => {
   const { id } = useParams();
   const cropId = id;
-  const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [cropStatus, setCropStatus] = useState(null);
-  const [refetch, setRefetch] = useState<number>(0);
   const [lastCollection, setLastCollection] = useState<LastCollection | null>(null);
-
+  const [eto, setEto] = useState<number>(0);
+  const [etc, setEtc] = useState<number>(0);
+  const { data, loading, setRefetch } = UseGet({
+    endpoint: `v1/collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${lastCollection?._id}`,
+  });
   const [cropData, setCropData] = useState({} as Crop);
   const [formData, setFormData] = useState({
     nameCollection: "",
@@ -42,66 +42,13 @@ export const RegisterView = () => {
     selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
     latitude: "",
     longitude: "",
-    eto: "", // Agrega la propiedad eto para ET0
     currentStage: "",
-    etc: "", // Agrega la propiedad etc para ETc
   });
-  const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [notificationDetails, setNotificationDetails] =
-    useState<NotificationI>(NotificationDataInit);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
   const handleDateChange = (date: Date) => {
     setFormData({
       ...formData,
-      selectedDate: date, // Actualiza el estado con la nueva fecha seleccionada
+      selectedDate: date,
     });
-  };
-
-  const handleNotification = (
-    title: string,
-    description: string,
-    status: string,
-    redirectUrl: string
-  ) => {
-    setNotificationDetails({ title, description, status, redirectUrl });
-    setShowNotification(true);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (!cropId) {
-        handleNotification("Error", "No se ha encontrado el ID del cultivo", "error", "");
-        return;
-      }
-      const response: any = await createNewCollection(backendApiCall, {
-        crop_id: cropId as string,
-        final_date: formData.selectedDate,
-        name: formData.nameCollection,
-        status: "in_progress",
-        user: userData.user,
-      });
-      if (response.status === "success") {
-        setRefetch((prev) => prev + 1);
-        setShowNotification(true);
-        setNotificationDetails({
-          title: "Estás cambiando un parámetro",
-          description:
-            "Si cambias la etapa de crecimiento en la que <br />  está el día, los registros de este también lo <br /> harán.",
-          status: "error",
-          redirectUrl: "",
-        });
-        return;
-      }
-      throw new Error("Server responded with status other than success.");
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   useEffect(() => {
@@ -171,22 +118,16 @@ export const RegisterView = () => {
       //const roundedEtcAverage = etcAverage.toFixed(2);
 
       // Actualizar el estado de formData con los valores de ET0 y ETc
-      setFormData((prevState) => ({
-        ...prevState,
-        eto: et0Sum.toFixed(2), // Promedio de ET0
-        etc: etcSum.toFixed(2), // Promedio de ETc
-      }));
+      const eto = et0Sum.toFixed(2); // Promedio de ET0
+      const etc = etcSum.toFixed(2); // Promedio de ETc
+
+      setEto(parseFloat(eto));
+      setEtc(parseFloat(etc));
     };
     fetchData();
-  }, [backendApiCall, cropId, refetch]);
-
-  const handleNotificationClose = () => {
-    setShowNotification(false);
-  };
+  }, [backendApiCall, cropId]);
 
   const [showFormModal, setShowFormModal] = useState<boolean>(false);
-  const [showNotificationSign, setShowNotificationSign] = useState<boolean>(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
 
   const handleShowFormModal = () => {
     setShowFormModal(true);
@@ -196,6 +137,10 @@ export const RegisterView = () => {
     setShowFormModal(false);
   };
 
+  const handleDelete = () => {};
+
+  const handleEdit = () => {};
+
   return (
     <MainLayout>
       <FormContainer>
@@ -204,41 +149,27 @@ export const RegisterView = () => {
           Nota: Siendo administrador puedes ver los registros hechos por los usuarios encargados que
           has asignado a este cultivo. Incluso puedes hacer uno tu.
         </Description>
-        <Table $custom1>
-          <thead>
-            <TableRow index={-1}>
-              <TableCell $custom>ID</TableCell>
-              <TableCell $custom>Nombres</TableCell>
-              <TableCell $custom>Acciones</TableCell>
-            </TableRow>
-          </thead>
-          <tbody>
-            <TableRow2 index={1}>
-              <TableCell $custom1>1</TableCell>
-              <TableCell></TableCell>
-              <TableCell>
-                <a href="#">Edi </a>
-                <a href="#"> Eli </a>
-              </TableCell>
-            </TableRow2>
-            <TableRow2 index={2}>
-              <TableCell $custom1>2</TableCell>
-              <TableCell></TableCell>
-              <TableCell>
-                <a href="#">Edi </a>
-                <a href="#"> Eli </a>
-              </TableCell>
-            </TableRow2>
-            <TableRow2 index={3}>
-              <TableCell $custom1>3</TableCell>
-              <TableCell></TableCell>
-              <TableCell>
-                <a href="#">Edi </a>
-                <a href="#"> Eli </a>
-              </TableCell>
-            </TableRow2>
-          </tbody>
-        </Table>
+        {!loading && data.collectionRecord.length > 0 && (
+          <TableV1
+            evencolor="#FFFFFF"
+            oddcolor="rgb(6, 182, 212, 0.2)"
+            data={data.collectionRecord}
+            pagination={{
+              rowsPerPage,
+              setRowsPerPage,
+              currentPage,
+              setCurrentPage,
+              setRefetch,
+              totalPages: data.meta.total_pages,
+            }}
+            columns={["ID", "Nombre", "Fecha", "Acciones"]}
+            columnMapping={{
+              Nombre: "name",
+              Fecha: "createdAt",
+            }}
+            options={{ edit: handleEdit, delete: handleDelete }}
+          />
+        )}
         <ButtonContainer style={{ alignItems: "center" }}>
           <div style={{ maxHeight: "20px" }}>
             <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
@@ -250,23 +181,12 @@ export const RegisterView = () => {
       </FormContainer>
       {showFormModal && (
         <AddRegistry
+          collectionId={lastCollection?._id as string}
           cropname={cropData.name}
-          initialCollectionDate={formData.selectedDate}
-          selectedDate={formData.selectedDate}
-          eto={parseFloat(formData.eto)}
-          currentGrowth="Frutificación (Kc = 1.75)"
-          etc={parseFloat(formData.etc)}
+          eto={eto}
+          currentGrowth={1.75}
+          etc={etc}
           onClose={handleFormModalClose}
-        />
-      )}
-      {showNotification && (
-        <NotificationModal
-          title={notificationDetails.title}
-          description={notificationDetails.description}
-          status={notificationDetails.status}
-          buttonText="Aceptar"
-          onClose={handleNotificationClose}
-          redirectUrl={notificationDetails.redirectUrl}
         />
       )}
     </MainLayout>
