@@ -16,7 +16,9 @@ import VarForm from "./pages/VarForm";
 import { LotsCrops } from "./pages/LotsCrops";
 import { EditCrop } from "./pages/EditCrop";
 import { RegisterView } from "./pages/RegisterView";
-import { WaterFoot } from "./pages/WaterFoot";
+import { WFComponents } from "./pages/WFComponents";
+import { WFCrops } from "./pages/WFCrops";
+import { WFLot } from "./pages/WFLot";
 import "./App.css";
 import "./styles/MainMenuStyles";
 
@@ -47,7 +49,9 @@ export const App: React.FC = () => {
                   <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
                   <Route path="/edit-crop/:id" element={<EditCrop />} />
                   <Route path="/lot-menu/edit-crop/register-view/:id" element={<RegisterView />} />
-                  <Route path="/lot-menu/water-footprint/:id" element={<WaterFoot />} />
+                  <Route path="/lot-menu/water-footprint/:id" element={<WFLot />} />
+                  <Route path="/lot-menu/water-footprint/crops/:id" element={<WFCrops />} />
+                  <Route path="/lot-menu/water-footprint/crops/components/:id" element={<WFComponents />} />
                 </>
               ) : (
                 <>
