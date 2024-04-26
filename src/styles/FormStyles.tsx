@@ -4,6 +4,8 @@ const colors = {
   orange: "#ff670f",
   red: "#cf352b",
   green: "#39ca07",
+  blue: "#06b6d4",
+  gray: "#737373",
 };
 
 interface InputProps {
@@ -13,6 +15,8 @@ interface InputProps {
   $custom2?: boolean;
   $custom3?: boolean;
   $custom4?: boolean;
+  $gray?: boolean;
+  $blue?: boolean;
 }
 
 export const FormContainer = styled.div`
@@ -73,6 +77,7 @@ export const Button = styled.button<InputProps>`
   font-size: 14px;
   font-weight: 550; /*semibold*/
   padding: 10px;
+  text-align: center;
   background-color: ${(props) => colors[(props.color as keyof typeof colors) || "orange"]};
   color: #fff;
   cursor: pointer;
@@ -90,11 +95,23 @@ export const ButtonSubmit = styled.button<InputProps>`
   font-size: 14px;
   font-weight: 550; /*semibold*/
   padding: 10px;
-  background-color: ${(props) => colors[(props.color as keyof typeof colors) || "green"]};
+  text-align: center;
+  background-color: ${(props) =>
+    props.$gray
+      ? colors.gray
+      : props.$blue
+        ? colors.blue
+        : colors[(props.color as keyof typeof colors) || "green"]};
   color: #fff;
   cursor: pointer;
   border-radius: 6px;
-  border: 1px solid ${(props) => colors[(props.color as keyof typeof colors) || "green"]};
+  border: 1px solid
+    ${(props) =>
+      props.$gray
+        ? colors.gray
+        : props.$blue
+          ? colors.blue
+          : colors[(props.color as keyof typeof colors) || "green"]};
   margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
