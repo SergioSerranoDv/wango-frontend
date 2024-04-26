@@ -186,7 +186,7 @@ export default function NewCrop() {
               onChange={handleChange}
               required
             />
-            <Button type="submit" $custom1>
+            <Button type="submit" $custom2>
               Añadir cultivo
             </Button>
 
