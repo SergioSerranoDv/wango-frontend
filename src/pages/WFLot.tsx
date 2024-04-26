@@ -101,7 +101,7 @@ export const WFLot: React.FC = () => {
                 setRefetch,
                 totalPages: data.meta.total_pages,
               }}
-              options={{ edit: handleEdit, delete: handleDelete }}
+              options={{ edit: handleEdit , delete: handleEdit}}
             />
           )}
           <RegisterFormContainer>
