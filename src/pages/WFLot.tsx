@@ -87,6 +87,8 @@ export const WFLot: React.FC = () => {
           </RegisterFormContainer>
           {!loading && data && data.crops.length > 0 && (
             <TableV1
+            evencolor="#FFFFFF"
+            oddcolor="rgb(255, 103, 15, 0.2)"
               columns={["ID", "Cultivos", "Área", "Opciones"]}
               columnMapping={{
                 Cultivos: "name",

@@ -70,6 +70,8 @@ export const WFCrops: React.FC = () => {
           </RegisterFormContainer>
           {!loading && data && data.crops && data.crops.length > 0 && (
             <TableV1
+            evencolor="#FFFFFF"
+            oddcolor="rgb(255, 103, 15, 0.2)"
               columns={["Fecha inicio", "Fecha fin", "Acciones"]}
               columnMapping={{
                 FechaInicio: "name",
