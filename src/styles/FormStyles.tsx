@@ -14,9 +14,15 @@ interface InputProps {
   $custom1?: boolean;
   $custom2?: boolean;
   $custom3?: boolean;
+<<<<<<< HEAD
   $gray?: boolean;
   $blue?: boolean;
   $custom4?: boolean;
+=======
+  $custom4?: boolean;
+  $gray?: boolean;
+  $blue?: boolean;
+>>>>>>> 21f6ea59f58b47bb26d352d237ee277db6709afa
 }
 
 export const FormContainer = styled.div`
