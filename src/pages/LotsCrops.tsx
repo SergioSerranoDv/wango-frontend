@@ -8,7 +8,7 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
 import { Crop } from "../interfaces/crop";
-import { Table, TableRow, TableCell, TableRow2 } from "../styles/LotsTableStyles";
+import { Table, TableRow, TableCell, TableRow2 } from "../styles/TableStyles";
 import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
@@ -92,7 +92,8 @@ export const LotsCrops: React.FC = () => {
           <Text>Cultivos del lote '{Lot.name}'</Text>
           <RegisterFormContainer>
             <br />
-            <br />{" "}
+            <br />
+            {""}
             <InfoContainer>
               <DetailsSign $custom3>
                 ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
@@ -115,6 +116,8 @@ export const LotsCrops: React.FC = () => {
           </RegisterFormContainer>
           {!loading && data && data.crops.length > 0 && (
             <TableV1
+              evencolor="#FFFFFF"
+              oddcolor="rgb(255, 103, 15, 0.2)"
               columns={["ID", "Cultivos", "Área", "Acciones"]}
               columnMapping={{
                 Cultivos: "name",
@@ -144,7 +147,7 @@ export const LotsCrops: React.FC = () => {
           <InfoContainer>
             <DetailsSign $custom3>Usuarios encargados:</DetailsSign>
           </InfoContainer>
-          <Container>
+          {/* <Container>
             <Table $custom>
               <thead>
                 <TableRow index={-1}>
@@ -180,7 +183,7 @@ export const LotsCrops: React.FC = () => {
                 </TableRow2>
               </tbody>
             </Table>
-          </Container>
+          </Container> */}
           {/*Mostrar modal de notificación si showNotification es true*/}
           {showNotification && (
             <NotificationModal

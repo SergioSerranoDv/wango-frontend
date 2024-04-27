@@ -6,3 +6,10 @@ export interface Crop {
   latitude: string;
   longitude: string;
 }
+export const CropDataInit: Crop = {
+  area: 0,
+  lot_id: "",
+  name: "",
+  latitude: "",
+  longitude: "",
+};

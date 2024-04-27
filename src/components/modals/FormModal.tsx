@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
 import { createNewRecords } from "../../services/record_s";
 import { AppContext } from "../../context/AppContext";
 import { ApiContext } from "../../context/ApiContext";
@@ -15,7 +14,6 @@ import {
   InfoContainer,
   Input,
   Label,
-  Select,
   Overlay,
   ModalContainer,
   SignBoard,
@@ -23,38 +21,31 @@ import {
 import { NotificationDataInit, NotificationI } from "../../interfaces/notification";
 
 interface AddRegistryProps {
+  collectionId: string;
   cropname: string;
-  initialCollectionDate: Date;
   eto: number;
-  currentGrowth: string;
+  currentGrowth: number;
   etc: number;
-  selectedDate: Date;
   onClose: () => void;
 }
 
 export const AddRegistry: React.FC<AddRegistryProps> = ({
+  collectionId,
   cropname,
-  initialCollectionDate,
-  selectedDate,
   eto,
   currentGrowth,
   etc,
   onClose,
 }) => {
-  const { id } = useParams();
-  const collectionId = id;
   const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
   const [refetch, setRefetch] = useState<number>(0);
   const [isVisible, setIsVisible] = useState(true);
   const [formData, setFormData] = useState({
     nameRecord: "",
-    eto: eto,
-    performance: "",
-    currentGrowth: currentGrowth,
-    etc: etc,
-    ar: "",
-    selectedDate: new Date(), // Estado para almacenar la fecha seleccionada
+    performance: 0,
+    ar: 0,
+    selectedDate: new Date(),
   });
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [notificationDetails, setNotificationDetails] =
@@ -78,17 +69,17 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
     e.preventDefault();
     try {
       if (!collectionId) {
-        handleNotification("Error", "No se ha encontrado el ID del cultivo", "error", "");
+        handleNotification("Error", "No se ha encontrado el ID de la recolección", "error", "");
         return;
       }
       const response: any = await createNewRecords(backendApiCall, {
-        amount_chemical_used: parseFloat(formData.ar),
+        amount_chemicals_used: formData.ar,
         actual_crop_evapotranspiration: etc,
-        collection_id: collectionId,
-        current_stage: parseFloat(formData.currentGrowth),
-        daily_performance: parseFloat(formData.performance),
+        collection_id: collectionId as string,
+        current_stage: currentGrowth,
+        daily_performance: formData.performance,
         name: formData.nameRecord,
-        reference_evapotranspiration: eto,
+        reference_evotranspiration: eto,
         user: userData.user,
       });
       if (response.status === "success") {
@@ -142,7 +133,7 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
               </DetailsSign>
             </InfoContainer>
             <div style={{ paddingBottom: "32px" }}>
-              <Calendar selected={selectedDate} onChange={handleDateChange} />
+              <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
             </div>
             <Form>
               <Label htmlFor="nameRecord">Nombre del registro</Label>
@@ -155,20 +146,13 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
                 required
               />
               <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
-              <Input
-                type="text"
-                id="eto"
-                name="eto"
-                value={eto}
-                onChange={handleChange}
-                required
-                disabled
-              />
+              <Input type="number" id="eto" name="eto" value={eto} required disabled />
               <Label htmlFor="performance">Rendimiento diario (R)</Label>
               <Input
-                type="text"
+                type="number"
                 id="performance"
                 name="performance"
+                value={formData.performance}
                 onChange={handleChange}
                 required
               />
@@ -177,22 +161,12 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
                 type="text"
                 id="currentGrowth"
                 name="currentGrowth"
-                value={formData.currentGrowth}
-                //onChange={handleChange}
-                required
+                value="Frutificación (Kc = 1.75)"
                 disabled
               ></Input>
 
               <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
-              <Input
-                type="number"
-                id="etc"
-                name="etc"
-                value={etc}
-                onChange={handleChange}
-                required
-                disabled
-              />
+              <Input type="number" id="etc" name="etc" value={etc} disabled />
               <Label htmlFor="ar">Cant. aplicada de productos químicos - día (AR) </Label>
               <Description
                 style={{ marginBottom: "-12px", marginTop: "0px" }}
@@ -204,8 +178,8 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
                 type="number"
                 id="ar"
                 name="ar"
-                onChange={handleChange}
                 value={formData.ar}
+                onChange={handleChange}
                 required
               />
               <ButtonContainer>

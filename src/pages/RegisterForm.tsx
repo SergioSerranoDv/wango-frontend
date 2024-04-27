@@ -191,7 +191,7 @@ const RegisterForm: React.FC = () => {
           type="email"
           id="email"
           name="email"
-          value={userData.email ? userData.email : emailNewUser}
+          //value={userData.email ? userData.email : emailNewUser}
           onChange={handleChange}
           disabled
         />

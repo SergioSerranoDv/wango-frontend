@@ -20,7 +20,7 @@ export const deleteCrop = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
   cropId: string
 ): Promise<boolean> => {
-  const response = await backendApiCall({ method: "DELETE", endpoint: "v1/crop/delete/${cropId}" });
+  const response = await backendApiCall({ method: "DELETE", endpoint: `v1/crop/delete/${cropId}` });
   if (response.status === "success") {
     return true;
   }
@@ -34,6 +34,14 @@ export const fetchCropDetails = async (
   return await backendApiCall({ method: "GET", endpoint: `v1/crop/info/${cropId}` });
 };
 export const updateCrop = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  data: Crop,
+  cropId: string
+) => {
+  return await backendApiCall({ method: "PUT", endpoint: `v1/crop/update/${cropId}`, body: data });
+};
+
+export const saveCrop = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
   data: Crop,
   cropId: string

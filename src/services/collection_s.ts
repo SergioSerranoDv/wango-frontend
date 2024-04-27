@@ -10,3 +10,9 @@ export const createNewCollection = async (
     body: data,
   });
 };
+export const getCollectionByCropId = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  cropId: string
+): Promise<apiResponse> => {
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/crop/${cropId}` });
+};
