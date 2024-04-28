@@ -1,10 +1,14 @@
 import { useState, useContext, useEffect } from "react";
-import { Calendar } from "../components/modals/Calendar";
-import { AddRegistry } from "../components/modals/FormModal";
 import { useParams } from "react-router-dom";
+import { AddRegistry } from "../components/modals/FormModal";
 import { ApiContext } from "../context/ApiContext";
-import { fetchCropDetails, getCropStatus } from "../services/crop_s";
+import { Calendar } from "../components/modals/Calendar";
+import { LoadingAnimation } from "../components/Loading";
+import { TableV1 } from "../components/TableV1";
+import { MainLayout } from "../layouts/MainLayout";
 import { calculateEt0andETc } from "../services/weather_s";
+import { fetchCropDetails } from "../services/crop_s";
+import { getCollectionByCropId } from "../services/collection_s";
 import { Records } from "../interfaces/record";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { Crop, CropDataInit } from "../interfaces/crop";
@@ -15,9 +19,6 @@ import {
   FormContainer,
   SignBoard,
 } from "../styles/FormStyles";
-import { MainLayout } from "../layouts/MainLayout";
-import { TableV1 } from "../components/TableV1";
-import { LoadingAnimation } from "../components/Loading";
 
 export const RegisterView = () => {
   const { id } = useParams();
@@ -44,12 +45,14 @@ export const RegisterView = () => {
   });
 
   useEffect(() => {
-    async function fetchCollectionDataByCropId() {
+    async function fetchCollectionRecords() {
       if (cropId) {
         try {
-          const response = await getCropStatus(backendApiCall, cropId);
+          // Subprocess 1: Get collection by crop id to get the collection id
+          const response = await getCollectionByCropId(backendApiCall, cropId);
           if (response.status === "success") {
             setCollection(response.data);
+            // Subprocess 2: Get collection records by collection id
             const collectionRecords = await backendApiCall({
               method: "GET",
               endpoint: `v1/collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${response.data._id}`,
@@ -61,11 +64,11 @@ export const RegisterView = () => {
             console.log("Error getting collection status:", response.message);
           }
         } catch (error) {
-          console.log("Error getting collecction status:", error);
+          console.log("Error getting collecction data:", error);
         }
       }
     }
-    fetchCollectionDataByCropId();
+    fetchCollectionRecords();
   }, [backendApiCall, cropId]);
 
   useEffect(() => {

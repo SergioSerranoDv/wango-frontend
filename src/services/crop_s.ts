@@ -20,18 +20,11 @@ export const deleteCrop = async (
   backendApiCall: (data: ApiProps) => Promise<apiResponse>,
   cropId: string
 ): Promise<boolean> => {
-  const response = await backendApiCall({ method: "DELETE", endpoint: "v1/crop/delete/${cropId}" });
+  const response = await backendApiCall({ method: "DELETE", endpoint: `v1/crop/delete/${cropId}` });
   if (response.status === "success") {
     return true;
   }
   return false;
-};
-
-export const getCropStatus = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
-  cropId: string
-): Promise<apiResponse> => {
-  return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/crop/${cropId}` });
 };
 
 export const fetchCropDetails = async (

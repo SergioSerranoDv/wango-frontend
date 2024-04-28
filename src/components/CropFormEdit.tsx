@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { NotificationModal } from "./modals/NotificationModal";
 import { CollectionModal } from "./modals/CollectionModal";
-import { createNewCollection } from "../services/collection_s";
 import { fetchLotDetails } from "../services/lot_s";
-import { fetchCropDetails, updateCrop, getCropStatus } from "../services/crop_s";
+import { fetchCropDetails, updateCrop } from "../services/crop_s";
+import { getCollectionByCropId } from "../services/collection_s";
 import { NotificationI, NotificationDataInit } from "../interfaces/notification";
 import { Crop } from "../interfaces/crop";
 import { LotI } from "../interfaces/Lot";
@@ -114,7 +114,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
     async function loadCropstatus() {
       if (cropId) {
         try {
-          const cropStatus = await getCropStatus(backendApiCall, cropId);
+          const cropStatus = await getCollectionByCropId(backendApiCall, cropId);
           setCropStatus(cropStatus.data.status);
           if (cropStatus) {
             //console.log("Estado del crop: ", cropStatus.data.status);

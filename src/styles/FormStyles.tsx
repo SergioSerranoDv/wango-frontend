@@ -17,6 +17,7 @@ interface InputProps {
   $custom4?: boolean;
   $gray?: boolean;
   $blue?: boolean;
+  $orange?: boolean;
 }
 
 export const FormContainer = styled.div`
@@ -99,9 +100,11 @@ export const ButtonSubmit = styled.button<InputProps>`
   background-color: ${(props) =>
     props.$gray
       ? colors.gray
-      : props.$blue
-        ? colors.blue
-        : colors[(props.color as keyof typeof colors) || "green"]};
+      : props.$orange
+        ? colors.orange
+        : props.$blue
+          ? colors.blue
+          : colors[(props.color as keyof typeof colors) || "green"]};
   color: #fff;
   cursor: pointer;
   border-radius: 6px;

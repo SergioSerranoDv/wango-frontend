@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { ApiContext, ApiProps, apiResponse } from "../context/ApiContext";
+import { ApiContext } from "../context/ApiContext";
 
 interface GetByIdProps {
   endpoint: string;

@@ -24,35 +24,35 @@ export const WFComponents = () => {
   }, [backendApiCall, cropId, refetch]);
 
   const linkStyle = {
-    textDecoration: 'none',
+    textDecoration: "none",
   };
 
   return (
     <MainLayout>
       <FormContainer>
-        <SignBoard $custom2>Cultivo {cropData.name}<br/>Selecciona un componente</SignBoard>
+        <SignBoard $custom2>Selecciona un componente</SignBoard>
         <Form>
-        <Link to={`/lot-menu/water-footprint/comp-green/${cropId}`} style={linkStyle}>
-          <ButtonSubmit type="button" $custom1 as="div">
-            Componente verde
-          </ButtonSubmit>
-        </Link>
-        <Link to={`/lot-menu/water-footprint/comp-blue/${cropId}`} style={linkStyle}>
-          <ButtonSubmit type="button" $custom1 $blue as="div">
-            Componente azul
-          </ButtonSubmit>
-        </Link>
-        <Link to={`/lot-menu/water-footprint/comp-gray/${cropId}`} style={linkStyle}>
-          <ButtonSubmit type="button" $custom1 $gray as="div">
-            Componente gris
-          </ButtonSubmit>
-        </Link>
-        <Link to={`/lot-menu/water-footprint/full-wf/${cropId}`} style={linkStyle}>
-          <Button type="button" $custom1 as="div">
-            Huella hídrica completa
-          </Button>
-        </Link>
-      </Form>
+          <Link to={`/lot-menu/water-footprint/crops/comp-green/${cropId}`} style={linkStyle}>
+            <ButtonSubmit type="button" $custom1 as="div">
+              Componente verde
+            </ButtonSubmit>
+          </Link>
+          <Link to={`/lot-menu/water-footprint/crops/comp-blue/${cropId}`} style={linkStyle}>
+            <ButtonSubmit type="button" $custom1 $blue as="div">
+              Componente azul
+            </ButtonSubmit>
+          </Link>
+          <Link to={`/lot-menu/water-footprint/crops/comp-gray/${cropId}`} style={linkStyle}>
+            <ButtonSubmit type="button" $custom1 $gray as="div">
+              Componente gris
+            </ButtonSubmit>
+          </Link>
+          <Link to={`/lot-menu/water-footprint/crops/full-wf/${cropId}`} style={linkStyle}>
+            <ButtonSubmit type="button" $custom1 $orange as="div">
+              Huella hídrica completa
+            </ButtonSubmit>
+          </Link>
+        </Form>
       </FormContainer>
     </MainLayout>
   );
