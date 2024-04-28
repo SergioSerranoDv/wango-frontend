@@ -51,9 +51,7 @@ export const WFLot: React.FC = () => {
   const handleEdit = (crop: Crop) => {
     window.open(`/lot-menu/water-footprint/crops/${crop._id}`, "_self");
   };
-  const handleDelete = async (cropId: string) => {
-    
-  };
+  const handleDelete = async (cropId: string) => {};
   const handleNotificationClose = () => {
     setShowNotification(false);
   };
@@ -87,8 +85,8 @@ export const WFLot: React.FC = () => {
           </RegisterFormContainer>
           {!loading && data && data.crops.length > 0 && (
             <TableV1
-            evencolor="#FFFFFF"
-            oddcolor="rgb(255, 103, 15, 0.2)"
+              evencolor="#FFFFFF"
+              oddcolor="rgb(255, 103, 15, 0.2)"
               columns={["ID", "Cultivos", "Área", "Opciones"]}
               columnMapping={{
                 Cultivos: "name",
@@ -103,7 +101,7 @@ export const WFLot: React.FC = () => {
                 setRefetch,
                 totalPages: data.meta.total_pages,
               }}
-              options={{ edit: handleEdit , delete: handleEdit}}
+              options={{ edit: handleEdit, delete: handleEdit }}
             />
           )}
           <RegisterFormContainer>

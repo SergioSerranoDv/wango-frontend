@@ -6,6 +6,7 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchCropDetails } from "../services/crop_s";
 import { Crop } from "../interfaces/crop";
+import { Collection } from "../interfaces/collection";
 import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
@@ -20,23 +21,17 @@ import {
 
 export const WFCrops: React.FC = () => {
   const { id } = useParams();
-  const cropId = id || "";
+  const collectionId = id || "";
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
-  const [refetch, setRefetch] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const {
-    data,
-    loading,
-    setRefetch: setRefetchData,
-  } = UseGet({
-    endpoint: `v1/crop/paginated?page=${currentPage}&limit=${rowsPerPage}&crop_id=${cropId}`,
+  const { data, loading, setRefetch } = UseGet({
+    endpoint: `v1/collection/info/crop/${collectionId}/paginated?page=${currentPage}&limit=${rowsPerPage}`,
   });
   const [cropData, setCropData] = useState({} as Crop);
-
   useEffect(() => {
     const fetchCropData = async () => {
-      const response = await fetchCropDetails(backendApiCall, cropId);
+      const response = await fetchCropDetails(backendApiCall, collectionId);
       if (response.status === "success" && response.data) {
         setCropData(response.data);
       }
@@ -45,15 +40,13 @@ export const WFCrops: React.FC = () => {
     if (serviceIsReady) {
       fetchCropData();
     }
-  }, [cropId, serviceIsReady]);
+  }, [collectionId, serviceIsReady]);
 
   const handleEdit = (crop: Crop) => {
-    window.open(`/lot-menu/water-footprint/crops/${crop._id}`, "_self");
+    window.open(`/lot-menu/water-footprint/crops/components/${crop._id}`, "_self");
   };
 
-  const handleDelete = async (cropId: string) => {
-    // Implementation needed
-  };
+  const handleDelete = async (cropId: string) => {};
 
   return (
     <div>
@@ -68,22 +61,22 @@ export const WFCrops: React.FC = () => {
               <DetailsSign $custom3>Historial de registros:</DetailsSign>
             </InfoContainer>
           </RegisterFormContainer>
-          {!loading && data && data.crops && data.crops.length > 0 && (
+          {!loading && data && data.collections && data.collections.length > 0 && (
             <TableV1
-            evencolor="#FFFFFF"
-            oddcolor="rgb(255, 103, 15, 0.2)"
-              columns={["Fecha inicio", "Fecha fin", "Acciones"]}
+              evencolor="#FFFFFF"
+              oddcolor="rgb(255, 103, 15, 0.2)"
+              columns={["id", "Fecha Inicio", "Fecha Fin", "Acciones"]}
               columnMapping={{
-                FechaInicio: "name",
-                FechaFin: "area",
+                "Fecha Inicio": "createdAt",
+                "Fecha Fin": "updatedAt",
               }}
-              data={data.crops}
+              data={data.collections}
               pagination={{
                 currentPage,
                 setCurrentPage,
                 rowsPerPage,
                 setRowsPerPage,
-                setRefetch: setRefetchData,
+                setRefetch,
                 totalPages: data.meta.total_pages,
               }}
               options={{ edit: handleEdit, delete: handleDelete }}
