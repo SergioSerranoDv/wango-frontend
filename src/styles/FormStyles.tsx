@@ -18,6 +18,7 @@ interface InputProps {
   $gray?: boolean;
   $blue?: boolean;
   $orange?: boolean;
+  $custom5?: boolean;
 }
 
 export const FormContainer = styled.div`
@@ -38,14 +39,20 @@ export const Form = styled.form`
   box-sizing: border-box;
 `;
 
-export const Label = styled.label<{ $primary?: boolean }>`
+export const ContainerInput = styled.div`
+  margin-bottom: 15px;
+`;
+
+export const Label = styled.label<InputProps>`
   //color: "#000000";
   margin: ${(props) => (props.$primary ? "4px 0px -12px 0" : "0 0 -6px 0")};
-  font-size: 1rem;
-  font-size: 14px;
+  font-size: ${(props) => (props.$custom1 ? "18px" : "14px")};
   font-weight: bold;
   line-height: 0.01;
   //background-color: #000;
+  width: ${(props) => (props.$custom1 ? "25%" : "100%")};
+  //border: ${(props) => (props.$custom1 ? "1px solid #000000" : "")};
+  padding-right: ${(props) => (props.$custom1 ? "1px" : "")};
 `;
 
 export const Input = styled.input<InputProps>`
@@ -56,10 +63,11 @@ export const Input = styled.input<InputProps>`
   font-weight: 550; /*semibold*/
   opacity: 0.85;
   border-radius: 5px;
-  width: 100%;
+  width: ${(props) => (props.$custom1 ? "75%" : "100%")};
   border: 1px solid #000000;
   box-sizing: border-box;
   //background-color: #ff0078;
+  margin-left: ${(props) => (props.$custom1 ? "10px" : "")};
 `;
 
 export const ButtonContainer = styled.div`
@@ -129,7 +137,11 @@ export const Logo = styled.img`
 
 export const SignBoard = styled.p<InputProps>`
   font-size: ${(props) => (props.$primary ? "13px" : "13px")};
-  font-weight: ${(props) => (props.$primary ? "" : "620")};
+  font-size: ${(props) => (props.$custom4 ? "14px" : "")};
+  font-size: ${(props) => (props.$custom3 ? "12.5px" : "")};
+  font-size: ${(props) => (props.$custom5 ? "15px" : "")};
+  font-weight: ${(props) => (props.$custom5 ? "700" : "620")};
+  font-weight: ${(props) => (props.$primary ? "" : "")};
   text-align: center;
   color: ${(props) => (props.$primary ? "#000000" : "#4d4d4d")};
   margin: ${(props) => (props.$primary ? "20px 0 20px 0" : "0 0 24px 0")};
@@ -195,20 +207,37 @@ export const DivIdentification = styled.div`
 export const FormField = styled.div<InputProps>``;
 
 export const InfoContainer = styled.div<InputProps>`
+  align-items: ${(props) => (props.$custom2 ? "center" : "right")};
+  background: ${(props) => (props.$custom1 ? "#D9D9D9" : "")};
   display: flex;
   flex-direction: column;
   gap: 7.5px;
   box-sizing: border-box;
-  border-bottom: 1px solid #000000;
+  border-bottom: ${(props) => (props.$custom1 ? "0px" : "1px solid #000000")};
+  border-bottom: ${(props) => (props.$custom4 ? "0px" : "")};
   padding-bottom: 18px;
-  margin-bottom: 26px;
-  margin-top: -6px;
+  margin-bottom: ${(props) => (props.$custom1 ? "5px" : "26px")};
+  margin-bottom: ${(props) => (props.$custom4 ? "0px" : "")};
+  margin-top: ${(props) => (props.$custom1 ? "15px" : "-6px")};
+  padding: ${(props) => (props.$custom1 ? "0px 15px 20px 15px" : "-6px")};
+  border-radius: ${(props) => (props.$custom1 ? "15px" : "0px")};
+  align-items: ${(props) => (props.$custom4 ? "center" : "")};
 `;
 
 export const DetailsSign = styled.a<InputProps>`
+  margin-top: ${(props) => (props.$custom4 ? "-7px" : "")};
   font-size: 13px;
   font-weight: bold;
   color: ${(props) => (props.$custom3 ? "#4d4d4d" : "#3dac17")};
+  color: ${(props) => (props.$custom4 ? "#4d4d4d" : "")};
+  //color: #3dac17;
+`;
+export const DetailsSign2 = styled.a<InputProps>`
+  margin-top: ${(props) => (props.$custom4 ? "-7px" : "")};
+  font-size: 15px;
+  font-weight: bold;
+  color: ${(props) => (props.$custom3 ? "#4d4d4d" : "#3dac17")};
+  color: ${(props) => (props.$custom4 ? "#4d4d4d" : "")};
   //color: #3dac17;
 `;
 
@@ -220,4 +249,12 @@ export const DetailsItem = styled.a<InputProps>`
 export const Link = styled.a<InputProps>`
   color: ${(props) => (props.$primary ? "#548af7" : "#4d4d4d")};
   cursor: pointer;
+`;
+
+export const SubLabel = styled.span`
+  padding-right: 1px;
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 0.6rem;
+  margin-right: 5px; /* Espacio entre el label principal y el subnivel */
 `;
