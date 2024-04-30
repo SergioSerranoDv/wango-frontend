@@ -18,6 +18,7 @@ import { EditCrop } from "./pages/EditCrop";
 import { RegisterView } from "./pages/RegisterView";
 import "./App.css";
 import "./styles/MainMenuStyles";
+import { WFGreen } from "./pages/WFGreen";
 
 export const App: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -46,6 +47,10 @@ export const App: React.FC = () => {
                   <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
                   <Route path="/edit-crop/:id" element={<EditCrop />} />
                   <Route path="/lot-menu/edit-crop/register-view/:id" element={<RegisterView />} />
+                  <Route
+                    path="/lot-menu/water-footprint/crops/comp-green/:id"
+                    element={<WFGreen />}
+                  />
                 </>
               ) : (
                 <>
