@@ -1,20 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
 import {
   LeftContainer,
   NavbarContainer,
   NavbarInnerContainer,
   NavbarLinkContainer,
+  CenterContainer,
   RightContainer,
   Logo,
   Text,
+  UserImage,
+  DropdownContent,
+  DropdownItem,
 } from "../styles/NavbarStyles";
-import Dropdown from "../components/Dropdown";
 import LogoImg from "../assets/images/logoNavbar.svg";
 
-interface NavbarProps {
+interface LinkProps {
   id: number;
   elementList: JSX.Element;
 }
@@ -22,11 +25,12 @@ interface LinkElementProps {
   text: string;
   link: string;
 }
-
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const { logout } = useAuth0();
   const { userData } = useContext(AppContext);
-  const NavbarItems: NavbarProps[] = [
+  const [isOpen, setIsOpen] = useState(false);
+  const LinkItems: LinkProps[] = [
     {
       id: 1,
       elementList: <LinkElement text="Editar perfil" link="/my-profile" />,
@@ -52,42 +56,41 @@ const Navbar: React.FC = () => {
     },
   ];
 
+  const toggleDropdown = () => {
+    if (window.innerWidth >= 768) {
+      navigate("/my-profile");
+    } else {
+      setIsOpen(!isOpen);
+    }
+  };
+
   return (
-    <NavbarContainer>
-      <NavbarInnerContainer>
-        <LeftContainer>
-          <NavbarLinkContainer>
-            <Dropdown></Dropdown>
-            {NavbarItems.map((item, index) => (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                key={index}
-              >
-                {item.elementList}
-              </div>
-            ))}
-          </NavbarLinkContainer>
-        </LeftContainer>
-        <RightContainer>
-          <Link to="/">
-            <Logo src={LogoImg} />
-          </Link>
-          <img
-            width={40}
-            height={40}
-            style={{
-              borderRadius: "50%",
-            }}
-            src={userData.picture}
-            alt="User profile"
-          />
-        </RightContainer>
-      </NavbarInnerContainer>
-    </NavbarContainer>
+    <>
+      <NavbarContainer>
+        <NavbarInnerContainer>
+          <LeftContainer>
+            <Link to="/">
+              <Logo src={LogoImg} />
+            </Link>
+          </LeftContainer>
+          <CenterContainer>
+            <NavbarLinkContainer>
+              {LinkItems.map((item) => (
+                <div key={item.id}>{item.elementList}</div>
+              ))}
+            </NavbarLinkContainer>
+          </CenterContainer>
+          <RightContainer>
+            <UserImage onClick={toggleDropdown} src={userData.picture} alt="User profile" />
+          </RightContainer>
+        </NavbarInnerContainer>
+      </NavbarContainer>
+      <DropdownContent open={isOpen}>
+        {LinkItems.map((item) => (
+          <DropdownItem key={item.id}>{item.elementList}</DropdownItem>
+        ))}
+      </DropdownContent>
+    </>
   );
 };
 
