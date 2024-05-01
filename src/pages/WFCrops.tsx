@@ -6,17 +6,13 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchCropDetails } from "../services/crop_s";
 import { Crop } from "../interfaces/crop";
-import { Collection } from "../interfaces/collection";
 import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
-  Button,
-  DetailsItem,
-  DetailsSign,
-  InfoContainer,
-  Link,
   RegisterFormContainer,
-  SignBoard,
+  InfoContainer,
+  DetailsSign,
+  DetailsItem,
 } from "../styles/lotscropsStyles";
 
 export const WFCrops: React.FC = () => {
@@ -29,6 +25,7 @@ export const WFCrops: React.FC = () => {
     endpoint: `v1/collection/info/crop/${collectionId}/paginated?page=${currentPage}&limit=${rowsPerPage}`,
   });
   const [cropData, setCropData] = useState({} as Crop);
+
   useEffect(() => {
     const fetchCropData = async () => {
       const response = await fetchCropDetails(backendApiCall, collectionId);
@@ -42,11 +39,21 @@ export const WFCrops: React.FC = () => {
     }
   }, [collectionId, serviceIsReady]);
 
-  const handleEdit = (crop: Crop) => {
-    window.open(`/lot-menu/water-footprint/crops/components/${crop._id}`, "_self");
-  };
-
-  const handleDelete = async (cropId: string) => {};
+  const formattedCollections = data?.collections?.map(
+    (collection: { createdAt: string | number | Date; updatedAt: string | number | Date }) => ({
+      ...collection,
+      createdAt: new Date(collection.createdAt).toLocaleString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      updatedAt: new Date(collection.updatedAt).toLocaleString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+    })
+  );
 
   return (
     <div>
@@ -61,7 +68,7 @@ export const WFCrops: React.FC = () => {
               <DetailsSign $custom3>Historial de registros:</DetailsSign>
             </InfoContainer>
           </RegisterFormContainer>
-          {!loading && data && data.collections && data.collections.length > 0 && (
+          {!loading && formattedCollections && (
             <TableV1
               evencolor="#FFFFFF"
               oddcolor="rgb(255, 103, 15, 0.2)"
@@ -70,16 +77,16 @@ export const WFCrops: React.FC = () => {
                 "Fecha Inicio": "createdAt",
                 "Fecha Fin": "updatedAt",
               }}
-              data={data.collections}
+              data={formattedCollections}
               pagination={{
                 currentPage,
                 setCurrentPage,
                 rowsPerPage,
                 setRowsPerPage,
                 setRefetch,
-                totalPages: data.meta.total_pages,
+                totalPages: data?.meta?.total_pages,
               }}
-              options={{ edit: handleEdit, delete: handleDelete }}
+              options={{ edit: () => {}, delete: () => {} }}
             />
           )}
         </Container>
@@ -87,3 +94,5 @@ export const WFCrops: React.FC = () => {
     </div>
   );
 };
+
+export default WFCrops;
