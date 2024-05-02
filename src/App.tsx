@@ -5,7 +5,7 @@ import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import { LoadingAnimation } from "./components/Loading";
 import { AddLot } from "./pages/AddLot";
-import { Profile } from "./pages/Profile";
+import { Profile } from "./pages/UserProfile";
 import { DashboardLots } from "./pages/DashboardLots";
 import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
@@ -16,8 +16,12 @@ import VarForm from "./pages/VarForm";
 import { LotsCrops } from "./pages/LotsCrops";
 import { EditCrop } from "./pages/EditCrop";
 import { RegisterView } from "./pages/RegisterView";
+import { WFComponents } from "./pages/WFComponents";
+import { WFCrops } from "./pages/WFCrops";
+import { WFLot } from "./pages/WFLot";
 import "./App.css";
 import "./styles/MainMenuStyles";
+import { WFGreen } from "./pages/WFGreen";
 
 export const App: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -46,6 +50,12 @@ export const App: React.FC = () => {
                   <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
                   <Route path="/edit-crop/:id" element={<EditCrop />} />
                   <Route path="/lot-menu/edit-crop/register-view/:id" element={<RegisterView />} />
+                  <Route path="/lot-menu/water-footprint/:id" element={<WFLot />} />
+                  <Route path="/lot-menu/water-footprint/crops/:id" element={<WFCrops />} />
+                  <Route
+                    path="/lot-menu/water-footprint/crops/components/:id"
+                    element={<WFComponents />}
+                  />
                 </>
               ) : (
                 <>

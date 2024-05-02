@@ -51,7 +51,7 @@ function LoteMenu({ lotId = "" }: Props) {
     {
       id: 3,
       elementList: (
-        <LinkElement src={HuellaHidrica} text="Calcular huella hídrica" link="/huellaHidrica" />
+        <LinkElement src={HuellaHidrica} text="Calcular huella hídrica" link={`/lot-menu/water-footprint/${lotId}`} />
       ),
     },
     {

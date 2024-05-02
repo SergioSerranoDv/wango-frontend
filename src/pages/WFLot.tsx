@@ -20,7 +20,7 @@ import {
   SignBoard,
 } from "../styles/lotscropsStyles";
 
-export const LotsCrops: React.FC = () => {
+export const WFLot: React.FC = () => {
   const { id } = useParams();
   const lotId = id || "";
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
@@ -32,22 +32,6 @@ export const LotsCrops: React.FC = () => {
     endpoint: `v1/crop/paginated?page=${currentPage}&limit=${rowsPerPage}&lot_id=${lotId}`,
   });
   const [Lot, setLot] = useState(LotDataInit);
-  // const [Crop, setCrop] = useState<{
-  //   id: string | undefined;
-  //   area: number;
-  //   lot_id: string;
-  //   name: string;
-  //   latitude: string | undefined;
-  //   longitude: string | undefined;
-  // }>({
-  //   id: "",
-  //   area: 0,
-  //   lot_id: "",
-  //   name: "",
-  //   latitude: "",
-  //   longitude: "",
-  // });
-  //  UseEffect to load the lot data
   useEffect(() => {
     const fetchLotData = async () => {
       const response = await fetchLotDetails(backendApiCall, lotId);
@@ -65,22 +49,9 @@ export const LotsCrops: React.FC = () => {
   }, [lotId, serviceIsReady, refetchLotDetails]);
 
   const handleEdit = (crop: Crop) => {
-    window.open(`/edit-crop/${crop._id}`, "_self");
+    window.open(`/lot-menu/water-footprint/crops/${crop._id}`, "_self");
   };
-  const handleDelete = async (cropId: string) => {
-    const response = await backendApiCall({
-      method: "DELETE",
-      endpoint: `v1/crop/delete/${cropId}`,
-      body: {
-        lot_id: lotId,
-      },
-    });
-    if (response.status === "success") {
-      setShowNotification(true);
-      setRefetch((prev) => prev + 1);
-      setRefetchLotDetails((prev) => prev + 1);
-    }
-  };
+  const handleDelete = async (cropId: string) => {};
   const handleNotificationClose = () => {
     setShowNotification(false);
   };
@@ -88,11 +59,10 @@ export const LotsCrops: React.FC = () => {
     <div>
       <MainLayout>
         <Container>
-          <Text>Cultivos del lote '{Lot.name}'</Text>
+          <Text>Registros para la huella hídrica en el lote '{Lot.name}'</Text>
           <RegisterFormContainer>
             <br />
-            <br />
-            {""}
+            <br />{" "}
             <InfoContainer>
               <DetailsSign $custom3>
                 ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
@@ -117,7 +87,7 @@ export const LotsCrops: React.FC = () => {
             <TableV1
               evencolor="#FFFFFF"
               oddcolor="rgb(255, 103, 15, 0.2)"
-              columns={["ID", "Cultivos", "Área", "Acciones"]}
+              columns={["ID", "Cultivos", "Área", "Opciones"]}
               columnMapping={{
                 Cultivos: "name",
                 Área: "area",
@@ -131,67 +101,24 @@ export const LotsCrops: React.FC = () => {
                 setRefetch,
                 totalPages: data.meta.total_pages,
               }}
-              options={{ edit: handleEdit, delete: handleDelete }}
+              options={{ edit: handleEdit, delete: handleEdit }}
             />
           )}
-          <SignBoard $custom3>
-            ¿Quieres añadir un cultivo?{" "}
-            <Link href={`/lot-menu/new-crop/${lotId}`} $custom3>
-              ¡Hazlo aquí!
-            </Link>
-          </SignBoard>
-          {/* <Button type="submit" $custom1>
-            Crear nuevo encargado
-          </Button>
-          <InfoContainer>
-            <DetailsSign $custom3>Usuarios encargados:</DetailsSign>
-          </InfoContainer>
-          <Container>
-            <Table $custom>
-              <thead>
-                <TableRow index={-1}>
-                  <TableCell $custom>ID</TableCell>
-                  <TableCell $custom>Nombres</TableCell>
-                  <TableCell $custom>Acciones</TableCell>
-                </TableRow>
-              </thead>
-              <tbody>
-                <TableRow2 index={1}>
-                  <TableCell $custom1>1</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <a href="#">Edi </a>
-                    <a href="#"> Eli </a>
-                  </TableCell>
-                </TableRow2>
-                <TableRow2 index={2}>
-                  <TableCell $custom1>2</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <a href="#">Edi </a>
-                    <a href="#"> Eli </a>
-                  </TableCell>
-                </TableRow2>
-                <TableRow2 index={3}>
-                  <TableCell $custom1>3</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <a href="#">Edi </a>
-                    <a href="#"> Eli </a>
-                  </TableCell>
-                </TableRow2>
-              </tbody>
-            </Table>
-          </Container> */}
-          {/*Mostrar modal de notificación si showNotification es true */}
+          <RegisterFormContainer>
+            <InfoContainer>
+              <DetailsSign $custom3>
+                Nota: Para ver los registros y el valor del componente de un cultivo, debes
+                finalizar el proceso de recolección de registros dando click en el ícono de la mano.
+              </DetailsSign>
+            </InfoContainer>
+          </RegisterFormContainer>
           {showNotification && (
             <NotificationModal
               title="Cultivo eliminado exitosamente"
               description="El cultivo ha sido eliminado con éxito."
-              status="success" // Asegúrate de tener esta variable definida
+              status="success"
               buttonText="Aceptar"
               onClose={handleNotificationClose}
-              // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
               redirectUrl=""
             />
           )}
