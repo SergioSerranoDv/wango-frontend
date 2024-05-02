@@ -1,61 +1,110 @@
 import styled from "styled-components";
 
 export const Text = styled.div`
-  font-family: Inter, sans-serif;
-  margin: 10px;
-  font-size: 19px;
-  text-align: center;
   color: black;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  margin: 10px;
+  text-align: center;
+  @media (max-width: 874px) {
+    width: 90px;
+  }
   @media (max-width: 768px) {
-    display: none;
+    font-size: 16px;
+    width: 100%;
   }
 `;
 
 export const NavbarContainer = styled.nav`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
   background-color: #ffb032;
   border-bottom: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
 
   @media (max-width: 768px) {
     background-color: #fff;
   }
 `;
+
 export const LeftContainer = styled.div`
-  flex: 70%;
-  display: flex;
   align-items: center;
+  display: flex;
+  flex: 20%;
+  justify-content: flex-start;
   padding-left: 5%;
+`;
+
+export const CenterContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex: 60%;
+  justify-content: center;
 
   @media (max-width: 768px) {
-    padding-left: 0px;
+    display: none;
   }
 `;
 
-export const NavbarLinkContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding-right: 20px;
-`;
-
 export const RightContainer = styled.div`
-  flex: 30%;
-  display: flex;
   align-items: center;
+  display: flex;
+  flex: 20%;
   justify-content: flex-end;
   padding-right: 5%;
-  gap: 2rem;
+`;
+
+export const NavbarLinkContainer = styled.div`
+  align-items: center;
+  display: flex;
 `;
 
 export const Logo = styled.img`
-  max-width: 121px;
   max-height: auto;
+  max-width: 121px;
 `;
 
 export const NavbarInnerContainer = styled.div`
   display: flex;
-  width: 100%;
   height: 80px;
+  width: 100%;
+`;
+
+export const UserImage = styled.img`
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+`;
+
+export const DropdownContent = styled.div<{ open: boolean }>`
+  align-items: center;
+  background-color: #ffb032;
+  display: ${({ open }) => (open ? "flex" : "none")};
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  right: 0;
+  width: 100%;
+  z-index: 1;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+export const DropdownItem = styled.div`
+  align-items: center;
+  border-bottom: 2px solid #ffdda8;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  height: 36px;
+  justify-content: center;
+  width: 80%;
+
+  &:hover {
+    background-color: #ffdda8;
+  }
 `;

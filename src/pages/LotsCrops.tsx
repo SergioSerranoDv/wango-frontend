@@ -8,7 +8,6 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
 import { Crop } from "../interfaces/crop";
-import { Table, TableRow, TableCell, TableRow2 } from "../styles/TableStyles";
 import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
@@ -141,13 +140,13 @@ export const LotsCrops: React.FC = () => {
               ¡Hazlo aquí!
             </Link>
           </SignBoard>
-          <Button type="submit" $custom1>
+          {/* <Button type="submit" $custom1>
             Crear nuevo encargado
           </Button>
           <InfoContainer>
             <DetailsSign $custom3>Usuarios encargados:</DetailsSign>
           </InfoContainer>
-          {/* <Container>
+          <Container>
             <Table $custom>
               <thead>
                 <TableRow index={-1}>
@@ -184,7 +183,7 @@ export const LotsCrops: React.FC = () => {
               </tbody>
             </Table>
           </Container> */}
-          {/*Mostrar modal de notificación si showNotification es true*/}
+          {/*Mostrar modal de notificación si showNotification es true */}
           {showNotification && (
             <NotificationModal
               title="Cultivo eliminado exitosamente"
