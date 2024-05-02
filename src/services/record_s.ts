@@ -10,6 +10,23 @@ export const createNewRecords = async (
     body: data,
   });
 };
+export const updateRecord = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  data: Records,
+  recordId: string
+) => {
+  return await backendApiCall({
+    method: "PUT",
+    endpoint: `v1/collection-record/update/${recordId}`,
+    body: data,
+  });
+};
+export const fetchRecordDetails = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  recordId: string
+): Promise<apiResponse> => {
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection-record/info/${recordId}` });
+};
 interface PaaginationProps {
   page: number;
   limit: number;
