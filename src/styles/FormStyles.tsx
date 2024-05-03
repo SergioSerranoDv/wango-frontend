@@ -25,10 +25,8 @@ export const FormContainer = styled.div`
   max-width: 400px;
   margin: 0 auto;
   background-color: #ffffff;
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   position: relative; /* Añade posición relativa */
 `;
 
@@ -144,12 +142,9 @@ export const SignBoard = styled.p<InputProps>`
   font-weight: ${(props) => (props.$primary ? "" : "")};
   text-align: center;
   color: ${(props) => (props.$primary ? "#000000" : "#4d4d4d")};
-  margin: ${(props) => (props.$primary ? "20px 0 20px 0" : "0 0 24px 0")};
-  margin-top: ${(props) => (props.$custom1 ? "-250px" : "10px")};
+  margin-top: 0px;
   margin-bottom: ${(props) => (props.$custom1 ? "40px" : "10px")};
-  margin-top: ${(props) => (props.$custom2 ? "10px" : "")};
   margin-bottom: ${(props) => (props.$custom2 ? "42px" : "")};
-  margin: ${(props) => (props.$custom ? "-24px 0px 35px 0px" : "")};
   font-weight: ${(props) => (props.$custom ? "450" : "")};
   color: ${(props) => (props.$custom ? "#D80000" : "")};
   opacity: 0.95;

@@ -32,7 +32,6 @@ export const FormWrapper = styled.div`
 `;
 
 export const Form = styled.form`
-  padding: ${spacing.large};
   background-color: ${colors.white};
   border-radius: 10px;
   width: 100%;

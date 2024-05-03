@@ -5,7 +5,7 @@ import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import { LoadingAnimation } from "./components/Loading";
 import { AddLot } from "./pages/AddLot";
-import { Profile } from "./pages/Profile";
+import { Profile } from "./pages/UserProfile";
 import { DashboardLots } from "./pages/DashboardLots";
 import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";

@@ -8,8 +8,6 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
 import { Crop } from "../interfaces/crop";
-import { Table, TableRow, TableCell, TableRow2 } from "../styles/TableStyles";
-import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
   Button,
@@ -88,66 +86,65 @@ export const LotsCrops: React.FC = () => {
   return (
     <div>
       <MainLayout>
-        <Container>
-          <Text>Cultivos del lote '{Lot.name}'</Text>
-          <RegisterFormContainer>
-            <br />
-            <br />
-            {""}
-            <InfoContainer>
-              <DetailsSign $custom3>
-                ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>
-                Área disponible:{" "}
-                <DetailsItem>
-                  {" "}
-                  {Lot.capacity_in_use !== undefined ? `${Lot.available_capacity} Ha` : ``}
-                </DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>
-                Área en ocupación:{" "}
-                <DetailsItem>
-                  {Lot.capacity_in_use !== undefined ? `${Lot.capacity_in_use} Ha` : ``}
-                </DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>Cultivos:</DetailsSign>
-            </InfoContainer>
-          </RegisterFormContainer>
-          {!loading && data && data.crops.length > 0 && (
-            <TableV1
-              evencolor="#FFFFFF"
-              oddcolor="rgb(255, 103, 15, 0.2)"
-              columns={["ID", "Cultivos", "Área", "Acciones"]}
-              columnMapping={{
-                Cultivos: "name",
-                Área: "area",
-              }}
-              data={data.crops}
-              pagination={{
-                currentPage,
-                setCurrentPage,
-                rowsPerPage,
-                setRowsPerPage,
-                setRefetch,
-                totalPages: data.meta.total_pages,
-              }}
-              options={{ edit: handleEdit, delete: handleDelete }}
-            />
-          )}
-          <SignBoard $custom3>
-            ¿Quieres añadir un cultivo?{" "}
-            <Link href={`/lot-menu/new-crop/${lotId}`} $custom3>
-              ¡Hazlo aquí!
-            </Link>
-          </SignBoard>
-          <Button type="submit" $custom1>
+        <Text>Cultivos del lote '{Lot.name}'</Text>
+        <RegisterFormContainer>
+          <br />
+          <br />
+          {""}
+          <InfoContainer>
+            <DetailsSign $custom3>
+              ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
+            </DetailsSign>
+            <DetailsSign $custom3>
+              Área disponible:{" "}
+              <DetailsItem>
+                {" "}
+                {Lot.capacity_in_use !== undefined ? `${Lot.available_capacity} Ha` : ``}
+              </DetailsItem>
+            </DetailsSign>
+            <DetailsSign $custom3>
+              Área en ocupación:{" "}
+              <DetailsItem>
+                {Lot.capacity_in_use !== undefined ? `${Lot.capacity_in_use} Ha` : ``}
+              </DetailsItem>
+            </DetailsSign>
+            <DetailsSign $custom3>Cultivos:</DetailsSign>
+          </InfoContainer>
+        </RegisterFormContainer>
+        {!loading && data && data.crops.length > 0 && (
+          <TableV1
+            evencolor="#FFFFFF"
+            oddcolor="rgb(255, 103, 15, 0.2)"
+            columns={["ID", "Cultivos", "Área", "Acciones"]}
+            columnMapping={{
+              Cultivos: "name",
+              Área: "area",
+            }}
+            data={data.crops}
+            pagination={{
+              currentPage,
+              setCurrentPage,
+              rowsPerPage,
+              setRowsPerPage,
+              setRefetch,
+              totalPages: data.meta.total_pages,
+            }}
+            options={{ edit: handleEdit, delete: handleDelete }}
+          />
+        )}
+        <SignBoard $custom3>
+          ¿Quieres añadir un cultivo?{" "}
+          <Link href={`/lot-menu/new-crop/${lotId}`} $custom3>
+            ¡Hazlo aquí!
+          </Link>
+        </SignBoard>
+        {/* <Button type="submit" $custom1>
             Crear nuevo encargado
           </Button>
           <InfoContainer>
             <DetailsSign $custom3>Usuarios encargados:</DetailsSign>
           </InfoContainer>
-          {/* <Container>
+          <Container>
             <Table $custom>
               <thead>
                 <TableRow index={-1}>
@@ -184,19 +181,18 @@ export const LotsCrops: React.FC = () => {
               </tbody>
             </Table>
           </Container> */}
-          {/*Mostrar modal de notificación si showNotification es true*/}
-          {showNotification && (
-            <NotificationModal
-              title="Cultivo eliminado exitosamente"
-              description="El cultivo ha sido eliminado con éxito."
-              status="success" // Asegúrate de tener esta variable definida
-              buttonText="Aceptar"
-              onClose={handleNotificationClose}
-              // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
-              redirectUrl=""
-            />
-          )}
-        </Container>
+        {/*Mostrar modal de notificación si showNotification es true */}
+        {showNotification && (
+          <NotificationModal
+            title="Cultivo eliminado exitosamente"
+            description="El cultivo ha sido eliminado con éxito."
+            status="success" // Asegúrate de tener esta variable definida
+            buttonText="Aceptar"
+            onClose={handleNotificationClose}
+            // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
+            redirectUrl=""
+          />
+        )}
       </MainLayout>
     </div>
   );
