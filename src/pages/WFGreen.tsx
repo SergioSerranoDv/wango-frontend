@@ -129,7 +129,7 @@ export const WFGreen: React.FC = () => {
           </ContainerInput>
           <SignBoard $custom5>Noviembre (11/2023)</SignBoard>
         </FormContainer>
-        <TableV1
+        {/* <TableV1
           evencolor="#FFFFFF"
           oddcolor="rgb(255, 103, 15, 0.2)"
           // data=
@@ -146,7 +146,7 @@ export const WFGreen: React.FC = () => {
             Lote: "name",
             Capacidad: "capacity",
           }}
-        />
+        /> */}
       </MainLayout>
     </>
   );
