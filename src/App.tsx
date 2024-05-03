@@ -56,6 +56,10 @@ export const App: React.FC = () => {
                     path="/lot-menu/water-footprint/crops/components/:id"
                     element={<WFComponents />}
                   />
+                  <Route
+                    path="/lot-menu/water-footprint/crops/comp-green/:id"
+                    element={<WFGreen />}
+                  />
                 </>
               ) : (
                 <>

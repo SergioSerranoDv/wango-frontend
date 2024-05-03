@@ -31,6 +31,7 @@ export const WFCrops: React.FC = () => {
       const response = await fetchCropDetails(backendApiCall, collectionId);
       if (response.status === "success" && response.data) {
         setCropData(response.data);
+        console.log(response.data);
       }
     };
 

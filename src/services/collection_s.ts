@@ -17,6 +17,13 @@ export const getCollectionByCropId = async (
   return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/crop/${cropId}` });
 };
 
+export const findCollectionById = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  collectionId: string
+): Promise<apiResponse> => {
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/${collectionId}` });
+};
+
 interface PaaginationProps {
   page: number;
   limit: number;

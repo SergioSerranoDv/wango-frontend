@@ -18,9 +18,13 @@ import {
 import { Crop } from "../interfaces/crop";
 import { fetchCropDetails } from "../services/crop_s";
 import { TableV1 } from "../components/TableV1";
+import { Collection } from "../interfaces/collection";
+import { findCollectionById } from "../services/collection_s";
 
 export const WFGreen: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
+  const { id } = useParams();
+  const collectionId = id;
   const [crop, setCrop] = useState<Crop>({
     _id: "",
     area: 0,
@@ -29,10 +33,40 @@ export const WFGreen: React.FC = () => {
     latitude: "",
     longitude: "",
   });
-  const { id } = useParams();
-  const cropId = id;
+  const [collection, setCollection] = useState<Collection>({
+    _id: "",
+    crop_id: "",
+    inicial_date: new Date(),
+    final_date: new Date(),
+    name: "",
+    status: "",
+    user: "",
+  });
+
   useEffect(() => {
-    console.log("CropID: ", cropId);
+    console.log("CollectionID: ", collectionId);
+    async function loadCollectionDetails() {
+      if (collectionId) {
+        try {
+          const collectionDetails = await findCollectionById(backendApiCall, collectionId);
+          if (collectionDetails && collectionDetails.data) {
+            setCollection(collectionDetails.data);
+            console.log("Collection Data: ", collectionDetails.data);
+            // console.log("Collection: ", collection);
+          }
+        } catch (error) {
+          console.log("Error fetching crop details:", error);
+        }
+      }
+    }
+    loadCollectionDetails();
+    console.log("Collection: ", collection);
+  }, [backendApiCall, collectionId]);
+
+  const cropId = collection?.crop_id;
+
+  useEffect(() => {
+    console.log("CropID: ", collection?.crop_id);
     async function loadCropDetails() {
       if (cropId) {
         try {
@@ -55,6 +89,7 @@ export const WFGreen: React.FC = () => {
         <FormContainer>
           <SignBoard $custom4>Registros del cultivo '{crop?.name}' en el periodo</SignBoard>
           <SignBoard $custom3>00/00/00 - 00/00/00</SignBoard>
+          <SignBoard $custom3>{collection?.status} - 00/00/00</SignBoard>
           <InfoContainer $custom1>
             <br />
             <DetailsSign $custom4>
@@ -97,7 +132,7 @@ export const WFGreen: React.FC = () => {
         {/* <TableV1
           evencolor="#FFFFFF"
           oddcolor="rgb(255, 103, 15, 0.2)"
-          //data=
+          // data=
           // pagination={{
           //   rowsPerPage,
           //   setRowsPerPage,
@@ -107,11 +142,10 @@ export const WFGreen: React.FC = () => {
           //   totalPages: data.meta.total_pages,
           // }}
           columns={["Fecha", "R(Ton/dia)", "Kc", "ETo(mm/dia)", "ETc(mm/dia)"]}
-          // columnMapping={{
-          //   Lote: "name",
-          //   Capacidad: "capacity",
-          // }}
-          //options={{ edit: handleEdit, delete: handleDelete }}
+          columnMapping={{
+            Lote: "name",
+            Capacidad: "capacity",
+          }}
         /> */}
       </MainLayout>
     </>
