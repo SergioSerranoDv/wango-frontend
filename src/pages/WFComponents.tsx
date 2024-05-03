@@ -37,17 +37,17 @@ export const WFComponents = () => {
               Componente verde
             </ButtonSubmit>
           </Link>
-          <Link to={`/lot-menu/water-footprint/crops/comp-blue/${cropId}`} style={linkStyle}>
+          <Link to={`/lot-menu/water-footprint/crops/comp-green/${cropId}`} style={linkStyle}>
             <ButtonSubmit type="button" $custom1 $blue as="div">
               Componente azul
             </ButtonSubmit>
           </Link>
-          <Link to={`/lot-menu/water-footprint/crops/comp-gray/${cropId}`} style={linkStyle}>
+          <Link to={`/lot-menu/water-footprint/crops/comp-green/${cropId}`} style={linkStyle}>
             <ButtonSubmit type="button" $custom1 $gray as="div">
               Componente gris
             </ButtonSubmit>
           </Link>
-          <Link to={`/lot-menu/water-footprint/crops/full-wf/${cropId}`} style={linkStyle}>
+          <Link to={`/lot-menu/water-footprint/crops/comp-green/${cropId}`} style={linkStyle}>
             <ButtonSubmit type="button" $custom1 $orange as="div">
               Huella hídrica completa
             </ButtonSubmit>
