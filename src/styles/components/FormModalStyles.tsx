@@ -36,7 +36,7 @@ export const ModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
-  overflow-y: auto; /* Agregar esta línea */
+  overflow-y: auto;
 `;
 
 export const Form = styled.form`
