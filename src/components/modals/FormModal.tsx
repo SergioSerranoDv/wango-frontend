@@ -98,11 +98,27 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
       // Maneja la respuesta del servidor
       if (response.status === "success") {
         // Si la respuesta es exitosa, muestra una notificación de éxito
+        const title = recordId ? "Registro actualizado" : "Registro creado";
+        const description = recordId
+          ? "Has actualizado exitosamente el registro."
+          : "Has creado un registro, podrás hacer otro en 24 horas.";
+
         setNotificationDetails({
-          title: "Registro exitoso",
-          description: "Tu registro ha sido creado/actualizado correctamente.",
+          title,
+          description,
           status: "success",
-          redirectUrl: "", // Puedes especificar una URL para redirigir si es necesario
+          redirectUrl: "",
+        });
+      } else if (
+        response.status === "error" &&
+        response.message === "You can only create a record once a day"
+      ) {
+        // Si el usuario ya ha creado un registro hoy, muestra una notificación de error
+        setNotificationDetails({
+          title: "Ya has creado un registro hoy",
+          description: "Recuerda que solo puedes crear un registro cada 24 horas.",
+          status: "error",
+          redirectUrl: "",
         });
       } else {
         // Si hay un error, muestra una notificación de error
@@ -115,7 +131,6 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
       }
       setShowNotification(true); // Muestra la notificación
       setRefetch((prev) => prev + 1); // Actualiza el estado para refrescar los datos si es necesario
-      onClose(); // Cierra el modal de registro
     } catch (error) {
       console.error(error); // Registra el error en la consola
       // Muestra una notificación de error
@@ -129,21 +144,8 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
     }
   };
 
-  const handleNotification = (
-    title: string,
-    description: string,
-    status: string,
-    redirectUrl: string
-  ) => {
-    setNotificationDetails({ title, description, status, redirectUrl });
-    setShowNotification(true);
-  };
-
   const handleNotificationClose = () => {
     setShowNotification(false);
-  };
-
-  const handleClose = () => {
     onClose();
   };
 
@@ -213,7 +215,7 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
               <Button type="submit" color="green">
                 {recordId ? "Actualizar" : "Crear"}
               </Button>
-              <Button type="button" color="red" onClick={handleClose}>
+              <Button type="button" color="red" onClick={onClose}>
                 Cancelar
               </Button>
             </ButtonContainer>

@@ -29,12 +29,14 @@ export const Overlay = styled.div`
 
 export const ModalContainer = styled.div`
   max-width: 400px;
+  max-height: 80%;
   background-color: #ffffff;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
+  overflow-y: auto;
 `;
 
 export const Form = styled.form`
