@@ -22,6 +22,7 @@ import {
   SignBoard,
   ButtonContainer2,
   SignBoard2,
+  InfoContainer2,
 } from "../styles/FormStyles";
 
 interface FormData {
@@ -197,7 +198,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
       <FormContainer>
         <SignBoard>Información del cultivo</SignBoard>
         {showNotification && <SignBoard2 $custom1>{notificationMessage}</SignBoard2>}
-        <InfoContainer>
+        <InfoContainer2 $custom1>
           <br />
           <DetailsSign $custom3>
             Lote: <DetailsItem> {lot?.name}</DetailsItem>
@@ -208,7 +209,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
           <DetailsSign $custom3>
             Área en ocupación: <DetailsItem>{lot?.capacity_in_use} Ha</DetailsItem>
           </DetailsSign>
-        </InfoContainer>
+        </InfoContainer2>
         <Form onSubmit={handleSubmit}>
           <Label htmlFor="cropName">Nombre del cultivo*</Label>
           <Input

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { TableV1 } from "../components/TableV1";
 import { UseGet } from "../hooks/UseGet";
@@ -16,6 +16,7 @@ import {
 } from "../styles/lotscropsStyles";
 
 export const WFCrops: React.FC = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const collectionId = id || "";
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
@@ -87,7 +88,14 @@ export const WFCrops: React.FC = () => {
                 setRefetch,
                 totalPages: data?.meta?.total_pages,
               }}
-              options={{ edit: () => {}, delete: () => {} }}
+              options={{
+                edit: (rowData: any) => {
+                  const { _id } = rowData; // Reemplaza "id" con el nombre correcto del campo
+                  navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
+                },
+
+                delete: () => {},
+              }}
             />
           )}
         </Container>

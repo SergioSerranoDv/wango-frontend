@@ -19,6 +19,7 @@ interface InputProps {
   $blue?: boolean;
   $orange?: boolean;
   $custom5?: boolean;
+  typeColor?: string;
 }
 
 export const FormContainer = styled.div`
@@ -61,7 +62,7 @@ export const Input = styled.input<InputProps>`
   font-weight: 550; /*semibold*/
   opacity: 0.85;
   border-radius: 5px;
-  width: ${(props) => (props.$custom1 ? "75%" : "100%")};
+  width: ${(props) => (props.$custom1 ? "70%" : "100%")};
   border: 1px solid #000000;
   box-sizing: border-box;
   //background-color: #ff0078;
@@ -101,7 +102,7 @@ export const Button = styled.button<InputProps>`
 export const ButtonSubmit = styled.button<InputProps>`
   font-size: 14px;
   font-weight: 550; /*semibold*/
-  padding: 10px;
+  padding: 11px;
   text-align: center;
   background-color: ${(props) =>
     props.$gray
@@ -114,13 +115,13 @@ export const ButtonSubmit = styled.button<InputProps>`
   color: #fff;
   cursor: pointer;
   border-radius: 6px;
-  border: 1px solid
-    ${(props) =>
-      props.$gray
-        ? colors.gray
-        : props.$blue
-          ? colors.blue
-          : colors[(props.color as keyof typeof colors) || "green"]};
+  //border: 1px solid
+  ${(props) =>
+    props.$gray
+      ? colors.gray
+      : props.$blue
+        ? colors.blue
+        : colors[(props.color as keyof typeof colors) || "green"]};
   margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
   margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
   margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
@@ -137,8 +138,8 @@ export const SignBoard = styled.p<InputProps>`
   font-size: ${(props) => (props.$primary ? "13px" : "13px")};
   font-size: ${(props) => (props.$custom4 ? "14px" : "")};
   font-size: ${(props) => (props.$custom3 ? "12.5px" : "")};
-  font-size: ${(props) => (props.$custom5 ? "15px" : "")};
-  font-weight: ${(props) => (props.$custom5 ? "700" : "620")};
+  font-size: ${(props) => (props.$custom5 ? "14px" : "")};
+  font-weight: ${(props) => (props.$custom5 ? "650" : "620")};
   font-weight: ${(props) => (props.$primary ? "" : "")};
   text-align: center;
   color: ${(props) => (props.$primary ? "#000000" : "#4d4d4d")};
@@ -203,7 +204,8 @@ export const FormField = styled.div<InputProps>``;
 
 export const InfoContainer = styled.div<InputProps>`
   align-items: ${(props) => (props.$custom2 ? "center" : "right")};
-  background: ${(props) => (props.$custom1 ? "#D9D9D9" : "")};
+  background: ${(props) => (props.typeColor ? "#FFAF31" : "#D9D9D9")};
+  background: ${(props) => (props.$custom4 ? "transparent" : "")};
   display: flex;
   flex-direction: column;
   gap: 7.5px;
@@ -217,6 +219,17 @@ export const InfoContainer = styled.div<InputProps>`
   padding: ${(props) => (props.$custom1 ? "0px 15px 20px 15px" : "-6px")};
   border-radius: ${(props) => (props.$custom1 ? "15px" : "0px")};
   align-items: ${(props) => (props.$custom4 ? "center" : "")};
+`;
+export const InfoContainer2 = styled.div<InputProps>`
+  background: ${(props) => (props.$custom1 ? "transparent" : "")};
+  display: flex;
+  flex-direction: column;
+  gap: 7.5px;
+  box-sizing: border-box;
+  padding-bottom: 18px;
+  margin-bottom: ${(props) => (props.$custom1 ? "5px" : "26px")};
+  margin-top: ${(props) => (props.$custom1 ? "15px" : "-6px")};
+  padding: ${(props) => (props.$custom1 ? "0px 15px 20px 0px" : "-6px")};
 `;
 
 export const DetailsSign = styled.a<InputProps>`
