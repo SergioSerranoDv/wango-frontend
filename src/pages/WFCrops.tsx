@@ -71,8 +71,9 @@ export const WFCrops: React.FC = () => {
         <TableV1
           evencolor="#FFFFFF"
           oddcolor="rgb(255, 103, 15, 0.2)"
-          columns={["id", "Fecha Inicio", "Fecha Fin", "Acciones"]}
+          columns={["id", "Nombre", "Fecha Inicio", "Fecha Fin", "Acciones"]}
           columnMapping={{
+            Nombre: "name",
             "Fecha Inicio": "createdAt",
             "Fecha Fin": "updatedAt",
           }}
