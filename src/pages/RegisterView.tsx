@@ -48,6 +48,7 @@ export const RegisterView = () => {
         try {
           // Subprocess 1: Obtener la colección por el ID del cultivo para obtener el ID de la colección
           const response = await getCollectionByCropId(backendApiCall, cropId);
+          console.log("Prueba: ", response.data);
           if (response.status === "success") {
             setCollection(response.data);
             // Subprocess 2: Obtener los registros de la colección por el ID de la colección
@@ -66,6 +67,7 @@ export const RegisterView = () => {
               })
             );
             setCollectionRecords(formattedRecords);
+            //console.log("Prueba: ", formattedRecords);
             setTotalPages(collectionRecords.data.meta.total_pages);
             setLoadingCollectionData(false);
           } else {
