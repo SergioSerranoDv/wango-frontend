@@ -58,7 +58,7 @@ export const WFCrops: React.FC = () => {
 
   return (
     <MainLayout>
-      <Text>Registros del cultivo '{cropData.name}'</Text>
+      <Text>Recolecciones del cultivo '{cropData.name}'</Text>
       <RegisterFormContainer>
         <InfoContainer>
           <DetailsSign $custom3>
