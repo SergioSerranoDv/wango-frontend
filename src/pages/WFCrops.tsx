@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { TableV1 } from "../components/TableV1";
 import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchCropDetails } from "../services/crop_s";
 import { Crop } from "../interfaces/crop";
-import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
   RegisterFormContainer,
@@ -16,6 +15,7 @@ import {
 } from "../styles/lotscropsStyles";
 
 export const WFCrops: React.FC = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const collectionId = id || "";
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
@@ -57,42 +57,45 @@ export const WFCrops: React.FC = () => {
   );
 
   return (
-    <div>
-      <MainLayout>
-        <Container>
-          <Text>Registros del cultivo '{cropData.name}'</Text>
-          <RegisterFormContainer>
-            <InfoContainer>
-              <DetailsSign $custom3>
-                Área: <DetailsItem>{cropData.area} Ha</DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>Historial de registros:</DetailsSign>
-            </InfoContainer>
-          </RegisterFormContainer>
-          {!loading && formattedCollections && (
-            <TableV1
-              evencolor="#FFFFFF"
-              oddcolor="rgb(255, 103, 15, 0.2)"
-              columns={["id", "Fecha Inicio", "Fecha Fin", "Acciones"]}
-              columnMapping={{
-                "Fecha Inicio": "createdAt",
-                "Fecha Fin": "updatedAt",
-              }}
-              data={formattedCollections}
-              pagination={{
-                currentPage,
-                setCurrentPage,
-                rowsPerPage,
-                setRowsPerPage,
-                setRefetch,
-                totalPages: data?.meta?.total_pages,
-              }}
-              options={{ edit: () => {}, delete: () => {} }}
-            />
-          )}
-        </Container>
-      </MainLayout>
-    </div>
+    <MainLayout>
+      <Text>Registros del cultivo '{cropData.name}'</Text>
+      <RegisterFormContainer>
+        <InfoContainer>
+          <DetailsSign $custom3>
+            Área: <DetailsItem>{cropData.area} Ha</DetailsItem>
+          </DetailsSign>
+          <DetailsSign $custom3>Historial de registros:</DetailsSign>
+        </InfoContainer>
+      </RegisterFormContainer>
+      {!loading && formattedCollections && (
+        <TableV1
+          evencolor="#FFFFFF"
+          oddcolor="rgb(255, 103, 15, 0.2)"
+          columns={["id", "Fecha Inicio", "Fecha Fin", "Acciones"]}
+          columnMapping={{
+            "Fecha Inicio": "createdAt",
+            "Fecha Fin": "updatedAt",
+          }}
+          data={formattedCollections}
+          pagination={{
+            currentPage,
+            setCurrentPage,
+            rowsPerPage,
+            setRowsPerPage,
+            setRefetch,
+            totalPages: data?.meta?.total_pages,
+          }}
+          options={{
+            edit: (rowData: any) => {
+              const { _id } = rowData; // Reemplaza "id" con el nombre correcto del campo
+              navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
+            },
+
+            delete: () => {},
+          }}
+        />
+      )}
+    </MainLayout>
   );
 };
 

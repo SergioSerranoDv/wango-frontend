@@ -56,74 +56,70 @@ export const WFLot: React.FC = () => {
     setShowNotification(false);
   };
   return (
-    <div>
-      <MainLayout>
-        <Container>
-          <Text>Registros para la huella hídrica en el lote '{Lot.name}'</Text>
-          <RegisterFormContainer>
-            <br />
-            <br />{" "}
-            <InfoContainer>
-              <DetailsSign $custom3>
-                ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>
-                Área disponible:{" "}
-                <DetailsItem>
-                  {" "}
-                  {Lot.capacity_in_use !== undefined ? `${Lot.available_capacity} Ha` : ``}
-                </DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>
-                Área en ocupación:{" "}
-                <DetailsItem>
-                  {Lot.capacity_in_use !== undefined ? `${Lot.capacity_in_use} Ha` : ``}
-                </DetailsItem>
-              </DetailsSign>
-              <DetailsSign $custom3>Cultivos:</DetailsSign>
-            </InfoContainer>
-          </RegisterFormContainer>
-          {!loading && data && data.crops.length > 0 && (
-            <TableV1
-              evencolor="#FFFFFF"
-              oddcolor="rgb(255, 103, 15, 0.2)"
-              columns={["ID", "Cultivos", "Área", "Opciones"]}
-              columnMapping={{
-                Cultivos: "name",
-                Área: "area",
-              }}
-              data={data.crops}
-              pagination={{
-                currentPage,
-                setCurrentPage,
-                rowsPerPage,
-                setRowsPerPage,
-                setRefetch,
-                totalPages: data.meta.total_pages,
-              }}
-              options={{ edit: handleEdit, delete: handleEdit }}
-            />
-          )}
-          <RegisterFormContainer>
-            <InfoContainer>
-              <DetailsSign $custom3>
-                Nota: Para ver los registros y el valor del componente de un cultivo, debes
-                finalizar el proceso de recolección de registros dando click en el ícono de la mano.
-              </DetailsSign>
-            </InfoContainer>
-          </RegisterFormContainer>
-          {showNotification && (
-            <NotificationModal
-              title="Cultivo eliminado exitosamente"
-              description="El cultivo ha sido eliminado con éxito."
-              status="success"
-              buttonText="Aceptar"
-              onClose={handleNotificationClose}
-              redirectUrl=""
-            />
-          )}
-        </Container>
-      </MainLayout>
-    </div>
+    <MainLayout>
+      <Text>Registros para la huella hídrica en el lote '{Lot.name}'</Text>
+      <RegisterFormContainer>
+        <br />
+        <br />{" "}
+        <InfoContainer>
+          <DetailsSign $custom3>
+            ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
+          </DetailsSign>
+          <DetailsSign $custom3>
+            Área disponible:{" "}
+            <DetailsItem>
+              {" "}
+              {Lot.capacity_in_use !== undefined ? `${Lot.available_capacity} Ha` : ``}
+            </DetailsItem>
+          </DetailsSign>
+          <DetailsSign $custom3>
+            Área en ocupación:{" "}
+            <DetailsItem>
+              {Lot.capacity_in_use !== undefined ? `${Lot.capacity_in_use} Ha` : ``}
+            </DetailsItem>
+          </DetailsSign>
+          <DetailsSign $custom3>Cultivos:</DetailsSign>
+        </InfoContainer>
+      </RegisterFormContainer>
+      {!loading && data && data.crops.length > 0 && (
+        <TableV1
+          evencolor="#FFFFFF"
+          oddcolor="rgb(255, 103, 15, 0.2)"
+          columns={["ID", "Cultivos", "Área", "Opciones"]}
+          columnMapping={{
+            Cultivos: "name",
+            Área: "area",
+          }}
+          data={data.crops}
+          pagination={{
+            currentPage,
+            setCurrentPage,
+            rowsPerPage,
+            setRowsPerPage,
+            setRefetch,
+            totalPages: data.meta.total_pages,
+          }}
+          options={{ edit: handleEdit, delete: handleEdit }}
+        />
+      )}
+      <RegisterFormContainer>
+        <InfoContainer>
+          <DetailsSign $custom3>
+            Nota: Para ver los registros y el valor del componente de un cultivo, debes finalizar el
+            proceso de recolección de registros dando click en el ícono de la mano.
+          </DetailsSign>
+        </InfoContainer>
+      </RegisterFormContainer>
+      {showNotification && (
+        <NotificationModal
+          title="Cultivo eliminado exitosamente"
+          description="El cultivo ha sido eliminado con éxito."
+          status="success"
+          buttonText="Aceptar"
+          onClose={handleNotificationClose}
+          redirectUrl=""
+        />
+      )}
+    </MainLayout>
   );
 };

@@ -51,7 +51,11 @@ function LoteMenu({ lotId = "" }: Props) {
     {
       id: 3,
       elementList: (
-        <LinkElement src={HuellaHidrica} text="Calcular huella hídrica" link={`/lot-menu/water-footprint/${lotId}`} />
+        <LinkElement
+          src={HuellaHidrica}
+          text="Calcular huella hídrica"
+          link={`/lot-menu/water-footprint/${lotId}`}
+        />
       ),
     },
     {
@@ -71,27 +75,23 @@ function LoteMenu({ lotId = "" }: Props) {
   ];
 
   return (
-    <>
-      <MainWrapper>
-        <ContentArea>
-          <Text>Lote: {data && data.name}</Text>
-          <Menu>
-            {MenuItems.map((item, index) => (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                key={index}
-              >
-                {item.elementList}
-              </div>
-            ))}
-          </Menu>
-        </ContentArea>
-      </MainWrapper>
-    </>
+    <ContentArea>
+      <Text>Lote: {data && data.name}</Text>
+      <Menu>
+        {MenuItems.map((item, index) => (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            key={index}
+          >
+            {item.elementList}
+          </div>
+        ))}
+      </Menu>
+    </ContentArea>
   );
 }
 
