@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect, Dispatch, SetStateAction } from "react";
-import { Form, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { ApiContext } from "../context/ApiContext";
-import { CropFormEdit } from "../components/CropFormEdit";
 import { Records } from "../interfaces/record";
 import {
   ContainerInput,
@@ -18,7 +17,7 @@ import {
 } from "../styles/FormStyles";
 import { Crop } from "../interfaces/crop";
 import { fetchCropDetails } from "../services/crop_s";
-import { getWaterFootprintByCollectionId } from "../services/water_footprint_s";
+import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { findCollectionById } from "../services/collection_s";
 import { TableV2 } from "../components/TableV2";
@@ -50,8 +49,6 @@ export const WF: React.FC = () => {
   const [refetch, setRefetch] = useState(0);
 
   useEffect(() => {
-    console.log("Tipo de componente: ", type);
-    console.log("CollectionID: ", collectionId);
     async function loadCollectionDetails() {
       if (collectionId) {
         try {
@@ -59,7 +56,6 @@ export const WF: React.FC = () => {
           if (collectionDetails && collectionDetails.data) {
             setCollection(collectionDetails.data);
             // setFormattedCollection(collectionDetails.data);
-            console.log("Collection Data: ", collectionDetails.data);
 
             // Verifica si las fechas son válidas antes de intentar formatearlas
             if (collectionDetails && collectionDetails.data) {
@@ -78,9 +74,6 @@ export const WF: React.FC = () => {
               setInitialDate(formattedInitialDate);
               setFinalDate(formattedFinalDate);
             }
-
-            // console.log("InitialDate: ", initialDate);
-            // console.log("FinallDate: ", finalDate);
           }
         } catch (error) {
           console.log("Error fetching crop details:", error);
@@ -88,13 +81,11 @@ export const WF: React.FC = () => {
       }
     }
     loadCollectionDetails();
-    console.log("Collection V2: ", collection);
   }, [backendApiCall, collectionId]);
 
   const cropId = collection?.crop_id;
 
   useEffect(() => {
-    console.log("CropID: ", collection?.crop_id);
     async function loadCropDetails() {
       if (cropId) {
         try {
@@ -131,7 +122,6 @@ export const WF: React.FC = () => {
           setCollectionRecords(formattedRecords);
           setTotalPages(collectionRecords.data.meta.total_pages);
           setLoadingCollectionData(false);
-          console.log("Registros de la colección: ", formattedRecords);
         } catch (error) {
           console.log("Error al obtener los datos de la colección:", error);
         }
@@ -142,14 +132,13 @@ export const WF: React.FC = () => {
 
   useEffect(() => {
     async function fetchWaterFootprint() {
-      if (collectionId) {
-        console.log("Fetching water footprint for collection: ", collectionId);
+      if (collectionId && cropId) {
         try {
-          const waterFootprint = await getWaterFootprintByCollectionId(
+          const waterFootprint = await getWaterFootprintByCropIdAndCollectionId(
             backendApiCall,
-            collectionId
+            collectionId,
+            cropId
           );
-          console.log("WaterFootprint: ", waterFootprint);
           if (waterFootprint && waterFootprint.data) {
             setWaterFootprint(waterFootprint.data);
           }
@@ -159,7 +148,7 @@ export const WF: React.FC = () => {
       }
     }
     fetchWaterFootprint();
-  }, [backendApiCall, collectionId]);
+  }, [backendApiCall, collectionId, cropId]);
 
   return (
     <>
