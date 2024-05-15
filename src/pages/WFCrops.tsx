@@ -4,7 +4,9 @@ import { MainLayout } from "../layouts/MainLayout";
 import { TableV3 } from "../components/TableV3";
 import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
+import { createNewWaterFootprint } from "../services/water_footprint_s";
 import { fetchCropDetails } from "../services/crop_s";
+import { updateCollectionStatus } from "../services/collection_s";
 import { Crop } from "../interfaces/crop";
 import { Collection } from "../interfaces/collection";
 import { Text } from "../styles/MainMenuStyles";
@@ -33,7 +35,6 @@ export const WFCrops: React.FC = () => {
       const response = await fetchCropDetails(backendApiCall, collectionId);
       if (response.status === "success" && response.data) {
         setCropData(response.data);
-        console.log(response.data);
       }
     };
 
@@ -57,7 +58,32 @@ export const WFCrops: React.FC = () => {
       }),
     })
   );
-
+  const handleUpdateCollectionStatus = async (collectionId: string, crop_id: string) => {
+    try {
+      const response = await updateCollectionStatus(backendApiCall, collectionId, {
+        crop_id: crop_id,
+        status: "completed",
+      });
+      if (response.status === "success") {
+        setRefetch((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleCreateNewWaterFootprint = async (collectionId: string, crop_id: string) => {
+    try {
+      const response = await createNewWaterFootprint(backendApiCall, {
+        collection_id: collectionId,
+        crop_id: crop_id,
+      });
+      if (response.status === "success") {
+        setRefetch((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <MainLayout>
       <Text>Recolecciones del cultivo '{cropData.name}'</Text>
@@ -92,10 +118,11 @@ export const WFCrops: React.FC = () => {
             update: {
               icon: stopCollection,
               action: (item: Collection) => {
-                const { _id, status } = item;
+                const { _id, crop_id, status } = item;
                 if (status === "in_progress") {
-                  console.log("stop collection");
+                  handleUpdateCollectionStatus(_id, crop_id);
                 } else {
+                  handleCreateNewWaterFootprint(_id, crop_id);
                   navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
                 }
               },
