@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
-import { TableV1 } from "../components/TableV1";
+import { TableV3 } from "../components/TableV3";
 import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchCropDetails } from "../services/crop_s";
 import { Crop } from "../interfaces/crop";
+import { Collection } from "../interfaces/collection";
 import { Text } from "../styles/MainMenuStyles";
 import {
   RegisterFormContainer,
@@ -13,6 +14,7 @@ import {
   DetailsSign,
   DetailsItem,
 } from "../styles/lotscropsStyles";
+import stopCollection from "../assets/icons/stopCollection.svg";
 
 export const WFCrops: React.FC = () => {
   const navigate = useNavigate();
@@ -68,7 +70,7 @@ export const WFCrops: React.FC = () => {
         </InfoContainer>
       </RegisterFormContainer>
       {!loading && formattedCollections && (
-        <TableV1
+        <TableV3
           evencolor="#FFFFFF"
           oddcolor="rgb(255, 103, 15, 0.2)"
           columns={["id", "Nombre", "Fecha Inicio", "Fecha Fin", "Acciones"]}
@@ -86,13 +88,18 @@ export const WFCrops: React.FC = () => {
             setRefetch,
             totalPages: data?.meta?.total_pages,
           }}
-          options={{
-            edit: (rowData: any) => {
-              const { _id } = rowData; // Reemplaza "id" con el nombre correcto del campo
-              navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
+          actions={{
+            update: {
+              icon: stopCollection,
+              action: (item: Collection) => {
+                const { _id, status } = item;
+                if (status === "in_progress") {
+                  console.log("stop collection");
+                } else {
+                  navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
+                }
+              },
             },
-
-            delete: () => {},
           }}
         />
       )}
