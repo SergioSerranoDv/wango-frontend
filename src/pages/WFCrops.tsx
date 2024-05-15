@@ -57,41 +57,39 @@ export const WFCrops: React.FC = () => {
   );
 
   return (
-    <MainLayout>
-      <Text>Recolecciones del cultivo '{cropData.name}'</Text>
-      <RegisterFormContainer>
-        <InfoContainer>
-          <DetailsSign $custom3>
-            Área: <DetailsItem>{cropData.area} Ha</DetailsItem>
-          </DetailsSign>
-          <DetailsSign $custom3>Historial de registros:</DetailsSign>
-        </InfoContainer>
-      </RegisterFormContainer>
-      {!loading && formattedCollections && (
-        <TableV1
-          evencolor="#FFFFFF"
-          oddcolor="rgb(255, 103, 15, 0.2)"
-          columns={["id", "Nombre", "Fecha Inicio", "Fecha Fin", "Acciones"]}
-          columnMapping={{
-            Nombre: "name",
-            "Fecha Inicio": "createdAt",
-            "Fecha Fin": "updatedAt",
-          }}
-          data={formattedCollections}
-          pagination={{
-            currentPage,
-            setCurrentPage,
-            rowsPerPage,
-            setRowsPerPage,
-            setRefetch,
-            totalPages: data?.meta?.total_pages,
-          }}
-          options={{
-            edit: (rowData: any) => {
-              const { _id } = rowData; // Reemplaza "id" con el nombre correcto del campo
-              navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
-            },
-
+      <MainLayout>
+          <Text>Recolecciones del cultivo '{cropData.name}'</Text>
+          <RegisterFormContainer>
+            <InfoContainer>
+              <DetailsSign $custom3>
+                Área: <DetailsItem>{cropData.area} Ha</DetailsItem>
+              </DetailsSign>
+              <DetailsSign $custom3>Historial de registros:</DetailsSign>
+            </InfoContainer>
+          </RegisterFormContainer>
+          {!loading && formattedCollections && (
+            <TableV1
+              evencolor="#FFFFFF"
+              oddcolor="rgb(255, 103, 15, 0.2)"
+              columns={["id", "Fecha Inicio", "Fecha Fin", "Acciones"]}
+              columnMapping={{
+                "Fecha Inicio": "createdAt",
+                "Fecha Fin": "updatedAt",
+              }}
+              data={formattedCollections}
+              pagination={{
+                currentPage,
+                setCurrentPage,
+                rowsPerPage,
+                setRowsPerPage,
+                setRefetch,
+                totalPages: data?.meta?.total_pages,
+              }}
+              options={{
+                edit: (rowData: any) => {
+                  const { _id } = rowData; // Reemplaza "id" con el nombre correcto del campo
+                  navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
+                },
             delete: () => {},
           }}
         />

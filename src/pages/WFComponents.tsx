@@ -65,6 +65,11 @@ export const WFComponents = () => {
               Huella hídrica completa
             </ButtonSubmit>
           </Link>
+          <Link to={`/lot-menu/water-footprint/crops/comp/${collectionId}/IA`} style={linkStyle}>
+            <ButtonSubmit type="button" $custom1 $amber as="div">
+              Análisis IA
+            </ButtonSubmit>
+          </Link>
         </Form>
       </FormContainer>
     </MainLayout>

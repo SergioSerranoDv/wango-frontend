@@ -6,6 +6,7 @@ interface InputProps {
   $custom1?: boolean;
   $custom2?: boolean;
   $custom3?: boolean;
+  $custom4?: boolean;
 }
 
 export const RegisterFormContainer = styled.div`
@@ -73,6 +74,7 @@ export const Logo = styled.img`
 `;
 
 export const SignBoard = styled.p<InputProps>`
+  //padding-top: ${(props) => (props.$custom4 ? "10px" : "")};
   font-size: ${(props) => (props.$primary ? "13px" : "13px")};
   font-weight: ${(props) => (props.$primary ? "" : "620")};
   text-align: ${(props) => (props.$custom3 ? "" : "center")};
@@ -89,6 +91,15 @@ export const SignBoard = styled.p<InputProps>`
   opacity: 0.95;
   padding: ${(props) => (props.$custom3 ? "8px 0 20px 0" : "")};
   border-bottom: ${(props) => (props.$custom3 ? "1px solid #000000" : "")};
+`;
+
+export const SignBoard3 = styled.p<InputProps>`
+  font-size: 13px;
+  font-weight: 620;
+  text-align: center;
+  color: #4d4d4d;
+  margin: -18px 0 24px 0;
+  opacity: 0.95;
 `;
 
 export const Description = styled.p<InputProps>`
@@ -124,6 +135,7 @@ export const Link = styled.a<InputProps>`
 `;
 
 export const InfoContainer = styled.div<InputProps>`
+  font-size: ${(props) => (props.$custom1 ? "14px" : "")};
   display: flex;
   flex-direction: column;
   gap: 7.5px;
