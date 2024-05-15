@@ -37,7 +37,6 @@ export const WF: React.FC = () => {
 
   //Se declara el estado inicial de collection
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
-  const [formattedCollection, setFormattedCollection] = useState<Collection[]>([]); // Estado para formatear
   const [waterFootprint, setWaterFootprint] = useState<any>({}); // Estado para almacenar la huella hídrica
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
