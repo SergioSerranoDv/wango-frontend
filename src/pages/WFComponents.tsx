@@ -2,8 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
 import { Crop } from "../interfaces/crop";
-import { fetchCropDetails } from "../services/crop_s";
-import { Button, ButtonSubmit, Form, FormContainer, SignBoard } from "../styles/FormStyles";
+import { ButtonSubmit, Form, FormContainer, SignBoard } from "../styles/FormStyles";
 import { MainLayout } from "../layouts/MainLayout";
 import { findCollectionById } from "../services/collection_s";
 import { Collection } from "../interfaces/collection";
@@ -17,7 +16,6 @@ export const WFComponents = () => {
   const [cropData, setCropData] = useState({} as Crop);
   //Obtener datos de la collection
   useEffect(() => {
-    console.log("Collection ID:", collectionId);
     const fetchData = async () => {
       const response = await findCollectionById(backendApiCall, collectionId as string);
       if (response.status === "success" && response.data !== undefined) {
