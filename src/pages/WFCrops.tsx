@@ -6,7 +6,6 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchCropDetails } from "../services/crop_s";
 import { Crop } from "../interfaces/crop";
-import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
 import {
   RegisterFormContainer,
@@ -58,9 +57,7 @@ export const WFCrops: React.FC = () => {
   );
 
   return (
-    <div>
       <MainLayout>
-        <Container>
           <Text>Recolecciones del cultivo '{cropData.name}'</Text>
           <RegisterFormContainer>
             <InfoContainer>
@@ -93,14 +90,11 @@ export const WFCrops: React.FC = () => {
                   const { _id } = rowData; // Reemplaza "id" con el nombre correcto del campo
                   navigate(`/lot-menu/water-footprint/crops/comp/${_id}`);
                 },
-
-                delete: () => {},
-              }}
-            />
-          )}
-        </Container>
-      </MainLayout>
-    </div>
+            delete: () => {},
+          }}
+        />
+      )}
+    </MainLayout>
   );
 };
 
