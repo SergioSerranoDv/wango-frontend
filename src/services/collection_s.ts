@@ -39,3 +39,14 @@ export const fetchPaginatedCollectionPerCollection = async (
     endpoint: `v1/collection/info/crop/${record_id}/paginated?page=${page}&limit=${limit}`,
   });
 };
+export const updateCollectionStatus = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  collectionId: string,
+  data: any
+): Promise<any> => {
+  return await backendApiCall({
+    method: "PUT",
+    endpoint: `v1/collection/update/status/${collectionId}`,
+    body: data,
+  });
+};

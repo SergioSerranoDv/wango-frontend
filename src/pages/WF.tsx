@@ -18,7 +18,7 @@ import {
 } from "../styles/FormStyles";
 import { Crop } from "../interfaces/crop";
 import { fetchCropDetails } from "../services/crop_s";
-import { TableV1 } from "../components/TableV1";
+import { getWaterFootprintByCollectionId } from "../services/water_footprint_s";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { findCollectionById } from "../services/collection_s";
 import { TableV2 } from "../components/TableV2";
@@ -39,6 +39,7 @@ export const WF: React.FC = () => {
   //Se declara el estado inicial de collection
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
   const [formattedCollection, setFormattedCollection] = useState<Collection[]>([]); // Estado para formatear
+  const [waterFootprint, setWaterFootprint] = useState<any>({}); // Estado para almacenar la huella hídrica
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -137,6 +138,27 @@ export const WF: React.FC = () => {
       }
     }
     fetchCollectionRecords();
+  }, [backendApiCall, collectionId]);
+
+  useEffect(() => {
+    async function fetchWaterFootprint() {
+      if (collectionId) {
+        console.log("Fetching water footprint for collection: ", collectionId);
+        try {
+          const waterFootprint = await getWaterFootprintByCollectionId(
+            backendApiCall,
+            collectionId
+          );
+          console.log("WaterFootprint: ", waterFootprint);
+          if (waterFootprint && waterFootprint.data) {
+            setWaterFootprint(waterFootprint.data);
+          }
+        } catch (error) {
+          console.log("Error fetching water footprint:", error);
+        }
+      }
+    }
+    fetchWaterFootprint();
   }, [backendApiCall, collectionId]);
 
   return (
@@ -246,7 +268,21 @@ export const WF: React.FC = () => {
                     : ""}
             </SubLabel>
             =
-            <Input disabled type="number" id="HHv" $custom1 />
+            <Input
+              disabled
+              type="number"
+              id="HHv"
+              $custom1
+              value={
+                type === "blue"
+                  ? waterFootprint.blue_component
+                  : type === "green"
+                    ? waterFootprint.green_component
+                    : type === "grey"
+                      ? waterFootprint.grey_component
+                      : ""
+              }
+            />
           </ContainerInput>
           <SignBoard $custom5>Hechos en el periodo</SignBoard>
           {!loadingCollectionData && collectionRecords.length > 0 && (
