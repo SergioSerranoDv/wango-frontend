@@ -6,6 +6,7 @@ const colors = {
   green: "#39ca07",
   blue: "#06b6d4",
   gray: "#737373",
+  amber: "#FB9E0B",
 };
 
 interface InputProps {
@@ -18,11 +19,12 @@ interface InputProps {
   $gray?: boolean;
   $blue?: boolean;
   $orange?: boolean;
+  $amber?: boolean;
   $custom5?: boolean;
   typeColor?: string;
 }
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.div<InputProps>`x
   max-width: 400px;
   margin: 0 auto;
   background-color: #ffffff;
@@ -38,7 +40,12 @@ export const Form = styled.form`
   box-sizing: border-box;
 `;
 
-export const ContainerInput = styled.div`
+export const ContainerInput = styled.div<InputProps>`
+  margin-top: ${(props) => (props.$custom1 ? "20px" : "")};
+  margin-top: ${(props) => (props.$custom4 ? "20px" : "")};
+  margin-top: ${(props) => (props.$custom2 ? "30px" : "")};
+  width: ${(props) => (props.$custom2 ? "95%" : "")};
+  border-bottom: ${(props) => (props.$custom2 ? "3px solid #FF670F" : "")};
   margin-bottom: 15px;
 `;
 
@@ -62,7 +69,7 @@ export const Input = styled.input<InputProps>`
   font-weight: 550; /*semibold*/
   opacity: 0.85;
   border-radius: 5px;
-  width: ${(props) => (props.$custom1 ? "70%" : "100%")};
+  width: ${(props) => (props.$custom1 ? "72%" : "100%")};
   border: 1px solid #000000;
   box-sizing: border-box;
   //background-color: #ff0078;
@@ -111,7 +118,9 @@ export const ButtonSubmit = styled.button<InputProps>`
         ? colors.orange
         : props.$blue
           ? colors.blue
-          : colors[(props.color as keyof typeof colors) || "green"]};
+          : props.$amber
+            ? colors.amber
+            : colors[(props.color as keyof typeof colors) || "green"]};
   color: #fff;
   cursor: pointer;
   border-radius: 6px;
@@ -140,10 +149,11 @@ export const SignBoard = styled.p<InputProps>`
   font-size: ${(props) => (props.$custom3 ? "12.5px" : "")};
   font-size: ${(props) => (props.$custom5 ? "14px" : "")};
   font-weight: ${(props) => (props.$custom5 ? "650" : "620")};
+  font-weight: ${(props) => (props.$custom4 ? "600" : "")};
   font-weight: ${(props) => (props.$primary ? "" : "")};
   text-align: center;
   color: ${(props) => (props.$primary ? "#000000" : "#4d4d4d")};
-  margin-top: 0px;
+  margin-top: ${(props) => (props.$custom3 ? "10px" : "0px")};
   margin-bottom: ${(props) => (props.$custom1 ? "40px" : "10px")};
   margin-bottom: ${(props) => (props.$custom2 ? "42px" : "")};
   font-weight: ${(props) => (props.$custom ? "450" : "")};
@@ -265,4 +275,13 @@ export const SubLabel = styled.span`
   margin-top: 10px;
   font-size: 0.6rem;
   margin-right: 5px; /* Espacio entre el label principal y el subnivel */
+`;
+
+export const Adder = styled.a`
+  color: #ff670f;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 `;

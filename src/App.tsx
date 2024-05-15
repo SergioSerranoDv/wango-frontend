@@ -22,6 +22,7 @@ import { WFLot } from "./pages/WFLot";
 import "./App.css";
 import "./styles/MainMenuStyles";
 import { WF } from "./pages/WF";
+import { IA } from "./pages/IA";
 import { WFFull } from "./pages/WFFull";
 
 export const App: React.FC = () => {
@@ -65,11 +66,12 @@ export const App: React.FC = () => {
                     path="/lot-menu/water-footprint/crops/comp/:id/full"
                     element={<WFFull />}
                   />
+                  <Route path="/lot-menu/water-footprint/crops/comp/:id/IA" element={<IA />} />
                 </>
               ) : (
                 <>
                   <Route path="/" element={<LoginPage />} />
-                  <Route path="/Loading" element={<LoadingAnimation />} />
+                  {/* <Route path="/Loading" element={<LoadingAnimation />} /> */}
                 </>
               )}
             </Routes>

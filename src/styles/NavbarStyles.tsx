@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Text = styled.div`
   color: black;
   font-family: Inter, sans-serif;
-  font-size: 20px;
+  font-size: 16px;
   margin: 10px;
   text-align: center;
   @media (max-width: 874px) {
