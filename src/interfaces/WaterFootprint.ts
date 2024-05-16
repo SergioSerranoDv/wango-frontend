@@ -6,6 +6,14 @@ export const waterFootprintDataInit = {
   green_component: 0,
   grey_component: 0,
   total: 0,
+  ia_suggestion: "",
   createdAt: "",
   updatedAt: "",
+};
+
+export interface IASuggestionI {
+  content: string;
+}
+export const IASuggestionDataInit: IASuggestionI = {
+  content: "",
 };
