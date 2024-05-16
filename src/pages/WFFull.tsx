@@ -1,32 +1,25 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { LotDataInit } from "../interfaces/Lot";
-import { NotificationModal } from "../components/modals/NotificationModal";
 import { MainLayout } from "../layouts/MainLayout";
-import { TableV1 } from "../components/TableV1";
-import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
-import { fetchLotDetails } from "../services/lot_s";
 import { Crop } from "../interfaces/crop";
-import { Container } from "../styles/GlobalStyles";
-import { Text } from "../styles/MainMenuStyles";
 import {
-  Button,
   DetailsItem,
   DetailsSign,
   InfoContainer,
-  Link,
-  RegisterFormContainer,
   SignBoard,
   SignBoard3,
 } from "../styles/lotscropsStyles";
 import { Adder, ContainerInput, FormContainer, Input, Label, SubLabel } from "../styles/FormStyles";
+import { waterFootprintDataInit } from "../interfaces/WaterFootprint";
+import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
 import { findCollectionById } from "../services/collection_s";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { fetchCropDetails } from "../services/crop_s";
 
 export const WFFull: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
+  const [waterFootprint, setWaterFootprint] = useState<any>(waterFootprintDataInit);
   const { id, type } = useParams<{ id: string; type: string }>();
   const collectionId = id;
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
@@ -83,7 +76,6 @@ export const WFFull: React.FC = () => {
   const cropId = collection?.crop_id;
 
   useEffect(() => {
-    console.log("CropID: ", collection?.crop_id);
     async function loadCropDetails() {
       if (cropId) {
         try {
@@ -100,6 +92,27 @@ export const WFFull: React.FC = () => {
     console.log("Crop: ", crop);
   }, [backendApiCall, cropId]);
 
+  useEffect(() => {
+    async function fetchWaterFootprint() {
+      if (collectionId && cropId) {
+        try {
+          const waterFootprint = await getWaterFootprintByCropIdAndCollectionId(
+            backendApiCall,
+            collectionId,
+            cropId
+          );
+          if (waterFootprint && waterFootprint.data) {
+            console.log("Water Footprint: ", waterFootprint.data);
+            setWaterFootprint(waterFootprint.data);
+          }
+        } catch (error) {
+          console.log("Error fetching water footprint:", error);
+        }
+      }
+    }
+    fetchWaterFootprint();
+  }, [backendApiCall, collectionId, cropId]);
+  console.log("Water Footprint: ", waterFootprint);
   return (
     <div>
       <MainLayout>
@@ -125,7 +138,7 @@ export const WFFull: React.FC = () => {
           </Label>
           <SubLabel>verde</SubLabel>
           =
-          <Input disabled type="number" id="HHv" $custom1 />
+          <Input disabled type="number" id="HHv" $custom1 value={waterFootprint.green_component} />
         </ContainerInput>
         <Adder>+</Adder>
         <ContainerInput $custom1>
@@ -134,7 +147,7 @@ export const WFFull: React.FC = () => {
           </Label>
           <SubLabel>azul </SubLabel>
           =
-          <Input disabled type="number" id="HHv" $custom1 />
+          <Input disabled type="number" id="HHv" $custom1 value={waterFootprint.blue_component} />
         </ContainerInput>
         <Adder>+</Adder>
         <ContainerInput $custom4>
@@ -143,7 +156,7 @@ export const WFFull: React.FC = () => {
           </Label>
           <SubLabel>gris </SubLabel>
           =
-          <Input disabled type="number" id="HHv" $custom1 />
+          <Input disabled type="number" id="HHv" $custom1 value={waterFootprint.grey_component} />
         </ContainerInput>
         <ContainerInput $custom2> </ContainerInput>
         <ContainerInput $custom4>
@@ -152,7 +165,7 @@ export const WFFull: React.FC = () => {
           </Label>
           <SubLabel>total</SubLabel>
           =
-          <Input disabled type="number" id="HHv" $custom1 />
+          <Input disabled type="number" id="HHv" $custom1 value={waterFootprint.total} />
         </ContainerInput>
       </MainLayout>
     </div>
