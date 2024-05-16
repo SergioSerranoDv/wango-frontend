@@ -6,7 +6,7 @@ import { findCollectionById } from "../services/collection_s";
 import { getWaterFootprintSuggestion } from "../services/water_footprint_s";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { IASuggestionDataInit, IASuggestionI } from "../interfaces/WaterFootprint";
-import { FormContainer, SignBoard } from "../styles/FormStyles";
+import { FormContainer, SignBoard, Suggestion } from "../styles/FormStyles";
 
 export const IA: React.FC = () => {
   const { backendApiCall } = React.useContext(ApiContext);
@@ -57,7 +57,8 @@ export const IA: React.FC = () => {
     <>
       <MainLayout>
         <FormContainer>
-          <SignBoard $custom4>Proximamente</SignBoard>
+          <SignBoard $custom>Análisis de IA</SignBoard>
+          <Suggestion>{IASuggestion.content}</Suggestion>
         </FormContainer>
       </MainLayout>
     </>
