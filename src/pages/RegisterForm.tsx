@@ -148,6 +148,7 @@ const RegisterForm: React.FC = () => {
                 onChange={handleChange}
                 required
               >
+                <option value="">--</option>
                 <option value="C.C">C.C</option>
                 <option value="C.E">C.E</option>
                 <option value="T.I">T.I</option>
