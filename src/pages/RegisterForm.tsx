@@ -55,77 +55,77 @@ const RegisterForm: React.FC = () => {
     // Obtener los datos de los inputs
     const { typeID, identification, userName, lastName, password } = formData;
 
-    if (validatePassword(password)) {
-      setIsValidPassword(true);
-      // Upate user data in the backend
-      const response = await backendApiCall({
-        method: "PUT",
-        endpoint: "v1/user/info/update",
-        body: {
-          name: userName,
-          last_name: lastName,
-          id_number: identification,
-          id_type: typeID,
-          security: {
-            identity_verified: true,
-            password: password,
-          },
+    // if (validatePassword(password)) {
+    //   setIsValidPassword(true);
+    // Upate user data in the backend
+    const response = await backendApiCall({
+      method: "PUT",
+      endpoint: "v1/user/info/update",
+      body: {
+        name: userName,
+        last_name: lastName,
+        id_number: identification,
+        id_type: typeID,
+        security: {
+          identity_verified: true,
+          password: password,
         },
-      });
-      if (response.status === "error") {
-        console.error(response.message);
-        return;
-      }
-      setRefetchData((prev) => prev + 1);
-    } else {
-      setIsValidPassword(false);
-    }
-  };
-
-  const validatePassword = (password: string): boolean => {
-    //Comprobar la longitud de los caracteres
-    if (password.length < 12) {
-      return false;
-    }
-
-    //Comprobar su cuenta con los caracteres exigidos
-    //Mayúsculas
-    const uppercaseRegex = /[A-Z]/;
-    //Minúsculas
-    const lowercaseRegex = /[a-z]/;
-    //Los caracteres especiales
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-
-    if (
-      !uppercaseRegex.test(password) ||
-      !lowercaseRegex.test(password) ||
-      !specialCharRegex.test(password)
-    ) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+      },
     });
-
-    const isValid = validatePassword(value);
-    setIsValidPassword(isValid);
-    console.log("Contraseña válida:", isValid);
+    if (response.status === "error") {
+      console.error(response.message);
+      return;
+    }
+    setRefetchData((prev) => prev + 1);
+    // } else {
+    //   setIsValidPassword(false);
+    // }
   };
-  console.log("Email:", userData.email);
-  useEffect(() => {
-    const getUserData = async () => {
-      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
-      setEmailNewUser(userData.data.email);
-    };
-    getUserData();
-  }, []);
+
+  // const validatePassword = (password: string): boolean => {
+  //   //Comprobar la longitud de los caracteres
+  //   if (password.length < 12) {
+  //     return false;
+  //   }
+
+  //   //Comprobar su cuenta con los caracteres exigidos
+  //   //Mayúsculas
+  //   const uppercaseRegex = /[A-Z]/;
+  //   //Minúsculas
+  //   const lowercaseRegex = /[a-z]/;
+  //   //Los caracteres especiales
+  //   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+  //   if (
+  //     !uppercaseRegex.test(password) ||
+  //     !lowercaseRegex.test(password) ||
+  //     !specialCharRegex.test(password)
+  //   ) {
+  //     return false;
+  //   }
+
+  //   return true;
+  // };
+
+  // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+
+  //   const isValid = validatePassword(value);
+  //   setIsValidPassword(isValid);
+  //   console.log("Contraseña válida:", isValid);
+  // };
+  // console.log("Email:", userData.email);
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+  //     setEmailNewUser(userData.data.email);
+  //   };
+  //   getUserData();
+  // }, []);
   return (
     <FormContainer>
       <Logo src={logo} alt="Logo" />
@@ -203,7 +203,7 @@ const RegisterForm: React.FC = () => {
             <option value="Admin">Administrador</option>
           </Select>
 
-          <Label htmlFor="password" $primary>
+          {/* <Label htmlFor="password" $primary>
             Contraseña*
           </Label>
 
@@ -218,13 +218,13 @@ const RegisterForm: React.FC = () => {
             name="password"
             value={formData.password}
             onChange={handlePasswordChange}
-          />
+          /> */}
 
-          {isValidPassword && (
-            <Button type="submit" $primary>
-              Continuar
-            </Button>
-          )}
+          {/* {isValidPassword && ( */}
+          <Button type="submit" $primary>
+            Continuar
+          </Button>
+          {/* )} */}
         </Form>
       </Container>
     </FormContainer>
