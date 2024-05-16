@@ -58,20 +58,20 @@ function LoteMenu({ lotId = "" }: Props) {
         />
       ),
     },
-    {
+    /*{
       id: 4,
       elementList: <LinkElement src={AnalisisIA} text="Análisis IA" link="/analisisIA" />,
-    },
+    },*/
     {
       id: 5,
       elementList: <LinkElement src={EditarLote} text="Editar lote" link={`/edit-lote/${lotId}`} />,
     },
-    {
+    /*{
       id: 6,
       elementList: (
         <LinkElement src={VerUsuarios} text="Ver usuarios encargados" link="/verUsers" />
       ),
-    },
+    },*/
   ];
 
   return (
