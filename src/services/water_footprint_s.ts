@@ -20,3 +20,13 @@ export const getWaterFootprintByCropIdAndCollectionId = async (
     endpoint: `v1/water-footprint/info?collection_id=${collectionId}&crop_id=${cropId}`,
   });
 };
+export const getWaterFootprintSuggestion = async (
+  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  collectionId: string,
+  cropId: string
+): Promise<apiResponse> => {
+  return await backendApiCall({
+    method: "GET",
+    endpoint: `v1/water-footprint/suggestion-ia?collection_id=${collectionId}&crop_id=${cropId}`,
+  });
+};
