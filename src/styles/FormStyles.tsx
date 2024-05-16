@@ -24,7 +24,7 @@ interface InputProps {
   typeColor?: string;
 }
 
-export const FormContainer = styled.div<InputProps>`x
+export const FormContainer = styled.div<InputProps>`
   max-width: 400px;
   margin: 0 auto;
   background-color: #ffffff;
@@ -284,4 +284,13 @@ export const Adder = styled.a`
   margin: 0 auto;
   display: flex;
   justify-content: center;
+`;
+
+export const Suggestion = styled.p`
+  white-space: pre-line;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4d4d4d;
+  margin-top: 10px;
 `;
