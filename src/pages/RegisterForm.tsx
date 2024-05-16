@@ -15,6 +15,7 @@ import logo from "../assets/images/logo.svg";
 import { ApiContext } from "../context/ApiContext";
 import { AppContext } from "../context/AppContext";
 import { DivIdentification } from "../styles/FormStyles";
+import { Container } from "../styles/GlobalStyles";
 
 const RegisterForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
@@ -133,97 +134,98 @@ const RegisterForm: React.FC = () => {
         <SignBoard $custom>Tu contraseña no cumple con los requisitos</SignBoard>
       )}
       {!isValidEmail && <SignBoard $custom>Correo electrónico inválido</SignBoard>}
-      <Form onSubmit={handleSubmit}>
-        <DivIdentification>
-          <FormField style={{ width: "25%" }}>
-            <Label $primary htmlFor="typeID">
-              Tipo*
-            </Label>
-            <Select
-              id="typeID"
-              name="typeID"
-              value={formData.typeID}
-              onChange={handleChange}
-              required
-            >
-              <option value="">--</option>
-              <option value="C.C">C.C</option>
-              <option value="C.E">C.E</option>
-              <option value="T.I">T.I</option>
-            </Select>
-          </FormField>
+      <Container>
+        <Form onSubmit={handleSubmit}>
+          <DivIdentification>
+            <FormField style={{ width: "25%" }}>
+              <Label $primary htmlFor="typeID">
+                Tipo*
+              </Label>
+              <Select
+                id="typeID"
+                name="typeID"
+                value={formData.typeID}
+                onChange={handleChange}
+                required
+              >
+                <option value="C.C">C.C</option>
+                <option value="C.E">C.E</option>
+                <option value="T.I">T.I</option>
+              </Select>
+            </FormField>
 
-          <FormField style={{ width: "75%" }}>
-            <Label htmlFor="identification">Identificación*</Label>
-            <Input
-              $custom
-              type="number"
-              id="identification"
-              name="identification"
-              value={formData.identification}
-              onChange={handleChange}
-              min={10000000}
-              max={1999999999}
-            />
-          </FormField>
-        </DivIdentification>
+            <FormField style={{ width: "75%" }}>
+              <Label htmlFor="identification">Identificación*</Label>
+              <Input
+                $custom
+                type="number"
+                id="identification"
+                name="identification"
+                value={formData.identification}
+                onChange={handleChange}
+                min={10000000}
+                max={1999999999}
+              />
+            </FormField>
+          </DivIdentification>
 
-        <Label htmlFor="userName">Nombres*</Label>
-        <Input
-          type="text"
-          id="userName"
-          name="userName"
-          value={formData.userName}
-          onChange={handleChange}
-        />
+          <Label htmlFor="userName">Nombres*</Label>
+          <Input
+            type="text"
+            id="userName"
+            name="userName"
+            value={formData.userName}
+            onChange={handleChange}
+          />
 
-        <Label htmlFor="lastName">Apellidos*</Label>
-        <Input
-          type="text"
-          id="lastName"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-        />
+          <Label htmlFor="lastName">Apellidos*</Label>
+          <Input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
 
-        <Label htmlFor="email">Correo*</Label>
-        <Input
-          type="email"
-          id="email"
-          name="email"
-          //value={userData.email ? userData.email : emailNewUser}
-          onChange={handleChange}
-          disabled
-        />
+          <Label htmlFor="email">Correo*</Label>
+          <Input
+            type="email"
+            id="email"
+            name="email"
+            value={emailNewUser}
+            onChange={handleChange}
+            disabled
+          />
 
-        <Label htmlFor="userType">Tipo de usuario*</Label>
-        <Select id="userType" name="userType" value="Admin" onChange={handleChange} disabled>
-          <option value="Admin">Administrador</option>
-        </Select>
+          <Label htmlFor="userType">Tipo de usuario*</Label>
+          <Select id="userType" name="userType" value="Admin" onChange={handleChange} disabled>
+            <option value="Admin">Administrador</option>
+          </Select>
 
-        <Label htmlFor="password" $primary>
-          Contraseña*
-        </Label>
+          <Label htmlFor="password" $primary>
+            Contraseña*
+          </Label>
 
-        <Description>
-          Tu password debe tener más de 12 caractéres, al menos 1 letra mayúscula, 1 letra
-          minúscula, y 1 caracter especial.
-        </Description>
-        <Input
-          $primary
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handlePasswordChange}
-        />
+          <Description>
+            Tu password debe tener más de 12 caractéres, al menos 1 letra mayúscula, 1 letra
+            minúscula, y 1 caracter especial.
+          </Description>
+          <Input
+            $primary
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handlePasswordChange}
+          />
 
-        {isValidPassword && (
-          <Button type="submit" $primary>
-            Continuar
-          </Button>
-        )}
-      </Form>
+          {isValidPassword && (
+            <Button type="submit" $primary>
+              Continuar
+            </Button>
+          )}
+        </Form>
+      </Container>
     </FormContainer>
   );
 };
