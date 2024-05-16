@@ -34,7 +34,7 @@ const MainMenu: React.FC = () => {
       id: 2,
       elementList: <LinkElement src={MiPerfil} text="Mi perfil" link="/my-profile" />,
     },
-    {
+    /*{
       id: 3,
       elementList: (
         <LinkElement
@@ -49,7 +49,7 @@ const MainMenu: React.FC = () => {
       elementList: (
         <LinkElement src={VerTrabajador} text="Ver mis trabajadores" link="/ver-trabajadores" />
       ),
-    },
+    },*/
     {
       id: 5,
       elementList: (
