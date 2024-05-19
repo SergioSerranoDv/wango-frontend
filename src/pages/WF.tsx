@@ -1,12 +1,19 @@
 import React, { useState, useContext, useEffect, Dispatch, SetStateAction } from "react";
 import { useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
+import { TableV2 } from "../components/TableV2";
 import { ApiContext } from "../context/ApiContext";
+import { SignBoardWithVariablesToCalculateWaterFootprint } from "../components/SignBoard";
+import { Crop, CropDataInit } from "../interfaces/crop";
+import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { Records } from "../interfaces/record";
+import { fetchCropDetails } from "../services/crop_s";
+import { formatDate } from "../services/Date";
+import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
+import { findCollectionById } from "../services/collection_s";
 import {
   ContainerInput,
   DetailsItem,
-  DetailsSign,
   DetailsSign2,
   FormContainer,
   InfoContainer,
@@ -15,25 +22,12 @@ import {
   SignBoard,
   SubLabel,
 } from "../styles/FormStyles";
-import { Crop } from "../interfaces/crop";
-import { fetchCropDetails } from "../services/crop_s";
-import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
-import { Collection, CollectionDataInit } from "../interfaces/collection";
-import { findCollectionById } from "../services/collection_s";
-import { TableV2 } from "../components/TableV2";
 
 export const WF: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { id, type } = useParams<{ id: string; type: string }>();
   const collectionId = id;
-  const [crop, setCrop] = useState<Crop>({
-    _id: "",
-    area: 0,
-    lot_id: "",
-    name: "",
-    latitude: "",
-    longitude: "",
-  });
+  const [crop, setCrop] = useState<Crop>(CropDataInit);
 
   //Se declara el estado inicial de collection
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
@@ -46,6 +40,7 @@ export const WF: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loadingCollectionData, setLoadingCollectionData] = useState(true);
   const [refetch, setRefetch] = useState(0);
+
   useEffect(() => {
     async function loadCollectionDetails() {
       if (collectionId) {
@@ -53,25 +48,8 @@ export const WF: React.FC = () => {
           const collectionDetails = await findCollectionById(backendApiCall, collectionId);
           if (collectionDetails && collectionDetails.data) {
             setCollection(collectionDetails.data);
-            // setFormattedCollection(collectionDetails.data);
-
-            // Verifica si las fechas son válidas antes de intentar formatearlas
-            if (collectionDetails && collectionDetails.data) {
-              const initialDate = collectionDetails.data.createdAt;
-              const finalDate = collectionDetails.data.updatedAt;
-              const formattedInitialDate = new Date(initialDate).toLocaleString(undefined, {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              });
-              const formattedFinalDate = new Date(finalDate).toLocaleString(undefined, {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              });
-              setInitialDate(formattedInitialDate);
-              setFinalDate(formattedFinalDate);
-            }
+            setInitialDate(formatDate(collectionDetails.data.createdAt));
+            setFinalDate(formatDate(collectionDetails.data.updatedAt));
           }
         } catch (error) {
           console.log("Error fetching crop details:", error);
@@ -97,7 +75,6 @@ export const WF: React.FC = () => {
       }
     }
     loadCropDetails();
-    console.log("Crop: ", crop);
   }, [backendApiCall, cropId]);
 
   //Fetch the collection records
@@ -157,59 +134,7 @@ export const WF: React.FC = () => {
             {initialDate ? `${initialDate} - ` : ""}
             {finalDate ? `${finalDate}` : ""}
           </SignBoard>
-
-          <InfoContainer $custom1 typeColor={type === "grey" ? "#FB9E0B" : undefined}>
-            <br />
-            <DetailsSign $custom4>
-              R = <DetailsItem> Rendimiento del cultivo (Ton/día).</DetailsItem>
-            </DetailsSign>
-
-            <DetailsSign $custom3>
-              Kc = <DetailsItem> Coeficiente del cultivo.</DetailsItem>
-            </DetailsSign>
-
-            {type === "grey" && (
-              <DetailsSign $custom3>
-                C<SubLabel>max</SubLabel>=
-                <DetailsItem> Cantidad máxima permitida de químico.</DetailsItem>
-              </DetailsSign>
-            )}
-            {type === "grey" && (
-              <DetailsSign $custom3>
-                C<SubLabel>nat</SubLabel>=
-                <DetailsItem> Cantidad natural del químico en el agua.</DetailsItem>
-              </DetailsSign>
-            )}
-
-            {(type === "blue" || type === "green") && (
-              <DetailsSign $custom3>
-                ETo = <DetailsItem>Evapotranspiración de referencia (mm/día).</DetailsItem>
-              </DetailsSign>
-            )}
-
-            <DetailsSign $custom3>
-              ETc = <DetailsItem>Evapotranspiración real del cultivo (mm/día).</DetailsItem>
-            </DetailsSign>
-
-            {type === "grey" && (
-              <DetailsSign $custom3>
-                α = <DetailsItem>Fracción de lixiviación-escorrentía superficial.</DetailsItem>
-              </DetailsSign>
-            )}
-
-            {type === "grey" && (
-              <DetailsSign $custom3>
-                AR = <DetailsItem>Cant. aplicada de productos químicos (Kg/Ha).</DetailsItem>
-              </DetailsSign>
-            )}
-
-            {type === "blue" && (
-              <DetailsSign $custom3>
-                Ir = <DetailsItem>Agua de riego basada en evapotranspiración (mm/día).</DetailsItem>
-              </DetailsSign>
-            )}
-          </InfoContainer>
-
+          <SignBoardWithVariablesToCalculateWaterFootprint type={type} />
           <InfoContainer $custom4>
             <br />
             <DetailsSign2 $custom4>
@@ -302,7 +227,6 @@ export const WF: React.FC = () => {
               </>
             )}
           </InfoContainer>
-
           <ContainerInput>
             <Label htmlFor="WateFGreen" $custom1>
               HH
@@ -348,11 +272,11 @@ export const WF: React.FC = () => {
               }
               data={collectionRecords}
               pagination={{
+                setRefetch,
                 rowsPerPage,
                 setRowsPerPage,
                 currentPage,
                 setCurrentPage,
-                setRefetch,
                 totalPages: totalPages,
               }}
               columns={["Fecha", "R", "Kc", "ETo", "ETc"]}
