@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { TableV2 } from "../components/TableV2";
