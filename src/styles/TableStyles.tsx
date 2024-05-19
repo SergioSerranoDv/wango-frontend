@@ -24,19 +24,19 @@ export const Table = styled.table<InputProps>`
   margin-top: ${(props) => (props.$custom ? "14px" : "4px")};
 `;
 
-export const TableRow = styled.tr<{ index: number; evenColor: string; oddColor: string }>`
-  background-color: ${(props) => (props.index % 2 === 0 ? props.evenColor : props.oddColor)};
-  font-weight: ${(props) => (props.index === -1 ? "bold" : "")};
-  font-size: ${(props) => (props.index === -1 ? "14px" : "12.5px")};
-  color: ${(props) => (props.index === -1 ? "#737373" : "#4c443f")};
+export const TableRow = styled.tr<{ $index: number; $evenColor: string; $oddColor: string }>`
+  background-color: ${(props) => (props.$index % 2 === 0 ? props.$evenColor : props.$oddColor)};
+  font-weight: ${(props) => (props.$index === -1 ? "bold" : "")};
+  font-size: ${(props) => (props.$index === -1 ? "14px" : "12.5px")};
+  color: ${(props) => (props.$index === -1 ? "#737373" : "#4c443f")};
 `;
 
-export const TableRow2 = styled.tr<{ index: number }>`
-  background-color: ${(props) => (props.index % 2 === 0 ? "#ffffff" : "#d4eff5")};
-  background-color: ${(props) => (props.index === -1 ? "#ffffff" : "")};
-  font-weight: ${(props) => (props.index === -1 ? "bold" : "")};
-  font-size: ${(props) => (props.index === -1 ? "14px" : "12.5px")};
-  color: ${(props) => (props.index === -1 ? "#737373" : "#4c443f")};
+export const TableRow2 = styled.tr<{ $index: number }>`
+  background-color: ${(props) => (props.$index % 2 === 0 ? "#ffffff" : "#d4eff5")};
+  background-color: ${(props) => (props.$index === -1 ? "#ffffff" : "")};
+  font-weight: ${(props) => (props.$index === -1 ? "bold" : "")};
+  font-size: ${(props) => (props.$index === -1 ? "14px" : "12.5px")};
+  color: ${(props) => (props.$index === -1 ? "#737373" : "#4c443f")};
 `;
 
 export const TableCell = styled.td<InputProps>`
