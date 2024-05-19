@@ -8,6 +8,8 @@ export interface Records {
   reference_evotranspiration: number;
   user: string;
   _id?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const RecordsDataInit: Records = {
@@ -20,4 +22,6 @@ export const RecordsDataInit: Records = {
   reference_evotranspiration: 0,
   user: "",
   _id: "",
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
