@@ -29,7 +29,7 @@ export const UseGet = (props: any): UseGetResponse => {
       };
       fetchData();
     }
-  }, [backendApiCall, serviceIsReady, refetch]);
+  }, [backendApiCall, serviceIsReady, refetch, props.endpoint]);
 
   return {
     data,
