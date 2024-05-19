@@ -19,8 +19,8 @@ import { Container } from "../styles/GlobalStyles";
 
 const RegisterForm: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
-  const { setRefetchData, userData } = useContext(AppContext);
-  const [emailNewUser, setEmailNewUser] = useState(userData.email);
+  const { setRefetchData } = useContext(AppContext);
+  const [emailNewUser, setEmailNewUser] = useState("");
   const [formData, setFormData] = useState({
     typeID: "",
     identification: "",
@@ -119,13 +119,16 @@ const RegisterForm: React.FC = () => {
   //   console.log("Contraseña válida:", isValid);
   // };
   // console.log("Email:", userData.email);
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
-  //     setEmailNewUser(userData.data.email);
-  //   };
-  //   getUserData();
-  // }, []);
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+      if (userData.data) {
+        setEmailNewUser(userData.data.email);
+      }
+    };
+    getUserData();
+  }, [backendApiCall]);
+
   return (
     <FormContainer>
       <Logo src={logo} alt="Logo" />
