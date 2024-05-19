@@ -58,23 +58,22 @@ export const TableV2: React.FC<TableV2Props> = ({
     <div>
       <Table>
         <thead>
-          <TableRow index={-1} evenColor={evencolor} oddColor={oddcolor}>
+          <TableRow $index={-1} $evenColor={evencolor} $oddColor={oddcolor}>
             {columns.map((column: string, index: number) => (
               <TableCell key={index}>{column}</TableCell>
             ))}
           </TableRow>
         </thead>
         <tbody>
-          {data &&
-            data.map((item: any, index: number) => (
-              <TableRow key={index} index={index} evenColor={evencolor} oddColor={oddcolor}>
-                {columns.map((column, colIndex) => {
-                  if (columnMapping[column]) {
-                    return <TableCell key={colIndex}>{item[columnMapping[column]]}</TableCell>;
-                  }
-                })}
-              </TableRow>
-            ))}
+          {data.map((item: any, index: number) => (
+            <TableRow key={index} $index={index} $evenColor={evencolor} $oddColor={oddcolor}>
+              {columns.map((column, colIndex) => {
+                if (columnMapping[column]) {
+                  return <TableCell key={colIndex}>{item[columnMapping[column]]}</TableCell>;
+                }
+              })}
+            </TableRow>
+          ))}
         </tbody>
       </Table>
       <div
