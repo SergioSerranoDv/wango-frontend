@@ -46,7 +46,6 @@ export const WF: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loadingCollectionData, setLoadingCollectionData] = useState(true);
   const [refetch, setRefetch] = useState(0);
-
   useEffect(() => {
     async function loadCollectionDetails() {
       if (collectionId) {
@@ -217,20 +216,82 @@ export const WF: React.FC = () => {
               Área = <DetailsItem>{crop?.area} Ha</DetailsItem>
             </DetailsSign2>
             <DetailsSign2 $custom3>
-              ETc = <DetailsItem>000.00 mm/año</DetailsItem>
+              ETo ={" "}
+              <DetailsItem>
+                {collectionRecords && collectionRecords.length > 0
+                  ? (() => {
+                      let eto = collectionRecords.reduce(
+                        (acc, record) => acc + record.reference_evotranspiration,
+                        0
+                      );
+                      eto = eto / collectionRecords.length;
+                      eto = eto * 365;
+                      return eto.toFixed(2);
+                    })()
+                  : null}
+                mm/año
+              </DetailsItem>
             </DetailsSign2>
             <DetailsSign2 $custom3>
-              R = <DetailsItem>00.0 Ton/año</DetailsItem>
+              R ={" "}
+              <DetailsItem>
+                {collectionRecords && collectionRecords.length > 0
+                  ? (() => {
+                      let r = collectionRecords.reduce(
+                        (acc, record) => acc + record.daily_performance,
+                        0
+                      );
+                      // convert to kg/year
+                      r = r * 365;
+                      r = r / collectionRecords.length;
+                      r = r / 1000; // Convert to tons/year
+                      return r.toFixed(2);
+                    })()
+                  : null}
+                Ton/año
+              </DetailsItem>
             </DetailsSign2>
             {type === "blue" && (
               <DetailsSign2 $custom3>
-                Ir = <DetailsItem>000.00 Kg/Ha</DetailsItem>
+                {}
+                Ir ={" "}
+                <DetailsItem>
+                  {collectionRecords && collectionRecords.length > 0
+                    ? (() => {
+                        let etc = collectionRecords.reduce(
+                          (acc, record) => acc + record.actual_crop_evapotranspiration,
+                          0
+                        );
+                        // convert to kg/year
+                        etc = etc * 365;
+                        etc = etc / collectionRecords.length;
+                        let lr = etc / 1.75;
+                        return lr.toFixed(2);
+                      })()
+                    : null}
+                  Kg/Ha
+                </DetailsItem>
               </DetailsSign2>
             )}
             {type === "grey" && (
               <>
                 <DetailsSign2 $custom3>
-                  AR = <DetailsItem>000.00 m3/año</DetailsItem>
+                  AR ={" "}
+                  <DetailsItem>
+                    {collectionRecords && collectionRecords.length > 0
+                      ? (() => {
+                          let ar = collectionRecords.reduce(
+                            (acc, record) => acc + record.amount_chemicals_used,
+                            0
+                          );
+                          // convert to kg/year
+                          ar = ar * 365;
+                          ar = ar / collectionRecords.length;
+                          return ar.toFixed(2);
+                        })()
+                      : null}
+                    m3/año
+                  </DetailsItem>
                 </DetailsSign2>
                 <DetailsSign2 $custom3>
                   C<SubLabel>max</SubLabel>=<DetailsItem> 50mg/L</DetailsItem>
