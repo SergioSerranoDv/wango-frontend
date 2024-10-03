@@ -18,6 +18,7 @@ import {
   RegisterFormContainer,
   SignBoard,
 } from "../styles/lotscropsStyles";
+import { FormContainer } from "../styles/FormStyles";
 
 export const LotsCrops: React.FC = () => {
   const { id } = useParams();
@@ -84,13 +85,10 @@ export const LotsCrops: React.FC = () => {
     setShowNotification(false);
   };
   return (
-    <div>
-      <MainLayout>
+    <MainLayout>
+      <div style={{ display: "block", width: "100%" }}>
         <Text>Cultivos del lote '{Lot.name}'</Text>
-        <RegisterFormContainer>
-          <br />
-          <br />
-          {""}
+        <FormContainer>
           <InfoContainer>
             <DetailsSign $custom3>
               ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
@@ -110,9 +108,10 @@ export const LotsCrops: React.FC = () => {
             </DetailsSign>
             <DetailsSign $custom3>Cultivos:</DetailsSign>
           </InfoContainer>
-        </RegisterFormContainer>
+        </FormContainer>
         {!loading && data && data.crops.length > 0 && (
           <TableV1
+            title="Cultivos"
             evencolor="#FFFFFF"
             oddcolor="rgb(255, 103, 15, 0.2)"
             columns={["ID", "Cultivos", "Área", "Acciones"]}
@@ -132,13 +131,25 @@ export const LotsCrops: React.FC = () => {
             options={{ edit: handleEdit, delete: handleDelete }}
           />
         )}
-        <SignBoard $custom3>
+        <SignBoard $custom3 style={{ marginTop: "1rem", textAlign: "center" }}>
           ¿Quieres añadir un cultivo?{" "}
           <Link href={`/lot-menu/new-crop/${lotId}`} $custom3>
             ¡Hazlo aquí!
           </Link>
         </SignBoard>
-        {/* <Button type="submit" $custom1>
+        {showNotification && (
+          <NotificationModal
+            title="Cultivo eliminado exitosamente"
+            description="El cultivo ha sido eliminado con éxito."
+            status="success" // Asegúrate de tener esta variable definida
+            buttonText="Aceptar"
+            onClose={handleNotificationClose}
+            // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
+            redirectUrl=""
+          />
+        )}
+      </div>
+      {/* <Button type="submit" $custom1>
             Crear nuevo encargado
           </Button>
           <InfoContainer>
@@ -181,19 +192,7 @@ export const LotsCrops: React.FC = () => {
               </tbody>
             </Table>
           </Container> */}
-        {/*Mostrar modal de notificación si showNotification es true */}
-        {showNotification && (
-          <NotificationModal
-            title="Cultivo eliminado exitosamente"
-            description="El cultivo ha sido eliminado con éxito."
-            status="success" // Asegúrate de tener esta variable definida
-            buttonText="Aceptar"
-            onClose={handleNotificationClose}
-            // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
-            redirectUrl=""
-          />
-        )}
-      </MainLayout>
-    </div>
+      {/*Mostrar modal de notificación si showNotification es true */}
+    </MainLayout>
   );
 };

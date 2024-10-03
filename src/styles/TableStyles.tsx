@@ -17,7 +17,6 @@ export const Container = styled.div<InputProps>`
 `;
 
 export const Table = styled.table<InputProps>`
-  border: 1px solid #000000;
   padding: 20px;
   width: 100%;
   border-collapse: collapse;
@@ -25,7 +24,7 @@ export const Table = styled.table<InputProps>`
 `;
 
 export const TableRow = styled.tr<{ $index: number; $evenColor: string; $oddColor: string }>`
-  background-color: ${(props) => (props.$index % 2 === 0 ? props.$evenColor : props.$oddColor)};
+  // background-color: ${(props) => (props.$index % 2 === 0 ? props.$evenColor : props.$oddColor)};
   font-weight: ${(props) => (props.$index === -1 ? "bold" : "")};
   font-size: ${(props) => (props.$index === -1 ? "14px" : "12.5px")};
   color: ${(props) => (props.$index === -1 ? "#737373" : "#4c443f")};
@@ -42,7 +41,7 @@ export const TableRow2 = styled.tr<{ $index: number }>`
 export const TableCell = styled.td<InputProps>`
   font-weight: ${(props) => (props.$custom1 ? "600" : "")};
   padding: ${(props) => (props.$custom ? "4px 8px 4px 8px" : "11px")};
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 export const PrevArrow = styled.button`
   display: flex;

@@ -1,4 +1,5 @@
 import { fetchWeatherApi } from "openmeteo";
+
 export const calculateEt0andETc = async () => {
   const params = {
     latitude: 2.9273,

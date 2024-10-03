@@ -1,7 +1,8 @@
-import { ApiProps, apiResponse } from "../context/ApiContext";
+import { Props, Response } from "../types/Api";
 import { Collection } from "../interfaces/collection";
+
 export const createNewCollection = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   data: Collection
 ) => {
   return await backendApiCall({
@@ -10,17 +11,18 @@ export const createNewCollection = async (
     body: data,
   });
 };
+
 export const getCollectionByCropId = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   cropId: string
-): Promise<apiResponse> => {
+): Promise<Response> => {
   return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/crop/${cropId}` });
 };
 
 export const findCollectionById = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   collectionId: string
-): Promise<apiResponse> => {
+): Promise<Response> => {
   return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/${collectionId}` });
 };
 
@@ -31,7 +33,7 @@ interface PaaginationProps {
 }
 
 export const fetchPaginatedCollectionPerCollection = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   { page, limit, record_id }: PaaginationProps
 ): Promise<any> => {
   return await backendApiCall({
@@ -40,7 +42,7 @@ export const fetchPaginatedCollectionPerCollection = async (
   });
 };
 export const updateCollectionStatus = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   collectionId: string,
   data: any
 ): Promise<any> => {

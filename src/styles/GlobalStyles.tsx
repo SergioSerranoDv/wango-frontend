@@ -1,8 +1,17 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin: auto;
-  max-width: 700px;
-  padding: 0px 10%;
-  padding-top: 56px;
+  display: flex;
+  padding: 4rem;
+  height: auto;
+  background-color: #f5f5f5;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex: 1;
+`;
+
+export const SubContainer = styled.div`
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
 `;

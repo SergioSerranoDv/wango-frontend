@@ -17,7 +17,6 @@ export const Text = styled.div`
 
 export const NavbarContainer = styled.nav`
   background-color: #ffb032;
-  border-bottom: 1px solid #000;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -39,7 +38,6 @@ export const LeftContainer = styled.div`
 export const CenterContainer = styled.div`
   align-items: center;
   display: flex;
-  flex: 60%;
   justify-content: center;
 
   @media (max-width: 768px) {

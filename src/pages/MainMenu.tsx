@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
-
-import { MainWrapper, ContentArea, Menu, ItemsMenu, Item, Text } from "../styles/MainMenuStyles";
-import Navbar from "../components/Navbar";
-
+import { TopCard } from "../sections/analytics/TopCard";
+import farm from "../assets/icons/farm.svg";
+import crop from "../assets/icons/crop.svg";
+import performance from "../assets/icons/performance.svg";
+import { ItemsMenu, Item, Text } from "../styles/MainMenuStyles";
 import MisLotes from "../assets/icons/myBatches.svg";
 import MiPerfil from "../assets/icons/myProfile.svg";
-import CrearTrabajador from "../assets/icons/createWorkerUser.svg";
-import VerTrabajador from "../assets/icons/viewMyWorkers.svg";
 import CerrarSesion from "../assets/icons/logoutIcon.svg";
+import { MainLayout } from "../layouts/MainLayout";
 import { useAuth0 } from "@auth0/auth0-react";
+import { WaterFootprintPieChart } from "../sections/analytics/WaterFootprintPieChart";
 
 interface MenuProps {
   id: number;
@@ -34,22 +35,6 @@ const MainMenu: React.FC = () => {
       id: 2,
       elementList: <LinkElement src={MiPerfil} text="Mi perfil" link="/my-profile" />,
     },
-    /*{
-      id: 3,
-      elementList: (
-        <LinkElement
-          src={CrearTrabajador}
-          text="Crear un usuario trabajador"
-          link="/crear-trabajador"
-        />
-      ),
-    },
-    {
-      id: 4,
-      elementList: (
-        <LinkElement src={VerTrabajador} text="Ver mis trabajadores" link="/ver-trabajadores" />
-      ),
-    },*/
     {
       id: 5,
       elementList: (
@@ -67,14 +52,8 @@ const MainMenu: React.FC = () => {
       ),
     },
   ];
-
-  return (
-    <>
-      <Navbar />
-      <MainWrapper>
-        <ContentArea>
-          <Text>¡Bienvenido {userData.name}!</Text>
-          <Menu>
+  {
+    /* <Menu>
             {MenuItems.map((item, index) => (
               <div
                 style={{
@@ -87,10 +66,47 @@ const MainMenu: React.FC = () => {
                 {item.elementList}
               </div>
             ))}
-          </Menu>
-        </ContentArea>
-      </MainWrapper>
-    </>
+          </Menu> */
+  }
+  const data = {
+    blue_component: 97986.86,
+    green_component: 292803,
+    grey_component: 40965.21,
+  };
+
+  return (
+    <MainLayout>
+      {/* <Text>¡Bienvenido {userData.name}!</Text> */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "2rem",
+          width: "100%",
+          marginBottom: "2rem",
+        }}
+      >
+        <TopCard
+          background="#FFB032"
+          description="Lotes de este mes"
+          icon={farm}
+          endpoint="v1/user/analytics/lots/quantity/by-month"
+        />
+        <TopCard
+          background="#4CAF50"
+          description="Cultivos de este mes"
+          icon={crop}
+          endpoint="v1/user/analytics/crops/quantity/by-month"
+        />
+        <TopCard
+          background="#6C4E31"
+          description="Producción de este mes"
+          icon={performance}
+          endpoint="v1/user/analytics/collections/daily-performance/quantity/by-month"
+        />
+      </div>
+      <WaterFootprintPieChart data={data} />
+    </MainLayout>
   );
 };
 
