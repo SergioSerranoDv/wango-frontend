@@ -1,4 +1,3 @@
-import React from "react";
 import { Aside, ItemMenu, ListItem } from "../styles/components/SideBar";
 
 export const SideBar = () => {
@@ -15,9 +14,6 @@ export const SideBar = () => {
             <a href="/lots-manage" style={{ textDecoration: "none", width: "100%" }}>
               <ItemMenu>Lotes</ItemMenu>
             </a>
-          </ListItem>
-          <ListItem>
-            <ItemMenu>Productos</ItemMenu>
           </ListItem>
           <ListItem>
             <ItemMenu>Reportes</ItemMenu>
