@@ -4,7 +4,6 @@ import { App } from "./App";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import { useNavigate } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
@@ -12,10 +11,6 @@ root.render(
   <Auth0Provider
     clientId={process.env.REACT_APP_AUTH0_CLIENT_ID as string}
     domain={process.env.REACT_APP_AUTH0_DOMAIN as string}
-    onRedirectCallback={(appState) => {
-      const history = useNavigate();
-      history(appState?.returnTo || window.location.pathname);
-    }}
     authorizationParams={{
       redirect_uri: window.location.origin,
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
