@@ -15,6 +15,7 @@ import {
   SignBoard,
   DivIdentification,
 } from "../styles/FormStyles";
+import { SubContainer } from "../styles/GlobalStyles";
 
 export const Profile: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
@@ -57,7 +58,7 @@ export const Profile: React.FC = () => {
 
   return (
     <MainLayout>
-      <FormContainer>
+      <SubContainer>
         <SignBoard $custom2>Información de usuario</SignBoard>
         <Form onSubmit={handleSubmit}>
           <DivIdentification>
@@ -159,7 +160,7 @@ export const Profile: React.FC = () => {
             redirectUrl="/"
           />
         )}
-      </FormContainer>
+      </SubContainer>
     </MainLayout>
   );
 };

@@ -1,13 +1,15 @@
-import { ApiProps, apiResponse } from "../context/ApiContext";
+import { Props, Response } from "../types/Api";
 import { Crop } from "../interfaces/crop";
+
 export const createNewCrop = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   data: Crop
 ) => {
   return await backendApiCall({ method: "POST", endpoint: "v1/crop/new", body: data });
 };
+
 export const fetchPaginatedCropsByLotId = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   { page, limit, lotId }: { page: number; limit: number; lotId: string }
 ): Promise<any> => {
   return await backendApiCall({
@@ -17,7 +19,7 @@ export const fetchPaginatedCropsByLotId = async (
 };
 
 export const deleteCrop = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   cropId: string
 ): Promise<boolean> => {
   const response = await backendApiCall({ method: "DELETE", endpoint: `v1/crop/delete/${cropId}` });
@@ -28,13 +30,14 @@ export const deleteCrop = async (
 };
 
 export const fetchCropDetails = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   cropId: string
-): Promise<apiResponse> => {
+): Promise<Response> => {
   return await backendApiCall({ method: "GET", endpoint: `v1/crop/info/${cropId}` });
 };
+
 export const updateCrop = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   data: Crop,
   cropId: string
 ) => {
@@ -42,7 +45,7 @@ export const updateCrop = async (
 };
 
 export const saveCrop = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   data: Crop,
   cropId: string
 ) => {

@@ -25,10 +25,9 @@ interface InputProps {
 }
 
 export const FormContainer = styled.div<InputProps>`
-  max-width: 400px;
-  margin: 0 auto;
-  background-color: #ffffff;
   display: flex;
+  max-width: 720px;
+  width: 100%;
   flex-direction: column;
   position: relative; /* Añade posición relativa */
 `;
@@ -214,7 +213,6 @@ export const FormField = styled.div<InputProps>``;
 
 export const InfoContainer = styled.div<InputProps>`
   align-items: ${(props) => (props.$custom2 ? "center" : "right")};
-  background: ${(props) => (props.typeColor ? "#FFAF31" : "#D9D9D9")};
   background: ${(props) => (props.$custom4 ? "transparent" : "")};
   display: flex;
   flex-direction: column;

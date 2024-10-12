@@ -8,6 +8,7 @@ import { LotI } from "../interfaces/Lot";
 import { SignBoard, Link } from "../styles/FormStyles";
 import { Text } from "../styles/MainMenuStyles";
 import { NotificationModal } from "../components/modals/NotificationModal";
+import { SubContainer } from "../styles/GlobalStyles";
 
 export const LotsManage: React.FC = () => {
   const { userData } = useContext(AppContext);
@@ -36,48 +37,53 @@ export const LotsManage: React.FC = () => {
 
   return (
     <MainLayout>
-      <Text>Estos son tus lotes, {userData.name}!</Text>
-      <br />
-      <br />{" "}
-      {!loading && data.lots.length > 0 && (
-        <TableV1
-          evencolor="#FFFFFF"
-          oddcolor="rgb(255, 103, 15, 0.2)"
-          data={data.lots}
-          pagination={{
-            rowsPerPage,
-            setRowsPerPage,
-            currentPage,
-            setCurrentPage,
-            setRefetch,
-            totalPages: data.meta.total_pages,
-          }}
-          columns={["ID", "Lote", "Capacidad", "Acciones"]}
-          columnMapping={{
-            Lote: "name",
-            Capacidad: "capacity",
-          }}
-          options={{ edit: handleEdit, delete: handleDelete }}
-        />
-      )}
-      <SignBoard>
-        ¿Quieres añadir un lote?
-        <Link $primary href="/add-lote">
-          ¡Hazlo aquí!
-        </Link>
-      </SignBoard>
-      {/* Mostrar modal de notificación si showNotification es true */}
-      {showNotification && (
-        <NotificationModal
-          title="Lote eliminado exitosamente"
-          description="El lote ha sido eliminado con éxito."
-          status="success" // Asegúrate de tener esta variable definida
-          buttonText="Aceptar"
-          onClose={handleNotificationClose}
-          // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
-          redirectUrl=""
-        />
-      )}
+      <div style={{ display: "block", width: "100%", margin: "atuo" }}>
+        <SubContainer>
+          <Text>Estos son tus lotes, {userData.name}!</Text>
+          <br />
+          <br />{" "}
+          {!loading && data.lots.length > 0 && (
+            <TableV1
+              evencolor="#FFFFFF"
+              oddcolor="rgb(255, 103, 15, 0.2)"
+              data={data.lots}
+              pagination={{
+                rowsPerPage,
+                setRowsPerPage,
+                currentPage,
+                setCurrentPage,
+                setRefetch,
+                totalPages: data.meta.total_pages,
+              }}
+              title="Lotes"
+              columns={["ID", "Lote", "Capacidad", "Acciones"]}
+              columnMapping={{
+                Lote: "name",
+                Capacidad: "capacity",
+              }}
+              options={{ edit: handleEdit, delete: handleDelete }}
+            />
+          )}
+          <SignBoard style={{ marginTop: "1rem" }}>
+            ¿Quieres añadir un lote?
+            <Link $primary href="/add-lote">
+              ¡Hazlo aquí!
+            </Link>
+          </SignBoard>
+          {/* Mostrar modal de notificación si showNotification es true */}
+          {showNotification && (
+            <NotificationModal
+              title="Lote eliminado exitosamente"
+              description="El lote ha sido eliminado con éxito."
+              status="success" // Asegúrate de tener esta variable definida
+              buttonText="Aceptar"
+              onClose={handleNotificationClose}
+              // No estoy seguro de qué debería ir en redirectUrl, así que dejé este campo vacío
+              redirectUrl=""
+            />
+          )}
+        </SubContainer>
+      </div>
     </MainLayout>
   );
 };

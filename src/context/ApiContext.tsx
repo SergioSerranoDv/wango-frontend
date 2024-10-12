@@ -1,21 +1,12 @@
 import React, { createContext, useEffect, useState, PropsWithChildren } from "react";
+import { Props, Response } from "../types/Api";
 import { useAuth0 } from "@auth0/auth0-react";
 interface apiData {
   userToken: string;
-  backendApiCall: (apiData: ApiProps) => Promise<apiResponse>;
+  backendApiCall: (apiData: Props) => Promise<Response>;
   serviceIsReady: boolean;
 }
 
-export interface ApiProps {
-  method: string;
-  endpoint: string;
-  body?: any;
-}
-export interface apiResponse {
-  data?: any;
-  message: string;
-  status: string;
-}
 export const ApiContext = createContext<apiData>({
   userToken: "",
   backendApiCall: async () => {
@@ -27,7 +18,8 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { getAccessTokenSilently } = useAuth0();
   const [serviceIsReady, setServiceIsReady] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>("");
-  const backendApiCall = async (apiData: ApiProps): Promise<apiResponse> => {
+
+  const backendApiCall = async (apiData: Props): Promise<Response> => {
     if (!serviceIsReady) {
       return { data: null, status: "error", message: "Token not ready yet" };
     }
@@ -41,7 +33,6 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
         body: JSON.stringify(apiData.body),
       });
       const data = await res.json();
-      console.log(data);
       if (data.status === "error") {
         return { data: null, status: "error", message: data.message };
       }
@@ -53,8 +44,10 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
 
   const getToken = async () => {
     const token = await getAccessTokenSilently();
+    console.log(token);
     return token;
   };
+
   useEffect(() => {
     getToken()
       .then((token) => {

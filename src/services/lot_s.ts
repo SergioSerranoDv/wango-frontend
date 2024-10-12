@@ -1,15 +1,15 @@
-import { ApiProps, apiResponse } from "../context/ApiContext";
+import { Props, Response } from "../types/Api";
 import { LotI } from "../interfaces/Lot";
 
 export const createNewLot = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   data: LotI
 ) => {
   return await backendApiCall({ method: "POST", endpoint: "v1/lot/new", body: data });
 };
 
 export const updateLot = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   data: LotI,
   lotId: string
 ) => {
@@ -17,14 +17,14 @@ export const updateLot = async (
 };
 
 export const fetchLotDetails = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   lotId: string
-): Promise<apiResponse> => {
+): Promise<Response> => {
   return await backendApiCall({ method: "GET", endpoint: `v1/lot/info/${lotId}` });
 };
 
 export const fetchPaginatedLotsPerUser = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   { page, limit }: { page: number; limit: number }
 ): Promise<any> => {
   return await backendApiCall({
@@ -34,7 +34,7 @@ export const fetchPaginatedLotsPerUser = async (
 };
 
 export const deleteLot = async (
-  backendApiCall: (data: ApiProps) => Promise<apiResponse>,
+  backendApiCall: (data: Props) => Promise<Response>,
   lotId: string
 ): Promise<boolean> => {
   const response = await backendApiCall({ method: "DELETE", endpoint: `v1/lot/delete/${lotId}` });

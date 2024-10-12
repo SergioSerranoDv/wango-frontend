@@ -8,23 +8,14 @@ import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";
 import { Crop } from "../interfaces/crop";
-import { Container } from "../styles/GlobalStyles";
 import { Text } from "../styles/MainMenuStyles";
-import {
-  Button,
-  DetailsItem,
-  DetailsSign,
-  InfoContainer,
-  Link,
-  RegisterFormContainer,
-  SignBoard,
-} from "../styles/lotscropsStyles";
+import { DetailsItem, DetailsSign, InfoContainer } from "../styles/lotscropsStyles";
+import { SubContainer } from "../styles/GlobalStyles";
 
 export const WFLot: React.FC = () => {
   const { id } = useParams();
   const lotId = id || "";
   const { backendApiCall, serviceIsReady } = useContext(ApiContext);
-  const [refetchLotDetails, setRefetchLotDetails] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showNotification, setShowNotification] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
@@ -46,22 +37,23 @@ export const WFLot: React.FC = () => {
       }
     };
     serviceIsReady && fetchLotData();
-  }, [lotId, serviceIsReady, refetchLotDetails]);
+  }, [lotId, serviceIsReady]);
 
   const handleEdit = (crop: Crop) => {
     window.open(`/lot-menu/water-footprint/crops/${crop._id}`, "_self");
   };
-  const handleDelete = async (cropId: string) => {};
+
   const handleNotificationClose = () => {
     setShowNotification(false);
   };
+
   return (
     <MainLayout>
-      <Text>Registros para la huella hídrica en el lote '{Lot.name}'</Text>
-      <RegisterFormContainer>
-        <br />
-        <br />{" "}
-        <InfoContainer>
+      <SubContainer>
+        <Text style={{ marginBottom: "1rem" }}>
+          Registros para la huella hídrica en el lote '{Lot.name}'
+        </Text>
+        <InfoContainer style={{ margin: "1rem 0" }}>
           <DetailsSign $custom3>
             ID: <DetailsItem>{Lot._id !== undefined && `${Lot._id}`}</DetailsItem>
           </DetailsSign>
@@ -80,46 +72,45 @@ export const WFLot: React.FC = () => {
           </DetailsSign>
           <DetailsSign $custom3>Cultivos:</DetailsSign>
         </InfoContainer>
-      </RegisterFormContainer>
-      {!loading && data && data.crops.length > 0 && (
-        <TableV1
-          evencolor="#FFFFFF"
-          oddcolor="rgb(255, 103, 15, 0.2)"
-          columns={["ID", "Cultivos", "Área", "Opciones"]}
-          columnMapping={{
-            Cultivos: "name",
-            Área: "area",
-          }}
-          data={data.crops}
-          pagination={{
-            currentPage,
-            setCurrentPage,
-            rowsPerPage,
-            setRowsPerPage,
-            setRefetch,
-            totalPages: data.meta.total_pages,
-          }}
-          options={{ edit: handleEdit, delete: handleEdit }}
-        />
-      )}
-      <RegisterFormContainer>
+        {!loading && data && data.crops.length > 0 && (
+          <TableV1
+            title="Lotes"
+            evencolor="#FFFFFF"
+            oddcolor="rgb(255, 103, 15, 0.2)"
+            columns={["ID", "Cultivos", "Área", "Opciones"]}
+            columnMapping={{
+              Cultivos: "name",
+              Área: "area",
+            }}
+            data={data.crops}
+            pagination={{
+              currentPage,
+              setCurrentPage,
+              rowsPerPage,
+              setRowsPerPage,
+              setRefetch,
+              totalPages: data.meta.total_pages,
+            }}
+            options={{ edit: handleEdit, delete: handleEdit }}
+          />
+        )}
         <InfoContainer>
-          <DetailsSign $custom3>
+          <DetailsSign $custom3 style={{ textAlign: "center", marginTop: "1rem" }}>
             Nota: Para ver los registros y el valor del componente de un cultivo, debes finalizar el
             proceso de recolección de registros dando click en el ícono de la mano.
           </DetailsSign>
         </InfoContainer>
-      </RegisterFormContainer>
-      {showNotification && (
-        <NotificationModal
-          title="Cultivo eliminado exitosamente"
-          description="El cultivo ha sido eliminado con éxito."
-          status="success"
-          buttonText="Aceptar"
-          onClose={handleNotificationClose}
-          redirectUrl=""
-        />
-      )}
+        {showNotification && (
+          <NotificationModal
+            title="Cultivo eliminado exitosamente"
+            description="El cultivo ha sido eliminado con éxito."
+            status="success"
+            buttonText="Aceptar"
+            onClose={handleNotificationClose}
+            redirectUrl=""
+          />
+        )}
+      </SubContainer>
     </MainLayout>
   );
 };

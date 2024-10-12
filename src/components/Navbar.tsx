@@ -73,14 +73,14 @@ const Navbar: React.FC = () => {
               <Logo src={LogoImg} />
             </Link>
           </LeftContainer>
-          <CenterContainer>
-            <NavbarLinkContainer>
-              {LinkItems.map((item) => (
-                <div key={item.id}>{item.elementList}</div>
-              ))}
-            </NavbarLinkContainer>
-          </CenterContainer>
           <RightContainer>
+            <CenterContainer>
+              <NavbarLinkContainer>
+                {LinkItems.map((item) => (
+                  <div key={item.id}>{item.elementList}</div>
+                ))}
+              </NavbarLinkContainer>
+            </CenterContainer>
             <UserImage onClick={toggleDropdown} src={userData.picture} alt="User profile" />
           </RightContainer>
         </NavbarInnerContainer>
