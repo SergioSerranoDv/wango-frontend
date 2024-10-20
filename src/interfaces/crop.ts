@@ -5,7 +5,9 @@ export interface Crop {
   name: string;
   latitude: string;
   longitude: string;
+  status_data_collection: string;
 }
+
 export const CropDataInit: Crop = {
   _id: "",
   area: 0,
@@ -13,4 +15,5 @@ export const CropDataInit: Crop = {
   name: "",
   latitude: "",
   longitude: "",
+  status_data_collection: "",
 };
