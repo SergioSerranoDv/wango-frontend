@@ -50,3 +50,10 @@ export const Item = styled.img`
     width: 50px;
   }
 `;
+
+export const TopCardsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+`;

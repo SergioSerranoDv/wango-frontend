@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
-import arrowheadRight from "../assets/icons/arrowheadRight.svg";
-import arrowheadLeft from "../assets/icons/arrowheadLeft.svg";
+import arrowheadRight from "../../assets/icons/arrowheadRight.svg";
+import arrowheadLeft from "../../assets/icons/arrowheadLeft.svg";
 import {
   ContainerNavigationControls,
   NextArrow,
@@ -8,8 +8,10 @@ import {
   Table,
   TableRow,
   TableCell,
-} from "../styles/TableStyles";
+  TableContainer,
+} from "../../styles/TableStyles";
 interface TableV1Props {
+  columns: any;
   title?: string;
   evencolor: string;
   oddcolor: string;
@@ -22,14 +24,6 @@ interface TableV1Props {
     setRefetch: Dispatch<SetStateAction<number>>;
     totalPages: number;
   };
-  columns: string[];
-  columnMapping: {
-    [key: string]: string;
-  };
-  options: {
-    edit: (item: any) => void;
-    delete: (item: any) => void;
-  };
 }
 export const TableV1: React.FC<TableV1Props> = ({
   title,
@@ -37,8 +31,6 @@ export const TableV1: React.FC<TableV1Props> = ({
   oddcolor,
   data,
   columns,
-  columnMapping,
-  options,
   pagination,
 }) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -57,19 +49,14 @@ export const TableV1: React.FC<TableV1Props> = ({
     pagination.setRefetch((prev: number) => prev + 1);
   };
   return (
-    <div
-      style={{
-        padding: "40px",
-        background: "#fff",
-        borderRadius: "16px",
-      }}
-    >
+    <TableContainer>
       <span style={{ color: "#ffb032" }}>{title}</span>
       <Table style={{ marginTop: "2rem" }}>
         <thead style={{ borderRadius: "16px" }}>
           <TableRow $index={-1} $evenColor={evencolor} $oddColor={oddcolor}>
-            {columns.map((column: string, index: number) => (
-              <TableCell key={index}>{column}</TableCell>
+            <TableCell>ID</TableCell>
+            {columns.map((column: any, index: number) => (
+              <TableCell key={index}>{column.title}</TableCell>
             ))}
           </TableRow>
         </thead>
@@ -77,21 +64,13 @@ export const TableV1: React.FC<TableV1Props> = ({
           {data.map((item: any, index: number) => (
             <TableRow key={index} $index={index} $evenColor={evencolor} $oddColor={oddcolor}>
               <TableCell>{index + 1}</TableCell>
-              {columns.map((column, colIndex) => {
-                if (columnMapping[column]) {
-                  return <TableCell key={colIndex}>{item[columnMapping[column]]}</TableCell>;
-                }
-              })}
-              <TableCell>
-                <button
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => options.edit(item)}
-                >
-                  <svg
+              {columns.map((column: any, index: number) => (
+                <TableCell key={index}>{column.render(item)}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+
+          {/* <svg
                     width="20"
                     viewBox="0 0 19 20"
                     fill="#548af7"
@@ -124,54 +103,8 @@ export const TableV1: React.FC<TableV1Props> = ({
                         <rect width="19" height="20" fill="white" />
                       </clipPath>
                     </defs>
-                  </svg>
-                </button>
-                <button
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => options.delete(item._id)}
-                >
-                  <svg
-                    width="20"
-                    viewBox="0 0 19 21"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clipPath="url(#clip0_765_1111)">
-                      <path
-                        d="M7.49012 0.0687771C7.11012 0.159004 6.7347 0.359961 6.46458 0.614235C6.01133 1.04076 5.83735 1.47548 5.83735 2.18499V2.62381L3.60771 2.63611L1.37349 2.64842L1.06675 2.77966C0.640964 2.96011 0.375422 3.18977 0.169398 3.56298L0 3.87467V5.33879C0 6.7537 0.00457831 6.80701 0.0961446 6.91774C0.279277 7.13921 0.416627 7.19662 0.782892 7.21303L1.12169 7.22943V7.36067C1.12169 7.43039 1.26361 10.1618 1.44217 13.4345C1.68024 17.9458 1.77639 19.4304 1.82675 19.5863C1.98699 20.0579 2.41735 20.5337 2.90265 20.7674C3.38795 21.0053 3.18651 21.0012 9.5 21.0012C15.8272 21.0012 15.6075 21.0094 16.1111 20.7633C16.5918 20.5296 17.0634 19.9882 17.1916 19.5248C17.2282 19.3812 17.8737 7.98405 17.8783 7.38118V7.22943L18.2171 7.21303C18.5834 7.19662 18.7207 7.13921 18.9039 6.91774C18.9954 6.80701 19 6.7537 19 5.33879V3.87467L18.8306 3.56298C18.6246 3.18977 18.359 2.96011 17.9333 2.77966L17.6265 2.64842L15.3969 2.63611L13.1627 2.62381V2.18499C13.1627 1.47548 12.9887 1.04076 12.5354 0.614235C12.2561 0.351759 11.8899 0.159004 11.4916 0.0646763C11.107 -0.0214481 7.86096 -0.0214481 7.49012 0.0687771ZM11.3588 1.42217C11.6335 1.60262 11.6747 1.69695 11.6884 2.18088L11.7067 2.62791H9.5H7.29325L7.31157 2.18499C7.3253 1.77487 7.33446 1.72565 7.44892 1.59442C7.68699 1.31554 7.68241 1.31554 9.55494 1.32784C11.1711 1.33604 11.2398 1.34014 11.3588 1.42217ZM17.4434 4.04282C17.5578 4.14125 17.5578 4.14125 17.5578 5.0271V5.90885H9.5H1.44217V5.0271C1.44217 4.14125 1.44217 4.14125 1.55663 4.04282L1.66651 3.94029H9.5H17.3335L17.4434 4.04282ZM16.4133 7.29095C16.4178 7.63135 15.8089 18.8686 15.7769 19.0613C15.7265 19.3607 15.6304 19.4961 15.3786 19.6068C15.1954 19.6888 15.1176 19.6888 9.5 19.6888C3.88241 19.6888 3.80458 19.6888 3.62145 19.6068C3.36964 19.4961 3.27349 19.3607 3.22313 19.0613C3.19108 18.8686 2.58217 7.63135 2.58675 7.29095C2.58675 7.22533 2.94843 7.22123 9.5 7.22123C16.0516 7.22123 16.4133 7.22533 16.4133 7.29095Z"
-                        fill="black"
-                        fillOpacity="0.7"
-                      />
-                      <path
-                        d="M5.5398 8.59105C5.35209 8.66488 5.1598 8.87403 5.12776 9.03808C5.11402 9.1119 5.10944 11.1461 5.11402 13.5658C5.12776 17.9294 5.12776 17.9622 5.2239 18.073C5.40246 18.2903 5.54896 18.356 5.8374 18.356C6.12583 18.356 6.27233 18.2903 6.45089 18.073C6.54703 17.9622 6.54703 17.9417 6.54703 13.4551C6.54703 8.96836 6.54703 8.94786 6.45089 8.83712C6.40053 8.77561 6.30438 8.68538 6.24029 8.64437C6.0892 8.54184 5.72294 8.51313 5.5398 8.59105Z"
-                        fill="black"
-                        fillOpacity="0.7"
-                      />
-                      <path
-                        d="M9.2024 8.59105C9.01469 8.66488 8.8224 8.87403 8.79035 9.03808C8.77662 9.1119 8.77204 11.1461 8.77662 13.5658C8.79035 17.9294 8.79035 17.9622 8.8865 18.073C9.06505 18.2903 9.21156 18.356 9.49999 18.356C9.78843 18.356 9.93493 18.2903 10.1135 18.073C10.2096 17.9622 10.2096 17.9417 10.2096 13.4551C10.2096 8.96836 10.2096 8.94786 10.1135 8.83712C10.0631 8.77561 9.96698 8.68538 9.90288 8.64437C9.7518 8.54184 9.38553 8.51313 9.2024 8.59105Z"
-                        fill="black"
-                        fillOpacity="0.7"
-                      />
-                      <path
-                        d="M12.865 8.59105C12.6773 8.66488 12.485 8.87404 12.453 9.03808C12.4392 9.1119 12.4346 11.1461 12.4392 13.5658C12.453 17.9294 12.453 17.9622 12.5491 18.073C12.7277 18.2903 12.8742 18.356 13.1626 18.356C13.451 18.356 13.5975 18.2903 13.7761 18.073C13.8722 17.9622 13.8722 17.9417 13.8722 13.4551C13.8722 8.96836 13.8722 8.94786 13.7761 8.83712C13.7257 8.77561 13.6296 8.68538 13.5655 8.64437C13.4144 8.54184 13.0481 8.51313 12.865 8.59105Z"
-                        fill="black"
-                        fillOpacity="0.7"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_765_1111">
-                        <rect width="19" height="21" fill="white" />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-              </TableCell>
-            </TableRow>
-          ))}
+                  </svg> */}
+          {/* </TableCell> */}
         </tbody>
       </Table>
       <div
@@ -221,6 +154,6 @@ export const TableV1: React.FC<TableV1Props> = ({
           </span>
         </div>
       </div>
-    </div>
+    </TableContainer>
   );
 };

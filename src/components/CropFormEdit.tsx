@@ -1,29 +1,25 @@
 import React, { useState, useContext, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../context/ApiContext";
+import { useNotification } from "../hooks/UseNotification";
 import { NotificationModal } from "./modals/NotificationModal";
 import { CollectionModal } from "./modals/CollectionModal";
 import { fetchLotDetails } from "../services/lot_s";
-import { fetchCropDetails, updateCrop } from "../services/crop_s";
+import { updateCrop } from "../services/crop_s";
 import { getCollectionByCropId } from "../services/collection_s";
 import { NotificationI, NotificationDataInit } from "../interfaces/notification";
 import { Crop } from "../interfaces/crop";
 import { LotI } from "../interfaces/Lot";
-import { LastCollectionModal } from "./modals/LastCollectionModal";
 import {
-  Button,
-  DetailsItem,
-  DetailsSign,
+  FormWrapper,
   Form,
-  InfoContainer,
-  Input,
+  FormField,
   Label,
-  FormContainer,
-  SignBoard,
-  ButtonContainer2,
-  SignBoard2,
-  InfoContainer2,
-} from "../styles/FormStyles";
+  Input,
+  ButtonContainer,
+  Button,
+} from "../styles/AddLoteStyles";
+import { LastCollectionModal } from "./modals/LastCollectionModal";
 
 interface FormData {
   cropName: string;
@@ -31,38 +27,32 @@ interface FormData {
   latitude: string;
   longitude: string;
 }
-interface CropFormEditProps {
-  cropId?: string;
+interface Props {
+  crop: Crop;
 }
 
-export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
+export const CropFormEdit: React.FC<Props> = ({ crop }) => {
   const navigate = useNavigate();
+  const { closeNotification, notificationDetails, showNotification, triggerNotification } =
+    useNotification();
   const [showCollectionModal, setShowCollectionModal] = useState(false);
   const [showLastCollectionModal, setShowLastCollectionModal] = useState(false);
   const [cropStatus, setCropStatus] = useState(null);
   const [lastCollection, setLastCollection] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState("");
-  const [notificationDetails, setNotificationDetails] = useState({
-    content: <></>,
-    status: "",
-    title: "",
-  });
+  // const [notificationDetails, setNotificationDetails] = useState({
+  //   content: <></>,
+  //   status: "",
+  //   title: "",
+  // });
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState({
-    cropName: "",
-    area: 0,
-    latitude: "",
-    longitude: "",
+    name: crop.name,
+    area: crop.area,
+    latitude: crop.latitude,
+    longitude: crop.longitude,
   });
-  const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [crop, setCrop] = useState<Crop>({
-    _id: "",
-    area: 0,
-    lot_id: "",
-    name: "",
-    latitude: "",
-    longitude: "",
-  });
+
   const [lot, setLot] = useState<LotI>({
     _id: "",
     capacity: 0,
@@ -70,29 +60,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
     available_capacity: 0,
     capacity_in_use: 0,
   });
-  // Fetch crop details when the component mounts
-  useEffect(() => {
-    async function loadCropDetails() {
-      if (cropId) {
-        try {
-          const cropDetails = await fetchCropDetails(backendApiCall, cropId);
-          if (cropDetails && cropDetails.data) {
-            setCrop(cropDetails.data);
-            setFormData((prevData) => ({
-              ...prevData,
-              cropName: cropDetails.data.name,
-              area: cropDetails.data.area,
-              latitude: cropDetails.data.latitude,
-              longitude: cropDetails.data.longitude,
-            }));
-          }
-        } catch (error) {
-          console.log("Error fetching crop details:", error);
-        }
-      }
-    }
-    loadCropDetails();
-  }, [backendApiCall, cropId]);
+
   // Fetch lot details when the component mounts
   useEffect(() => {
     async function loadLotDetails() {
@@ -109,27 +77,25 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
     }
     loadLotDetails();
   }, [backendApiCall, crop]);
+
   //load crop status
   useEffect(() => {
-    console.log("CropId: ", cropId);
     async function loadCropstatus() {
-      if (cropId) {
-        try {
-          const cropStatus = await getCollectionByCropId(backendApiCall, cropId);
+      try {
+        const cropStatus = await getCollectionByCropId(backendApiCall, crop._id);
+        setCropStatus(cropStatus.data.status);
+        if (cropStatus) {
+          //console.log("Estado del crop: ", cropStatus.data.status);
           setCropStatus(cropStatus.data.status);
-          if (cropStatus) {
-            //console.log("Estado del crop: ", cropStatus.data.status);
-            setCropStatus(cropStatus.data.status);
-            setLastCollection(cropStatus.data);
-          }
-        } catch (error) {
-          console.log("Error getting crop status:", error);
+          setLastCollection(cropStatus.data);
         }
+      } catch (error) {
+        console.log("Error getting crop status:", error);
       }
     }
     loadCropstatus();
     console.log("CropStatus Mira: ", cropStatus);
-  }, [backendApiCall, cropId, cropStatus]);
+  }, [backendApiCall, cropStatus]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -142,46 +108,35 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (!lot._id) {
-        return;
-      }
       const response = await updateCrop(
         backendApiCall,
         {
-          _id: cropId,
-          name: formData.cropName,
+          _id: crop._id,
+          name: formData.name,
           area: formData.area,
-          lot_id: lot._id,
+          lot_id: crop.lot_id,
           latitude: formData.latitude,
           longitude: formData.longitude,
         },
-        cropId
+        crop._id
       );
-      if (response.status === "error") {
-        setNotificationMessage("Hubo un error editando el cultivo");
+      if (response.status === "success") {
+        triggerNotification(
+          "Cultivo editado exitosamente",
+          "¡Excelente! El cultivo ha sido editado exitosamente.",
+          "success",
+          ""
+        );
       } else {
-        setNotificationMessage("Cultivo editado exitosamente");
+        triggerNotification("Error", "No se pudo editar el cultivo.", "error", "");
       }
-      setShowNotification(true);
-      setTimeout(() => {
-        setShowNotification(false);
-        navigate(`/lot-menu/crops/${crop.lot_id}`);
-      }, 4000);
     } catch (error) {
       console.error("Error updating crop:", error);
-      setNotificationMessage("Hubo un error editando el cultivo");
-      setShowNotification(true);
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 4000);
     }
-  };
-  const handleNotificationClose = () => {
-    setShowNotification(false);
   };
 
   const handleRegisterButton = () => {
-    if (cropStatus == "in_progress") {
+    if (cropStatus === "in_progress") {
       // console.log("Efectivamente está en progreso");
       // console.log("CropId: ", cropId);
       if (lastCollection) {
@@ -193,30 +148,18 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
     }
   };
 
+  console.log(crop);
+
   return (
     <>
-      <FormContainer>
-        <SignBoard>Información del cultivo</SignBoard>
-        {showNotification && <SignBoard2 $custom1>{notificationMessage}</SignBoard2>}
-        <InfoContainer2 $custom1>
-          <br />
-          <DetailsSign $custom3>
-            Lote: <DetailsItem> {lot?.name}</DetailsItem>
-          </DetailsSign>
-          <DetailsSign $custom3>
-            Área disponible: <DetailsItem> {lot?.available_capacity} Ha</DetailsItem>
-          </DetailsSign>
-          <DetailsSign $custom3>
-            Área en ocupación: <DetailsItem>{lot?.capacity_in_use} Ha</DetailsItem>
-          </DetailsSign>
-        </InfoContainer2>
+      <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <Label htmlFor="cropName">Nombre del cultivo*</Label>
           <Input
             type="text"
             id="cropName"
             name="cropName"
-            value={formData.cropName} // Asegúrate de que el valor esté vinculado a formData.cropName
+            value={formData.name} // Asegúrate de que el valor esté vinculado a formData.cropName
             onChange={handleChange}
             required
           />
@@ -234,7 +177,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
             type="number"
             id="latitude"
             name="latitude"
-            value={crop?.latitude}
+            value={formData.latitude}
             onChange={handleChange}
           />
           <Label htmlFor="longitude">Longitud (°)*</Label>
@@ -245,27 +188,22 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
             value={formData.longitude}
             onChange={handleChange}
           />
-          <ButtonContainer2>
-            <Button type="button" $custom1 onClick={handleRegisterButton}>
-              Registros
-            </Button>
-            <Button type="submit" color="green" $custom1>
-              Guardar cambios
-            </Button>
-          </ButtonContainer2>
+          <ButtonContainer>
+            <Button type="submit">Guardar cambios</Button>
+          </ButtonContainer>
         </Form>
-      </FormContainer>
+      </FormWrapper>
+
       {showNotification && (
         <NotificationModal
-          title={"Cultivo editado exitosamente Modal"}
-          description="¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’."
-          status="success"
+          title={notificationDetails.title}
+          description={notificationDetails.description}
+          status={notificationDetails.status}
           buttonText="Aceptar"
-          onClose={handleNotificationClose}
-          redirectUrl={`/lot-menu/crops/${cropId}`}
+          onClose={closeNotification}
         />
       )}
-      {showCollectionModal && (
+      {/* {showCollectionModal && (
         <CollectionModal
           data={{
             crop_id: cropId,
@@ -288,7 +226,7 @@ export const CropFormEdit: React.FC<CropFormEditProps> = ({ cropId = "" }) => {
           buttonText="Registros"
           onClose={() => setShowLastCollectionModal(false)}
         />
-      )}
+      )} */}
     </>
   );
 };

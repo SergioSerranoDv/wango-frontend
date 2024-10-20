@@ -53,12 +53,7 @@ export const NotificationModal: React.FC<NotificationProps> = ({
               <NotificationTitle>{title}</NotificationTitle>
             </NotificationHeader>
             <NotificationDescription dangerouslySetInnerHTML={{ __html: description }} />
-            {redirectUrl && (
-              <Link to={redirectUrl}>
-                <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
-              </Link>
-            )}
-            {!redirectUrl && <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>}
+            <AcceptButton onClick={handleClose}>{buttonText}</AcceptButton>
           </ModalContainer>
         </Overlay>
       )}

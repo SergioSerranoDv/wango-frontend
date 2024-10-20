@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { LotDataInit } from "../interfaces/Lot";
 import { NotificationModal } from "../components/modals/NotificationModal";
 import { MainLayout } from "../layouts/MainLayout";
-import { TableV1 } from "../components/TableV1";
+import { TableV1 } from "../components/tables/TableV1";
 import { UseGet } from "../hooks/UseGet";
 import { ApiContext } from "../context/ApiContext";
 import { fetchLotDetails } from "../services/lot_s";

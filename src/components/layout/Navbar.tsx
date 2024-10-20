@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -14,8 +14,8 @@ import {
   UserImage,
   DropdownContent,
   DropdownItem,
-} from "../styles/NavbarStyles";
-import LogoImg from "../assets/images/logoNavbar.svg";
+} from "../../styles/NavbarStyles";
+import LogoImg from "../../assets/images/logoNavbar.svg";
 
 interface LinkProps {
   id: number;
@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
   const LinkItems: LinkProps[] = [
     {
       id: 1,
-      elementList: <LinkElement text="Editar perfil" link="/my-profile" />,
+      elementList: <LinkElement text="Editar perfil" link="/profile" />,
     },
     {
       id: 2,

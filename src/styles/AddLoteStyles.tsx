@@ -32,7 +32,6 @@ export const FormWrapper = styled.div`
 `;
 
 export const Form = styled.form`
-  background-color: ${colors.white};
   border-radius: 10px;
   width: 100%;
 `;
@@ -50,7 +49,7 @@ export const FormField = styled.div`
 
 export const Label = styled.label`
   display: block;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: ${spacing.small};
 `;
 
@@ -72,4 +71,23 @@ export const Button = styled.button`
   color: ${colors.white};
   background-color: ${colors.orange};
   width: 100%;
+`;
+
+export const ButtonSecondary = styled.button`
+  padding: 12px 16px;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #ff8f2d;
+  min-width: 64px;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #ff6f00;
+  }
 `;

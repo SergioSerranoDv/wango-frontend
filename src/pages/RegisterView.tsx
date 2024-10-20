@@ -8,11 +8,11 @@ import { Records } from "../interfaces/record";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { Crop, CropDataInit } from "../interfaces/crop";
 import { MainLayout } from "../layouts/MainLayout";
-import { TableV1 } from "../components/TableV1";
+import { TableV1 } from "../components/tables/TableV1";
 import { LoadingAnimation } from "../components/Loading";
 import { NotificationModal } from "../components/modals/NotificationModal";
 import { AddRegistry } from "../components/modals/FormModal";
-import { ButtonContainer, Button, Description, SignBoard } from "../styles/FormStyles";
+import { Button, ButtonContainer, Description, SignBoard } from "../styles/FormStyles";
 
 export const RegisterView = () => {
   // Hooks y estado inicial

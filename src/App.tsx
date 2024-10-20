@@ -4,17 +4,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppContextProvider } from "./context/AppContext";
 import { ApiContextProvider } from "./context/ApiContext";
 import { LoadingAnimation } from "./components/Loading";
-import { AddLot } from "./pages/AddLot";
 import { Profile } from "./pages/UserProfile";
-import { DashboardLots } from "./pages/DashboardLots";
 import { Dashboard } from "./pages/Dashboard";
 import RegisterForm from "./pages/RegisterForm";
-import { LotsManage } from "./pages/LotsManage";
-import { EditLot } from "./pages/EditLot";
-import NewCrop from "./pages/NewCrop";
+import { Lots } from "./pages/Lots";
 import VarForm from "./pages/VarForm";
-import { LotsCrops } from "./pages/LotsCrops";
-import { EditCrop } from "./pages/EditCrop";
+import { Crops } from "./pages/Crops";
 import { RegisterView } from "./pages/RegisterView";
 import { WFComponents } from "./pages/WFComponents";
 import { WFCrops } from "./pages/WFCrops";
@@ -24,6 +19,7 @@ import "./styles/MainMenuStyles";
 import { WF } from "./pages/WF";
 import { IA } from "./pages/IA";
 import { WFFull } from "./pages/WFFull";
+import { WaterFootPrint } from "./pages/WaterFootprint";
 
 export const App: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -41,16 +37,12 @@ export const App: React.FC = () => {
               {isAuthenticated ? (
                 <>
                   <Route path="/" element={<Dashboard />} />
-                  <Route path="/my-profile" element={<Profile />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/register-form" element={<RegisterForm />} />
-                  <Route path="/lot-menu/:id" element={<DashboardLots />} />
-                  <Route path="/add-lote" element={<AddLot />} />
-                  <Route path="/edit-lote/:id" element={<EditLot />} />
-                  <Route path="/lot-menu/new-crop/:id" element={<NewCrop />} />
-                  <Route path="/lots-manage" element={<LotsManage />} />
+                  <Route path="/dashboard/lots" element={<Lots />} />
+                  <Route path="/dashboard/crops/:id" element={<Crops />} />
                   <Route path="/config-vars" element={<VarForm />} />
-                  <Route path="/lot-menu/crops/:id" element={<LotsCrops />} />
-                  <Route path="/edit-crop/:id" element={<EditCrop />} />
+                  <Route path="/dashboard/water-footprint" element={<WaterFootPrint />} />
                   <Route path="/lot-menu/edit-crop/register-view/:id" element={<RegisterView />} />
                   <Route path="/lot-menu/water-footprint/:id" element={<WFLot />} />
                   <Route path="/lot-menu/water-footprint/crops/:id" element={<WFCrops />} />

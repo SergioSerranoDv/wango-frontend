@@ -16,6 +16,15 @@ export const Container = styled.div<InputProps>`
   box-sizing: border-box;
 `;
 
+export const TableContainer = styled.div`
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+`;
+
 export const Table = styled.table<InputProps>`
   padding: 20px;
   width: 100%;

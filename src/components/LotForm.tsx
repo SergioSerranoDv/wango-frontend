@@ -93,7 +93,7 @@ export const LotForm: React.FC = () => {
     <>
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
-          <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader>
+          {/* <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader> */}
           <FormField>
             <Label htmlFor="nombreLote">Nombre del lote*</Label>
             <Input

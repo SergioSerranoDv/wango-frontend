@@ -1,8 +1,10 @@
 import React, { useState, useContext } from "react";
-import { NotificationModal } from "../components/modals/NotificationModal";
-import { ApiContext } from "../context/ApiContext";
-import { createNewCrop } from "../services/crop_s";
-import { NotificationDataInit, NotificationI } from "../interfaces/notification";
+import { useNavigate } from "react-router-dom";
+import { NotificationModal } from "../../components/modals/NotificationModal";
+import { ApiContext } from "../../context/ApiContext";
+import { createNewCrop } from "../../services/crop_s";
+import { LotI } from "../../interfaces/Lot";
+import { NotificationDataInit, NotificationI } from "../../interfaces/notification";
 import {
   Button,
   Description,
@@ -13,15 +15,15 @@ import {
   Input,
   Label,
   FormContainer,
-  SignBoard,
-} from "../styles/FormStyles";
+} from "../../styles/FormStyles";
 
 interface Props {
-  data: any
+  lotDetails: LotI;
 }
 
-export const RegisterCrop: React.FC<Props> = ({data}) => {
+export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
   const { backendApiCall } = useContext(ApiContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     cropName: "",
     area: "",
@@ -51,15 +53,15 @@ export const RegisterCrop: React.FC<Props> = ({data}) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!data._id) {
+    if (!lotDetails._id) {
       handleNotification("Error", "No se ha encontrado el ID del lote", "error", "");
       return;
     }
-    if (data.available_capacity === 0) {
+    if (lotDetails.available_capacity === 0) {
       handleNotification("Error", "El lote no tiene capacidad disponible", "error", "");
       return;
     }
-    if (parseInt(formData.area) > data.available_capacity) {
+    if (parseInt(formData.area) > lotDetails.available_capacity) {
       handleNotification(
         "Error",
         "El área debe ser menor o igual a la capacidad disponible",
@@ -93,7 +95,7 @@ export const RegisterCrop: React.FC<Props> = ({data}) => {
     try {
       const response = await createNewCrop(backendApiCall, {
         area: parseInt(formData.area),
-        lot_id: data._id,
+        lot_id: lotDetails._id,
         name: formData.cropName,
         latitude: formData.latitude,
         longitude: formData.longitude,
@@ -111,8 +113,8 @@ export const RegisterCrop: React.FC<Props> = ({data}) => {
           description:
             "¡Excelente! Podrás ver tu nuevo cultivo en la sección de <br />  ‘Ver cultivos del lote’.",
           status: "success",
-          redirectUrl: `/lot-menu/crops/${data._id}`,
         });
+        navigate(`/dashboard/crops/${lotDetails._id}`);
         return;
       }
       handleNotification("Error", response.message, "", "");
@@ -125,21 +127,15 @@ export const RegisterCrop: React.FC<Props> = ({data}) => {
     setShowNotification(false);
   };
 
-
   return (
     <>
       <FormContainer>
-        <SignBoard>
-          Agrega un nuevo cultivo al lote <DetailsItem>{data.name}</DetailsItem>
-          <br />
-          <br /> <br />{" "}
-        </SignBoard>
         <InfoContainer>
           <DetailsSign>
-            Área disponible: <DetailsItem>{data.available_capacity} Ha</DetailsItem>
+            Área disponible: <DetailsItem>{lotDetails.available_capacity} Ha</DetailsItem>
           </DetailsSign>
           <DetailsSign>
-            Área en ocupación: <DetailsItem>{data.capacity_in_use} Ha</DetailsItem>
+            Área en ocupación: <DetailsItem>{lotDetails.capacity_in_use} Ha</DetailsItem>
           </DetailsSign>
         </InfoContainer>
         <Form onSubmit={handleSubmit}>
@@ -204,4 +200,4 @@ export const RegisterCrop: React.FC<Props> = ({data}) => {
       )}
     </>
   );
-}
+};
