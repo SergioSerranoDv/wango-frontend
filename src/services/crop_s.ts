@@ -18,15 +18,18 @@ export const fetchPaginatedCropsByLotId = async (
   });
 };
 
-export const deleteCrop = async (
+export const deleteCropById = async (
   backendApiCall: (data: Props) => Promise<Response>,
-  cropId: string
-): Promise<boolean> => {
-  const response = await backendApiCall({ method: "DELETE", endpoint: `v1/crop/delete/${cropId}` });
-  if (response.status === "success") {
-    return true;
-  }
-  return false;
+  cropId: string,
+  lotId: string
+): Promise<any> => {
+  return await backendApiCall({
+    method: "DELETE",
+    endpoint: `v1/crop/delete/${cropId}`,
+    body: {
+      lot_id: lotId,
+    },
+  });
 };
 
 export const fetchCropDetails = async (
