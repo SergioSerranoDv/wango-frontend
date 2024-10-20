@@ -1,11 +1,13 @@
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ApiContext } from "../../context/ApiContext";
 import { Dropdown } from "../Dropdown";
 import { Modal } from "../modals/Modal";
 import { LotFormEdit } from "../LotFormEdit";
 import { RegisterCrop } from "../forms/RegisterCrop";
 import { Button, Item } from "../../styles/components/Actions";
 import { LotI } from "../../interfaces/Lot";
+import { deleteLotById } from "../../services/lot_s";
 
 interface Props {
   lotDetails: LotI;
@@ -14,6 +16,7 @@ interface Props {
 
 export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) => {
   const navigate = useNavigate();
+  const { backendApiCall } = useContext(ApiContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRegisterCropModalOpen, setIsRegisterCropModalOpen] = useState(false);
@@ -77,7 +80,37 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
       ),
       name: "Ver cultivos",
     },
+    {
+      action: () => handleDeleteLot(lotDetails._id),
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#000"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="3 6 5 6 21 6" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+          <line x1="10" y1="3" x2="10" y2="6" />
+          <line x1="14" y1="3" x2="14" y2="6" />
+        </svg>
+      ),
+      name: "Eliminar lote",
+    },
   ];
+
+  const handleDeleteLot = async (id: string) => {
+    const response = await deleteLotById(backendApiCall, id);
+    console.log("Response from delete crop:", response);
+    if (response.status === "success") {
+      refetchLotDetails((prev) => prev + 1);
+    }
+  };
 
   return (
     <>
