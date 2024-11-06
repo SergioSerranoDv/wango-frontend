@@ -1,5 +1,8 @@
 export interface Records {
-  amount_chemicals_used: number;
+  chemicals_used: {
+    product_id: string;
+    amount: number;
+  }[];
   actual_crop_evapotranspiration: number;
   collection_id: string;
   current_stage: number;
@@ -13,7 +16,7 @@ export interface Records {
 }
 
 export const RecordsDataInit: Records = {
-  amount_chemicals_used: 0,
+  chemicals_used: [],
   actual_crop_evapotranspiration: 0,
   collection_id: "",
   current_stage: 0,

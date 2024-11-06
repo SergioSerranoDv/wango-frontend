@@ -4,6 +4,7 @@ import dashboard from "../../assets/icons/dashboard.svg";
 import lot from "../../assets/icons/lot.svg";
 import report from "../../assets/icons/report.svg";
 import water from "../../assets/icons/water.svg";
+import fertilizer from "../../assets/icons/fertilizer.svg";
 
 export const SideBar = () => {
   return (
@@ -32,6 +33,15 @@ export const SideBar = () => {
               style={{ textDecoration: "none", width: "100%", color: "currentcolor" }}
             >
               <ItemMenu>Huella hidrica</ItemMenu>
+            </Link>
+          </ListItem>
+          <ListItem>
+            <img src={fertilizer} width={20} height={20} alt="Productos" />
+            <Link
+              to="/dashboard/products"
+              style={{ textDecoration: "none", width: "100%", color: "currentcolor" }}
+            >
+              <ItemMenu>Productos</ItemMenu>
             </Link>
           </ListItem>
           <ListItem>

@@ -65,3 +65,19 @@ export const CloseButton = styled.button`
     cursor: pointer;
   }
 `;
+
+export const AddButton = styled.button`
+  display: flex;
+  background-color: rgb(215, 215, 215);
+  border-radius: 50%;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: rgb(200, 200, 200);
+    cursor: pointer;
+  }
+`;

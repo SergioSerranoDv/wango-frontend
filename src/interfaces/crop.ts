@@ -1,10 +1,10 @@
 export interface Crop {
   _id: string;
   area: number;
-  lot_id: string;
+  latitude: number;
+  longitude: number;
   name: string;
-  latitude: string;
-  longitude: string;
+  lot_id: string;
   status_data_collection: string;
 }
 
@@ -13,7 +13,7 @@ export const CropDataInit: Crop = {
   area: 0,
   lot_id: "",
   name: "",
-  latitude: "",
-  longitude: "",
+  latitude: 0,
+  longitude: 0,
   status_data_collection: "",
 };

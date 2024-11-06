@@ -68,7 +68,7 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+      const userData = await backendApiCall({ method: "GET", endpoint: "user/info" });
 
       if (userData.status === "error") {
         console.error(userData.message);

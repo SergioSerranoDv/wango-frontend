@@ -1,21 +1,21 @@
 import React, { useState, useContext, useCallback } from "react";
-import { AppContext } from "../context/AppContext";
+import { LoadingAnimation } from "../components/Loading";
 import { LotForm } from "../components/LotForm";
-import { TableV1 } from "../components/tables/TableV1";
-import { Modal } from "../components/modals/Modal";
 import { LotActions } from "../components/actions/LotActions";
-import { MainLayout } from "../layouts/MainLayout";
+import { Modal } from "../components/modals/Modal";
+import { TableV1 } from "../components/tables/TableV1";
+import { AppContext } from "../context/AppContext";
 import { UseGet } from "../hooks/UseGet";
 import { UsePagination } from "../hooks/UsePagination";
 import { LotI } from "../interfaces/Lot";
+import { MainLayout } from "../layouts/MainLayout";
 import { ButtonSecondary } from "../styles/AddLoteStyles";
 import { Text } from "../styles/MainMenuStyles";
-import { LoadingAnimation } from "../components/Loading";
 
 // Custom hook to handle data fetching and pagination logic
-const useLotsData = (currentPage: number, rowsPerPage: number) => {
+export const useLotsData = (currentPage: number, rowsPerPage: number) => {
   return UseGet({
-    endpoint: `v1/lot/paginated?page=${currentPage}&limit=${rowsPerPage}`,
+    endpoint: `lot/paginated?page=${currentPage}&limit=${rowsPerPage}`,
   });
 };
 
@@ -56,31 +56,31 @@ export const Lots: React.FC = () => {
 
   return (
     <MainLayout>
-      <Header userName={userData.name} onOpenModal={() => setIsModalOpen(true)} />
       {loading ? (
         <LoadingAnimation />
-      ) : data?.lots?.length > 0 ? (
-        <TableV1
-          evencolor="#FFFFFF"
-          oddcolor="rgb(255, 103, 15, 0.2)"
-          data={data.lots}
-          pagination={{
-            rowsPerPage,
-            setRowsPerPage,
-            currentPage,
-            setCurrentPage,
-            setRefetch,
-            totalPages: data.meta.totalQ_pages,
-          }}
-          title="Lotes"
-          columns={columns()}
-        />
       ) : (
-        <p>No lots found</p>
+        <>
+          <Header userName={userData.name} onOpenModal={() => setIsModalOpen(true)} />
+          <TableV1
+            evencolor="#FFFFFF"
+            oddcolor="rgb(255, 103, 15, 0.2)"
+            data={data.lots}
+            pagination={{
+              rowsPerPage,
+              setRowsPerPage,
+              currentPage,
+              setCurrentPage,
+              setRefetch,
+              totalPages: data.meta.total_pages,
+            }}
+            title="Lotes"
+            columns={columns()}
+          />
+        </>
       )}
 
       {isModalOpen && (
-        <Modal title="Crear Lote" closeModal={() => setIsModalOpen(false)}>
+        <Modal title="Nuevo Lote" closeModal={() => setIsModalOpen(false)}>
           <LotForm />
         </Modal>
       )}
@@ -88,7 +88,6 @@ export const Lots: React.FC = () => {
   );
 };
 
-// A separate Header component for better readability
 const Header: React.FC<{ userName: string; onOpenModal: () => void }> = ({
   userName,
   onOpenModal,

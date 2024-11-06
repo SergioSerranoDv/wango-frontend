@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { ApiContext } from "../context/ApiContext";
-import { Crop } from "../interfaces/crop";
 import {
   DetailsItem,
   DetailsSign,
@@ -25,7 +24,7 @@ export const WFFull: React.FC = () => {
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
-  const [crop, setCrop] = useState<Crop>({
+  const [crop, setCrop] = useState({
     _id: "",
     area: 0,
     lot_id: "",

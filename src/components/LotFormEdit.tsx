@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useContext, SetStateAction } from "react";
 import { ApiContext } from "../context/ApiContext";
-import { useNotification } from "../hooks/UseNotification";
+import { UseNotification } from "../hooks/UseNotification";
 import { NotificationModal } from "./modals/NotificationModal";
 import { LotI } from "../interfaces/Lot";
 import { updateLot } from "../services/lot_s";
@@ -22,7 +22,7 @@ interface Props {
 export const LotFormEdit: React.FC<Props> = ({ data, refetchData }) => {
   const { backendApiCall } = useContext(ApiContext);
   const { closeNotification, notificationDetails, showNotification, triggerNotification } =
-    useNotification();
+    UseNotification();
   const [formData, setFormData] = useState<LotI>(data);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

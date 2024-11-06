@@ -23,7 +23,9 @@ interface InputProps {
   $custom5?: boolean;
   typeColor?: string;
 }
-
+interface SelectProps {
+  $primary?: boolean;
+}
 export const FormContainer = styled.div<InputProps>`
   display: flex;
   max-width: 720px;
@@ -72,6 +74,20 @@ export const Input = styled.input<InputProps>`
   border: 1px solid #000000;
   box-sizing: border-box;
   //background-color: #ff0078;
+  margin-left: ${(props) => (props.$custom1 ? "10px" : "")};
+`;
+
+export const SelectInput = styled.select<InputProps>`
+  margin: ${(props) => (props.$primary ? "-12px 0 12px 0" : "6px 0 4px 0")};
+  padding: 9.5px;
+  font-size: 14px;
+  color: ${(props) => (props.$custom ? "#000" : "#4d4d4d")};
+  font-weight: 550; /*semibold*/
+  opacity: 0.85;
+  border-radius: 5px;
+  width: ${(props) => (props.$custom1 ? "72%" : "100%")};
+  border: 1px solid #000000;
+  box-sizing: border-box;
   margin-left: ${(props) => (props.$custom1 ? "10px" : "")};
 `;
 

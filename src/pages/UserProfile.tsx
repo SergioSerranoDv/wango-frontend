@@ -33,7 +33,7 @@ export const Profile: React.FC = () => {
 
     const response = await backendApiCall({
       method: "PUT",
-      endpoint: "v1/user/info/update",
+      endpoint: "user/info/update",
       body: editedData,
     });
     if (response.status === "error") {

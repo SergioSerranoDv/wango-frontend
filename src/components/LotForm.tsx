@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { NotificationModal } from "./modals/NotificationModal";
-import { NotificationDataInit, NotificationI } from "../interfaces/notification";
+import { UseNotification } from "../hooks/UseNotification";
 import { ApiContext } from "../context/ApiContext";
 import { createNewLot } from "../services/lot_s";
 import {
@@ -15,78 +15,55 @@ import {
 } from "../styles/AddLoteStyles";
 
 interface FormData {
-  nombreLote: string;
-  capacidadLote: string;
-  capacidadUso: string;
-  capacidadDisponible: string;
+  name: string;
+  capacity: string;
 }
 
 export const LotForm: React.FC = () => {
+  const { closeNotification, notificationDetails, showNotification, triggerNotification } =
+    UseNotification();
   const { backendApiCall } = useContext(ApiContext);
   const [formData, setFormData] = useState<FormData>({
-    nombreLote: "",
-    capacidadLote: "",
-    capacidadUso: "",
-    capacidadDisponible: "",
+    name: "",
+    capacity: "",
   });
-  const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [notificationDetails, setNotificationDetails] =
-    useState<NotificationI>(NotificationDataInit);
-
-  const handleNotification = (
-    title: string,
-    description: string,
-    status: string,
-    redirectUrl: string
-  ) => {
-    setNotificationDetails({ title, description, status, redirectUrl });
-    setShowNotification(true);
-  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-      capacidadUso: value,
-      capacidadDisponible: value,
     });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log("Form data:", formData);
-      const area = parseInt(formData.capacidadLote);
+      const area = parseInt(formData.capacity);
+
       if (area <= 0) {
-        handleNotification("Error", "La capacidad debe ser mayor a 0", "error", "");
+        triggerNotification("Error", "La capacidad debe ser mayor a 0", "error", "");
         return;
       }
 
       const response = await createNewLot(backendApiCall, {
         available_capacity: area,
-        name: formData.nombreLote,
+        name: formData.name,
         capacity: area,
+        capacity_in_use: 0,
       });
 
-      if (response.status === "error") {
-        alert(response.message);
-      }
-      setShowNotification(true);
-      setNotificationDetails({
-        title: "Lote añadido exitosamente",
-        description:
+      if (response.status === "success") {
+        triggerNotification(
+          "Lote añadido exitosamente",
           "¡Excelente! Podrás ver tu nuevo lote en la sección de <br />  ‘Ver mis lotes’.",
-        status: "success",
-        redirectUrl: "/lots-manage",
-      });
+          "success",
+          "/lots-manage"
+        );
+      }
     } catch (error) {
       console.error("Error:", error);
     }
-  };
-
-  const handleNotificationClose = () => {
-    setShowNotification(false);
   };
 
   return (
@@ -95,23 +72,23 @@ export const LotForm: React.FC = () => {
         <Form onSubmit={handleSubmit}>
           {/* <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader> */}
           <FormField>
-            <Label htmlFor="nombreLote">Nombre del lote*</Label>
+            <Label htmlFor="name">Nombre del lote*</Label>
             <Input
-              id="nombreLote"
-              name="nombreLote"
+              id="name"
+              name="name"
               type="text"
-              value={formData.nombreLote}
+              value={formData.name}
               onChange={handleChange}
               required
             />
           </FormField>
           <FormField>
-            <Label htmlFor="capacidadLote">Capacidad (Ha)*</Label>
+            <Label htmlFor="capacity">Capacidad (Ha)*</Label>
             <Input
-              id="capacidadLote"
-              name="capacidadLote"
+              id="capacity"
+              name="capacity"
               type="number"
-              value={formData.capacidadLote}
+              value={formData.capacity}
               onChange={handleChange}
               required
             />
@@ -130,7 +107,7 @@ export const LotForm: React.FC = () => {
           description={notificationDetails.description}
           status={notificationDetails.status}
           buttonText="Aceptar"
-          onClose={handleNotificationClose}
+          onClose={closeNotification}
           redirectUrl={notificationDetails.redirectUrl}
         />
       )}

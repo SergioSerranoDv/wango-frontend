@@ -84,7 +84,7 @@ export const ButtonSecondary = styled.button`
   color: #fff;
   font-size: 14px;
   font-weight: 600;
-  background-color: #ff8f2d;
+  background-color: #ff670f;
   min-width: 64px;
   transition: background-color 0.3s;
   &:hover {

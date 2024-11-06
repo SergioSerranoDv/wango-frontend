@@ -3,17 +3,18 @@ import { useParams } from "react-router-dom";
 import { CropActions } from "../components/actions/CropActions";
 import { LoadingAnimation } from "../components/Loading";
 import { TableV1 } from "../components/tables/TableV1";
-import { MainLayout } from "../layouts/MainLayout";
 import { UseGet } from "../hooks/UseGet";
-import { Crop } from "../interfaces/crop";
 import { UsePagination } from "../hooks/UsePagination";
+import { MainLayout } from "../layouts/MainLayout";
+import { Crop } from "../interfaces/crop";
+import { Text } from "../styles/MainMenuStyles";
 
 export const Crops: React.FC = () => {
   const { id } = useParams();
   const lotId = id || "";
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = UseGet({
-    endpoint: `v1/crop/paginated?page=${currentPage}&limit=${rowsPerPage}&lot_id=${lotId}`,
+    endpoint: `crop/paginated?page=${currentPage}&limit=${rowsPerPage}&lot_id=${lotId}`,
   });
 
   const columns = useCallback(
@@ -27,11 +28,6 @@ export const Crops: React.FC = () => {
         title: "Area",
         dataIndex: "area",
         render: (data: Crop) => <span>{data.area}</span>,
-      },
-      {
-        title: "Estado de recolección",
-        dataIndex: "status_data_collection",
-        render: (data: Crop) => <span>{data.status_data_collection}</span>,
       },
       {
         title: "Acciones",
@@ -49,6 +45,7 @@ export const Crops: React.FC = () => {
 
   return (
     <MainLayout>
+      <Header />
       {loading ? (
         <LoadingAnimation />
       ) : (
@@ -71,3 +68,11 @@ export const Crops: React.FC = () => {
     </MainLayout>
   );
 };
+
+const Header = () => (
+  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "32px" }}>
+    <Text>
+      Estos son tus cultivos, recuerda que solo puedes tener una recolección activa por cultivo
+    </Text>
+  </div>
+);

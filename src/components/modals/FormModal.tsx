@@ -1,11 +1,9 @@
-import React, { useState, useContext } from "react";
-import { AppContext } from "../../context/AppContext";
-import { ApiContext } from "../../context/ApiContext";
-import { createNewRecords, updateRecord } from "../../services/record_s";
+import React, { useState, useContext, useEffect } from "react";
 import { NotificationModal } from "../../components/modals/NotificationModal";
+import { ApiContext } from "../../context/ApiContext";
+import { AppContext } from "../../context/AppContext";
+import { createNewRecords, updateRecord } from "../../services/record_s";
 import {
-  Overlay,
-  ModalContainer,
   SignBoard,
   InfoContainer,
   DetailsSign,
@@ -17,6 +15,7 @@ import {
   Description,
   DetailsItem,
 } from "../../styles/components/FormModalStyles";
+import { ProductSearch } from "../ProductSearch";
 
 interface AddRegistryProps {
   collectionId: string;
@@ -32,7 +31,6 @@ interface AddRegistryProps {
     eto: number;
     performance: number;
     etc: number;
-    ar: number;
   };
 }
 
@@ -54,8 +52,8 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
     eto: initialData?.eto || eto,
     performance: initialData?.performance || 0,
     etc: initialData?.etc || etc,
-    ar: initialData?.ar || 0,
   });
+  const [productsSelected, setProductsSelected] = useState<any[]>([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationDetails, setNotificationDetails] = useState({
     title: "",
@@ -75,8 +73,12 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
     e.preventDefault(); // Previene el comportamiento por defecto del formulario
     try {
       // Construye los datos del registro basado en el estado del formulario
+      console.log(productsSelected);
       const recordData = {
-        amount_chemicals_used: formData.ar,
+        chemicals_used: productsSelected.map((product) => ({
+          product_id: product._id,
+          amount: product.quantity,
+        })),
         actual_crop_evapotranspiration: formData.etc,
         collection_id: collectionId,
         current_stage: currentGrowth,
@@ -151,87 +153,92 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
 
   return (
     <>
-      <Overlay>
-        <ModalContainer>
-          <SignBoard $custom2>
-            Haz tu registro diario para el cultivo <DetailsItem>{cropname}</DetailsItem>
-          </SignBoard>
-          <InfoContainer>
-            <DetailsSign>
-              Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
-            </DetailsSign>
-          </InfoContainer>
-          {/* <div style={{ paddingBottom: "32px" }}>
+      <SignBoard $custom2>
+        Haz tu registro diario para el cultivo <DetailsItem>{cropname}</DetailsItem>
+      </SignBoard>
+      <InfoContainer>
+        <DetailsSign>
+          Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
+        </DetailsSign>
+      </InfoContainer>
+
+      {/* <div style={{ paddingBottom: "32px" }}>
               <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
             </div> */}
-          <Form onSubmit={handleSubmit}>
-            <Label htmlFor="nameRecord">Nombre del registro</Label>
-            <Input
-              type="text"
-              id="nameRecord"
-              name="nameRecord"
-              value={formData.nameRecord}
-              onChange={handleChange}
-              required
-            />
-            <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
-            <Input type="number" id="eto" name="eto" value={formData.eto} required disabled />
-            <Label htmlFor="performance">Rendimiento diario (R)</Label>
-            <Input
-              type="number"
-              id="performance"
-              name="performance"
-              value={formData.performance}
-              onChange={handleChange}
-              required
-            />
-            <Label htmlFor="currentGrowth">Etapa actual de crecimiento</Label>
-            <Input
-              type="text"
-              id="currentGrowth"
-              name="currentGrowth"
-              value={`Frutificación (Kc = ${currentGrowth})`}
-              disabled
-            ></Input>
+      <Form onSubmit={handleSubmit}>
+        <Label htmlFor="nameRecord">Nombre del registro</Label>
+        <Input
+          type="text"
+          id="nameRecord"
+          name="nameRecord"
+          value={formData.nameRecord}
+          onChange={handleChange}
+          required
+        />
+        <Label htmlFor="eto">Evapotranspiración de referencia (ETo)</Label>
+        <Input type="number" id="eto" name="eto" value={formData.eto} required disabled />
+        <Label htmlFor="performance">Rendimiento diario (R)</Label>
+        <Input
+          type="number"
+          id="performance"
+          name="performance"
+          value={formData.performance}
+          onChange={handleChange}
+          required
+        />
+        <Label htmlFor="currentGrowth">Etapa actual de crecimiento</Label>
+        <Input
+          type="text"
+          id="currentGrowth"
+          name="currentGrowth"
+          value={`Frutificación (Kc = ${currentGrowth})`}
+          disabled
+        ></Input>
+        <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
+        <Input type="number" id="etc" name="etc" value={formData.etc} disabled />
+        <Label htmlFor="ar">Cant. aplicada de productos químicos - día (AR) </Label>
+        <Description
+          style={{ marginBottom: "-12px", marginTop: "0px" }}
+          className="customDescription"
+        >
+          Selecciona el tipo de químico: Incluyendo fertilizantes, pesticidas, y otros aditivos
+          (mg/L)
+        </Description>
+        <ProductSearch
+          onProductSelect={(product) => console.log(product)}
+          productsSelected={productsSelected}
+          setProductsSelected={setProductsSelected}
+        />
+        <div>
+          {productsSelected.map((product) => (
+            <div key={product._id}>
+              <span>
+                {product.name} - {product.code} - {product.quantity} mg/L
+              </span>
+              <span> ~ </span>
+            </div>
+          ))}
+        </div>
+        <ButtonContainer>
+          <Button type="submit" color="green">
+            {recordId ? "Actualizar" : "Crear"}
+          </Button>
+          <Button type="button" color="red" onClick={onClose}>
+            Cancelar
+          </Button>
+        </ButtonContainer>
+      </Form>
 
-            <Label htmlFor="etc">Evapotranspiración real del cultivo (ETc)</Label>
-            <Input type="number" id="etc" name="etc" value={formData.etc} disabled />
-            <Label htmlFor="ar">Cant. aplicada de productos químicos - día (AR) </Label>
-            <Description
-              style={{ marginBottom: "-12px", marginTop: "0px" }}
-              className="customDescription"
-            >
-              Incluyendo fertilizantes, pesticidas, y otros aditivos.
-            </Description>
-            <Input
-              type="number"
-              id="ar"
-              name="ar"
-              value={formData.ar}
-              onChange={handleChange}
-              required
-            />
-            <ButtonContainer>
-              <Button type="submit" color="green">
-                {recordId ? "Actualizar" : "Crear"}
-              </Button>
-              <Button type="button" color="red" onClick={onClose}>
-                Cancelar
-              </Button>
-            </ButtonContainer>
-          </Form>
-          {showNotification && (
-            <NotificationModal
-              title={notificationDetails.title}
-              description={notificationDetails.description}
-              status={notificationDetails.status}
-              buttonText="Aceptar"
-              onClose={handleNotificationClose}
-              redirectUrl={notificationDetails.redirectUrl}
-            />
-          )}
-        </ModalContainer>
-      </Overlay>
+      {showNotification && (
+        <NotificationModal
+          title={notificationDetails.title}
+          description={notificationDetails.description}
+          status={notificationDetails.status}
+          buttonText="Aceptar"
+          onClose={handleNotificationClose}
+          redirectUrl={notificationDetails.redirectUrl}
+        />
+      )}
     </>
   );
 };

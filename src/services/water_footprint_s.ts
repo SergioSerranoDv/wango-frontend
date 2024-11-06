@@ -6,7 +6,7 @@ export const createNewWaterFootprint = async (
 ) => {
   return await backendApiCall({
     method: "POST",
-    endpoint: "v1/water-footprint/new/",
+    endpoint: "water-footprint/new/",
     body: data,
   });
 };
@@ -18,7 +18,7 @@ export const getWaterFootprintByCropIdAndCollectionId = async (
 ): Promise<Response> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `v1/water-footprint/info?collection_id=${collectionId}&crop_id=${cropId}`,
+    endpoint: `water-footprint/info?collection_id=${collectionId}&crop_id=${cropId}`,
   });
 };
 
@@ -29,6 +29,6 @@ export const getWaterFootprintSuggestion = async (
 ): Promise<Response> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `v1/water-footprint/suggestion-ia?collection_id=${collectionId}&crop_id=${cropId}`,
+    endpoint: `water-footprint/suggestion-ia?collection_id=${collectionId}&crop_id=${cropId}`,
   });
 };

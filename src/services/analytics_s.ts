@@ -5,6 +5,6 @@ export const getLotsQuantityByMonth = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `v1/user/analytics/lots/quantity/by-month`,
+    endpoint: `user/analytics/lots/quantity/by-month`,
   });
 };

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
-  Description,
   Form,
   FormField,
   Input,
@@ -60,7 +59,7 @@ const RegisterForm: React.FC = () => {
     // Upate user data in the backend
     const response = await backendApiCall({
       method: "PUT",
-      endpoint: "v1/user/info/update",
+      endpoint: "/user/info/update",
       body: {
         name: userName,
         last_name: lastName,
@@ -121,7 +120,7 @@ const RegisterForm: React.FC = () => {
   // console.log("Email:", userData.email);
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
+      const userData = await backendApiCall({ method: "GET", endpoint: "user/info" });
       if (userData.data) {
         setEmailNewUser(userData.data.email);
       }

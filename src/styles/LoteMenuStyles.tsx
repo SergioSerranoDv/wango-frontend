@@ -13,7 +13,7 @@ export const MainWrapper = styled.div`
 
 export const Text = styled.div`
   font-family: Inter, sans-serif;
-  margin-top: 8px;
+  margin: 8px 0;
   font-size: 14px;
   text-align: center;
   color: black;

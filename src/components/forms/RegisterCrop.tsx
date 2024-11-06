@@ -25,7 +25,7 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
   const { backendApiCall } = useContext(ApiContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    cropName: "",
+    name: "",
     area: "",
     latitude: "",
     longitude: "",
@@ -53,15 +53,22 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const { name, area, latitude, longitude } = formData;
+    const parsedArea = parseInt(area);
+    const parsedLatitude = parseInt(latitude);
+    const parsedLongitude = parseInt(longitude);
+
     if (!lotDetails._id) {
       handleNotification("Error", "No se ha encontrado el ID del lote", "error", "");
       return;
     }
+
     if (lotDetails.available_capacity === 0) {
       handleNotification("Error", "El lote no tiene capacidad disponible", "error", "");
       return;
     }
-    if (parseInt(formData.area) > lotDetails.available_capacity) {
+
+    if (parsedArea > lotDetails.available_capacity) {
       handleNotification(
         "Error",
         "El área debe ser menor o igual a la capacidad disponible",
@@ -70,11 +77,13 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
       );
       return;
     }
-    if (parseInt(formData.area) <= 0) {
+
+    if (parsedArea <= 0) {
       handleNotification("Error", "El área debe ser mayor a 0", "error", "");
       return;
     }
-    if (parseInt(formData.latitude) < -90 || parseInt(formData.latitude) > 90) {
+
+    if (parsedLatitude < -90 || parsedLatitude > 90) {
       handleNotification(
         "Error",
         "La latitud debe estar en un rango <br /> entre -90° y 90°",
@@ -83,7 +92,8 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
       );
       return;
     }
-    if (parseInt(formData.longitude) < -180 || parseInt(formData.longitude) > 180) {
+
+    if (parsedLongitude < -180 || parsedLongitude > 180) {
       handleNotification(
         "Error",
         "La longitud debe estar en un rango <br /> entre -90° y 90°",
@@ -92,21 +102,24 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
       );
       return;
     }
+
     try {
       const response = await createNewCrop(backendApiCall, {
-        area: parseInt(formData.area),
+        area: parsedArea,
+        latitude: parsedLatitude,
+        longitude: parsedLongitude,
+        name,
         lot_id: lotDetails._id,
-        name: formData.cropName,
-        latitude: formData.latitude,
-        longitude: formData.longitude,
       });
+
       if (response.status === "success") {
         setFormData({
-          cropName: "",
+          name: "",
           area: "",
           latitude: "",
           longitude: "",
         });
+
         setShowNotification(true);
         setNotificationDetails({
           title: "Cultivo añadido exitosamente",
@@ -139,45 +152,17 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
           </DetailsSign>
         </InfoContainer>
         <Form onSubmit={handleSubmit}>
-          <Label htmlFor="cropName">Nombre del cultivo*</Label>
-          <Input
-            type="text"
-            id="cropName"
-            name="cropName"
-            value={formData.cropName}
-            onChange={handleChange}
-            required
-          />
+          <Label htmlFor="name">Nombre del cultivo*</Label>
+          <Input type="text" id="name" name="name" onChange={handleChange} required />
 
           <Label htmlFor="area">Área (Ha)*</Label>
-          <Input
-            type="number"
-            id="area"
-            name="area"
-            value={formData.area}
-            onChange={handleChange}
-            required
-          />
+          <Input type="number" id="area" name="area" onChange={handleChange} required />
 
           <Label htmlFor="latitude">Latitud (-90° - 90°)*</Label>
-          <Input
-            type="number"
-            id="latitude"
-            name="latitude"
-            value={formData.latitude}
-            onChange={handleChange}
-            required
-          />
+          <Input type="number" id="latitude" name="latitude" onChange={handleChange} required />
 
           <Label htmlFor="longitude">Longitud (-180° - 180°)*</Label>
-          <Input
-            type="number"
-            id="longitude"
-            name="longitude"
-            value={formData.longitude}
-            onChange={handleChange}
-            required
-          />
+          <Input type="number" id="longitude" name="longitude" onChange={handleChange} required />
           <Button type="submit" $custom2>
             Añadir cultivo
           </Button>

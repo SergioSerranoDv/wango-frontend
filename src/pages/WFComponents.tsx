@@ -1,29 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ApiContext } from "../context/ApiContext";
-import { Crop } from "../interfaces/crop";
 import { ButtonSubmit, Form, FormContainer, SignBoard } from "../styles/FormStyles";
 import { MainLayout } from "../layouts/MainLayout";
-import { findCollectionById } from "../services/collection_s";
-import { Collection } from "../interfaces/collection";
 
 export const WFComponents = () => {
   const { id } = useParams();
   const collectionId = id;
-  const { backendApiCall } = useContext(ApiContext);
-  const [refetch, setRefetch] = useState<number>(0);
-  const [collectionData, setCollectionData] = useState({} as Collection);
-  const [cropData, setCropData] = useState({} as Crop);
-  //Obtener datos de la collection
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await findCollectionById(backendApiCall, collectionId as string);
-      if (response.status === "success" && response.data !== undefined) {
-        setCollectionData(response.data);
-      }
-    };
-    fetchData();
-  }, [backendApiCall, collectionId, refetch]);
 
   const linkStyle = {
     textDecoration: "none",
@@ -31,7 +12,7 @@ export const WFComponents = () => {
 
   return (
     <MainLayout>
-      <FormContainer>
+      <FormContainer style={{ margin: "auto" }}>
         <SignBoard $custom2>Selecciona un componente</SignBoard>
         <Form>
           <Link

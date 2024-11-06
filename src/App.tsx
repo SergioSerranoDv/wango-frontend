@@ -6,14 +6,14 @@ import { ApiContextProvider } from "./context/ApiContext";
 import { LoadingAnimation } from "./components/Loading";
 import { Profile } from "./pages/UserProfile";
 import { Dashboard } from "./pages/Dashboard";
+import { Products } from "./pages/Products";
 import RegisterForm from "./pages/RegisterForm";
 import { Lots } from "./pages/Lots";
 import VarForm from "./pages/VarForm";
 import { Crops } from "./pages/Crops";
-import { RegisterView } from "./pages/RegisterView";
+import { CollectionRecords } from "./pages/CollectionRecords";
 import { WFComponents } from "./pages/WFComponents";
-import { WFCrops } from "./pages/WFCrops";
-import { WFLot } from "./pages/WFLot";
+import { Collections } from "./pages/Collections";
 import "./App.css";
 import "./styles/MainMenuStyles";
 import { WF } from "./pages/WF";
@@ -37,17 +37,20 @@ export const App: React.FC = () => {
               {isAuthenticated ? (
                 <>
                   <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard/collections/:id" element={<Collections />} />
+                  <Route
+                    path="/dashboard/collections/records/:id"
+                    element={<CollectionRecords />}
+                  />
+                  <Route path="/dashboard/crops/:id" element={<Crops />} />
+                  <Route path="/dashboard/lots" element={<Lots />} />
+                  <Route path="/dashboard/products" element={<Products />} />
+                  <Route path="/dashboard/water-footprint" element={<WaterFootPrint />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/register-form" element={<RegisterForm />} />
-                  <Route path="/dashboard/lots" element={<Lots />} />
-                  <Route path="/dashboard/crops/:id" element={<Crops />} />
                   <Route path="/config-vars" element={<VarForm />} />
-                  <Route path="/dashboard/water-footprint" element={<WaterFootPrint />} />
-                  <Route path="/lot-menu/edit-crop/register-view/:id" element={<RegisterView />} />
-                  <Route path="/lot-menu/water-footprint/:id" element={<WFLot />} />
-                  <Route path="/lot-menu/water-footprint/crops/:id" element={<WFCrops />} />
                   <Route
-                    path="/lot-menu/water-footprint/crops/comp/:id"
+                    path="/dashboard/water-footprint/components/:id"
                     element={<WFComponents />}
                   />
                   <Route

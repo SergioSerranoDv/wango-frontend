@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NotificationDataInit, NotificationI } from "../interfaces/notification";
 
-export const useNotification = () => {
+export const UseNotification = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [notificationDetails, setNotificationDetails] =
     useState<NotificationI>(NotificationDataInit);

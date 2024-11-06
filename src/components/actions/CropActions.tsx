@@ -1,13 +1,17 @@
 import React, { SetStateAction, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dropdown } from "../Dropdown";
-import { Modal } from "../modals/Modal";
-import { CropFormEdit } from "../CropFormEdit";
-import { RegisterCrop } from "../forms/RegisterCrop";
-import { ApiContext } from "../../context/ApiContext";
-import { Button, Item } from "../../styles/components/Actions";
-import { deleteCropById } from "../../services/crop_s";
 import { Crop } from "../../interfaces/crop";
+import { EditIcon } from "../../icons/Edit";
+import { AddIcon } from "../../icons/Add";
+import { DeleteIcon } from "../../icons/Delete";
+import { Modal } from "../modals/Modal";
+import { CollectionForm } from "../forms/CollectionForm";
+import { CropFormEdit } from "../CropFormEdit";
+import { ApiContext } from "../../context/ApiContext";
+import { Item } from "../../styles/components/Actions";
+import { deleteCropById } from "../../services/crop_s";
+import { MoreOptions } from "../../icons/MoreOptions";
 
 interface Props {
   cropDetails: Crop;
@@ -19,11 +23,10 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
   const { backendApiCall } = useContext(ApiContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isRegisterCropModalOpen, setIsRegisterCropModalOpen] = useState(false);
+  const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
 
   const handleDeleteCrop = async (cropId: string) => {
     const response = await deleteCropById(backendApiCall, cropId, cropDetails.lot_id);
-    console.log("Response from delete crop:", response);
     if (response.status === "success") {
       refetchLotDetails((prev) => prev + 1);
     }
@@ -32,80 +35,36 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
   const actions = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z" />
-        </svg>
-      ),
+      icon: <EditIcon />,
       name: "Editar cultivo",
     },
     {
-      action: () => setIsRegisterCropModalOpen(true),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M12 5v14M5 12h14" />
-        </svg>
-      ),
-      name: "Nueva recolección",
+      action: () => setIsCollectionModalOpen(true),
+      icon: <AddIcon />,
+      name: "Agregar recolección",
+    },
+    {
+      action: () => navigate(`/dashboard/collections/${cropDetails._id}`),
+      icon: <AddIcon />,
+      name: "Ver recolecciones",
     },
     {
       action: () => handleDeleteCrop(cropDetails._id),
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#000"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="3 6 5 6 21 6" />
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-          <line x1="10" y1="3" x2="10" y2="6" />
-          <line x1="14" y1="3" x2="14" y2="6" />
-        </svg>
-      ),
+      icon: <DeleteIcon />,
       name: "Eliminar cultivo",
     },
   ];
 
   return (
     <>
-      <Button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-        <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"
-            fill-rule="evenodd"
-          />
-        </svg>
-      </Button>
+      <MoreOptions
+        style={{ pointerEvents: isDropdownOpen ? "none" : "auto" }}
+        isDropdownOpen={isDropdownOpen}
+        setIsDropdownOpen={setIsDropdownOpen}
+      />
 
       {isDropdownOpen && (
-        <Dropdown>
+        <Dropdown closeDropdown={() => setIsDropdownOpen(false)}>
           {actions.map((action) => (
             <Item
               key={action.name}
@@ -124,6 +83,12 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
       {isEditModalOpen && (
         <Modal title="Editar cultivo" closeModal={() => setIsEditModalOpen(false)}>
           <CropFormEdit crop={cropDetails} />
+        </Modal>
+      )}
+
+      {isCollectionModalOpen && (
+        <Modal title="Agregar recolección" closeModal={() => setIsCollectionModalOpen(false)}>
+          <CollectionForm cropId={cropDetails._id} />
         </Modal>
       )}
     </>

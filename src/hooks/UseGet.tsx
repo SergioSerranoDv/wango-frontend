@@ -11,6 +11,7 @@ export const UseGet = (props: any): UseGetResponse => {
   const [data, setData] = useState({});
   const [refetch, setRefetch] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     if (serviceIsReady) {
       const fetchData = async () => {
@@ -19,12 +20,13 @@ export const UseGet = (props: any): UseGetResponse => {
             method: "GET",
             endpoint: `${props.endpoint}`,
           });
+
           if (response.status === "success") {
             setData(response.data);
-            setLoading(false);
           }
+          setLoading(false);
         } catch (error) {
-          console.error(error);
+          console.error(error); 
         }
       };
       fetchData();

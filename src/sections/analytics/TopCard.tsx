@@ -8,8 +8,8 @@ interface TopCardProps {
   icon: string;
 }
 export const TopCard: React.FC<TopCardProps> = ({ background, endpoint, description, icon }) => {
-  const { data, loading, setRefetch } = UseGet({
-    endpoint: "v1/user/analytics/lots/quantity/by-month",
+  const { data, loading } = UseGet({
+    endpoint: endpoint,
   });
 
   return (

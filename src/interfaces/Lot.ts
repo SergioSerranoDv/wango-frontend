@@ -1,5 +1,5 @@
 export interface LotI {
-  _id: string;
+  _id?: string;
   available_capacity: number;
   capacity: number;
   capacity_in_use?: number;
