@@ -1,5 +1,6 @@
 import { useState, useCallback, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Header } from "../components/Header";
 import { LoadingAnimation } from "../components/Loading";
 import { RecordForm } from "../components/forms/RecordForm";
 import { Modal } from "../components/modals/Modal";
@@ -12,8 +13,7 @@ import { MainLayout } from "../layouts/MainLayout";
 import { formatDate } from "../services/Date";
 import { findCollectionById } from "../services/collection_s";
 import { findCropById } from "../services/crop_s";
-import { ButtonSecondary } from "../styles/AddLoteStyles";
-import { Description, SignBoard } from "../styles/FormStyles";
+import { SignBoard } from "../styles/FormStyles";
 import { Button } from "../styles/FormStyles";
 
 export const CollectionRecords = () => {
@@ -94,7 +94,11 @@ export const CollectionRecords = () => {
       ) : (
         <>
           <SignBoard $custom2>Registros del cultivo {cropData.name}</SignBoard>
-          <Header openModal={() => setShowFormModal(true)} />
+          <Header
+            description="Recuerda que puedes agregar un nuevo registro en cualquier momento."
+            title="Crear registro"
+            openModal={() => setShowFormModal(true)}
+          />
           <TableV1
             columns={columns()}
             data={data.collectionRecords}
@@ -135,34 +139,3 @@ export const CollectionRecords = () => {
     </MainLayout>
   );
 };
-
-const Header: React.FC<{ openModal: () => void }> = ({ openModal }) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      marginBottom: "32px",
-      alignItems: "center",
-    }}
-  >
-    <Description className="customDescription" style={{ margin: "0" }}>
-      Nota: Siendo administrador puedes ver los registros hechos por los usuarios encargados que has
-      asignado a este cultivo. Incluso puedes hacer uno tu.
-    </Description>
-    <ButtonSecondary onClick={openModal}>
-      <span>
-        <svg
-          width="1em"
-          height="1em"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ marginRight: "6px" }}
-        >
-          <path d="M11 13v6h2v-6h6v-2h-6V5h-2v6H5v2h6z" fill="currentColor"></path>
-        </svg>
-      </span>
-      Cear registro
-    </ButtonSecondary>
-  </div>
-);

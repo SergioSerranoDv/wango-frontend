@@ -61,6 +61,7 @@ export const Lots: React.FC = () => {
         <>
           <Header
             description={`Estos son tus lotes ${userData.name}, aquí puedes ver y administrar tus lotes.`}
+            title="Crear Lote"
             openModal={() => setIsModalOpen(true)}
           />
           <TableV1

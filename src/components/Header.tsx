@@ -1,10 +1,12 @@
 import { Button } from "../styles/FormStyles";
 import { Text, Hero } from "../styles/MainMenuStyles";
 
-export const Header: React.FC<{ description: string; openModal: any }> = ({
-  description,
-  openModal,
-}) => {
+interface HeaderProps {
+  description: string;
+  title: string;
+  openModal: any;
+}
+export const Header: React.FC<HeaderProps> = ({ description, title, openModal }) => {
   return (
     <>
       <Hero>
@@ -27,7 +29,7 @@ export const Header: React.FC<{ description: string; openModal: any }> = ({
               <path d="M11 13v6h2v-6h6v-2h-6V5h-2v6H5v2h6z" fill="currentColor"></path>
             </svg>
           </span>
-          Crear Lote
+          {title}
         </Button>
       </Hero>
     </>

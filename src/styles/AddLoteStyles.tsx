@@ -37,22 +37,3 @@ export const Button = styled.button`
   background-color: ${colors.orange};
   width: 100%;
 `;
-
-export const ButtonSecondary = styled.button`
-  padding: 12px 16px;
-  border: none;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  background-color: #ff670f;
-  min-width: 64px;
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: #ff6f00;
-  }
-`;

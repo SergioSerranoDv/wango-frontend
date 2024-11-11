@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Header } from "../components/Header";
 import { LoadingAnimation } from "../components/Loading";
 import { WFActions } from "../components/actions/WFActions";
 import { WForm } from "../components/forms/WForm";
@@ -8,8 +9,6 @@ import { UseGet } from "../hooks/UseGet";
 import { UsePagination } from "../hooks/UsePagination";
 import { WaterFootprintI } from "../interfaces/WaterFootprint";
 import { MainLayout } from "../layouts/MainLayout";
-import { ButtonSecondary } from "../styles/AddLoteStyles";
-import { Text } from "../styles/LoteMenuStyles";
 
 export const WaterFootPrint = () => {
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
@@ -54,7 +53,11 @@ export const WaterFootPrint = () => {
         <LoadingAnimation />
       ) : (
         <>
-          <Header openModal={() => setIsModalOpen(true)} />
+          <Header
+            description="Para calcular la huella hídrica de un cultivo, primero selecciona un cultivo y luego la recolección asociada."
+            title="Calcular huella"
+            openModal={() => setIsModalOpen(true)}
+          />
           <TableV1
             evencolor="#FFFFFF"
             oddcolor="rgb(255, 103, 15, 0.2)"
@@ -80,34 +83,3 @@ export const WaterFootPrint = () => {
     </MainLayout>
   );
 };
-
-const Header: React.FC<{ openModal: () => void }> = ({ openModal }) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      marginBottom: "32px",
-      alignItems: "center",
-    }}
-  >
-    <Text>
-      Para calcular la huella hídrica de un cultivo, primero selecciona un cultivo y luego la
-      recolección asociada.
-    </Text>
-    <ButtonSecondary onClick={openModal}>
-      <span>
-        <svg
-          width="1em"
-          height="1em"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ marginRight: "6px" }}
-        >
-          <path d="M11 13v6h2v-6h6v-2h-6V5h-2v6H5v2h6z" fill="currentColor"></path>
-        </svg>
-      </span>
-      Calcular
-    </ButtonSecondary>
-  </div>
-);

@@ -60,6 +60,7 @@ export const Products: React.FC = () => {
         <>
           <Header
             description="Tus productos quimicos registrados."
+            title="Crear producto"
             openModal={() => setEditModalOpen(true)}
           />
 
