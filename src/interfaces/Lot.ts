@@ -4,8 +4,10 @@ export interface LotI {
   capacity: number;
   capacity_in_use?: number;
   name: string;
+  createdAt: string;
 }
-export const LotDataInit: LotI = {
+
+export const LotDataInit = {
   _id: "",
   available_capacity: 0,
   capacity: 0,

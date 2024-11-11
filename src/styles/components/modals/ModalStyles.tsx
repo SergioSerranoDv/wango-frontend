@@ -31,23 +31,29 @@ export const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   width: calc(100% - 64px);
-  max-width: 40rem;
+  max-width: 36rem;
   border-radius: 4px;
   max-height: calc(100% - 64px);
-  min-height: 20rem;
   background-color: #fff;
+`;
+
+export const ModalFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 32px;
 `;
 
 export const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 16px 32px;
   border-bottom: 1px solid #e0e0e0;
 `;
 
 export const ModalBody = styled.div`
-  padding: 16px;
+  padding: 16px 32px;
 `;
 
 export const CloseButton = styled.button`

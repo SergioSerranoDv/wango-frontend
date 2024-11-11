@@ -1,4 +1,5 @@
 import React from "react";
+import { CancelButton } from "../../styles/FormStyles";
 import {
   CloseButton,
   BackDrop,
@@ -7,16 +8,17 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
+  ModalFooter,
 } from "../../styles/components/modals/ModalStyles";
 
 interface ModalProps {
+  action: React.ReactNode;
   title: string;
   children?: React.ReactNode;
   closeModal: () => void;
 }
 
-
-export const Modal: React.FC<ModalProps> = ({ closeModal, children, title }) => {
+export const Modal: React.FC<ModalProps> = ({ action, closeModal, children, title }) => {
   return (
     <Container>
       <BackDrop />
@@ -40,6 +42,12 @@ export const Modal: React.FC<ModalProps> = ({ closeModal, children, title }) => 
             </CloseButton>
           </ModalHeader>
           <ModalBody>{children}</ModalBody>
+          <ModalFooter>
+            <CancelButton type="button" onClick={() => closeModal()}>
+              Cancelar
+            </CancelButton>
+            {action}
+          </ModalFooter>
         </ModalContent>
       </ModalContainer>
     </Container>

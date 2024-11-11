@@ -6,9 +6,10 @@ export interface Crop {
   name: string;
   lot_id: string;
   status_data_collection: string;
+  createdAt?: string;
 }
 
-export const CropDataInit: Crop = {
+export const CropDataInit = {
   _id: "",
   area: 0,
   lot_id: "",

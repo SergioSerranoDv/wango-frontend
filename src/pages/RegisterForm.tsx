@@ -1,4 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
+import logo from "../assets/images/logo.svg";
+import { ApiContext } from "../context/ApiContext";
+import { AppContext } from "../context/AppContext";
 import {
   Button,
   Form,
@@ -10,9 +13,6 @@ import {
   Select,
   SignBoard,
 } from "../styles/FormStyles";
-import logo from "../assets/images/logo.svg";
-import { ApiContext } from "../context/ApiContext";
-import { AppContext } from "../context/AppContext";
 import { DivIdentification } from "../styles/FormStyles";
 import { Container } from "../styles/GlobalStyles";
 
@@ -223,9 +223,7 @@ const RegisterForm: React.FC = () => {
           /> */}
 
           {/* {isValidPassword && ( */}
-          <Button type="submit" $primary>
-            Continuar
-          </Button>
+          <Button type="submit">Continuar</Button>
           {/* )} */}
         </Form>
       </Container>

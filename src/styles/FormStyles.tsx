@@ -23,9 +23,7 @@ interface InputProps {
   $custom5?: boolean;
   typeColor?: string;
 }
-interface SelectProps {
-  $primary?: boolean;
-}
+
 export const FormContainer = styled.div<InputProps>`
   display: flex;
   max-width: 720px;
@@ -34,11 +32,12 @@ export const FormContainer = styled.div<InputProps>`
   position: relative; /* Añade posición relativa */
 `;
 
-export const Form = styled.form`
+export const Form = styled.form``;
+
+export const ContentWrapper = styled.div<InputProps>`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-sizing: border-box;
+  gap: 24px;
 `;
 
 export const ContainerInput = styled.div<InputProps>`
@@ -51,29 +50,20 @@ export const ContainerInput = styled.div<InputProps>`
 `;
 
 export const Label = styled.label<InputProps>`
-  //color: "#000000";
-  margin: ${(props) => (props.$primary ? "4px 0px -12px 0" : "0 0 -6px 0")};
+  position: static;
+  margin-bottom: 8px;
   font-size: ${(props) => (props.$custom1 ? "18px" : "14px")};
-  font-weight: bold;
-  line-height: 0.01;
-  //background-color: #000;
-  width: ${(props) => (props.$custom1 ? "25%" : "100%")};
-  //border: ${(props) => (props.$custom1 ? "1px solid #000000" : "")};
-  padding-right: ${(props) => (props.$custom1 ? "1px" : "")};
+  font-weight: 500;
+  user-select: none;
 `;
 
 export const Input = styled.input<InputProps>`
-  margin: ${(props) => (props.$primary ? "-12px 0 12px 0" : "6px 0 4px 0")};
   padding: 9.5px;
   font-size: 14px;
   color: ${(props) => (props.$custom ? "#000" : "#4d4d4d")};
-  font-weight: 550; /*semibold*/
   opacity: 0.85;
   border-radius: 5px;
-  width: ${(props) => (props.$custom1 ? "72%" : "100%")};
   border: 1px solid #000000;
-  box-sizing: border-box;
-  //background-color: #ff0078;
   margin-left: ${(props) => (props.$custom1 ? "10px" : "")};
 `;
 
@@ -103,22 +93,46 @@ export const ButtonContainer2 = styled.div`
   gap: 4%;
 `;
 
-export const Button = styled.button<InputProps>`
-  font-size: 14px;
-  font-weight: 550; /*semibold*/
-  padding: 10px;
-  text-align: center;
-  background-color: ${(props) => colors[(props.color as keyof typeof colors) || "orange"]};
+interface ButtonProps {
+  $background?: string;
+  $hoverBackground?: string;
+}
+
+export const Button = styled.button<ButtonProps>`
+  background-color: ${(props) => props.$background || "#ff7a33"};
   color: #fff;
   cursor: pointer;
-  border-radius: 6px;
-  border: 1px solid ${(props) => colors[(props.color as keyof typeof colors) || "orange"]};
-  margin-bottom: ${(props) => (props.$custom1 ? "-10px" : "")};
-  margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
-  margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
-  margin-top: ${(props) => (props.$custom2 ? "10px" : "")};
-  width: ${(props) => (props.$custom1 ? "50%" : "")};
-  width: ${(props) => (props.$custom2 ? "100%" : "")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  margin-left: 10px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => props.$hoverBackground || "#ff670f"};
+  }
+`;
+export const CancelButton = styled.button`
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 export const ButtonSubmit = styled.button<InputProps>`
@@ -225,7 +239,13 @@ export const DivIdentification = styled.div`
   gap: 1em;
 `;
 
-export const FormField = styled.div<InputProps>``;
+export const FormField = styled.div<InputProps>`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+`;
 
 export const InfoContainer = styled.div<InputProps>`
   align-items: ${(props) => (props.$custom2 ? "center" : "right")};

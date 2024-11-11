@@ -3,18 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
 import { UseGet } from "../../hooks/UseGet";
 import { UseNotification } from "../../hooks/UseNotification";
-import { NotificationModal } from "../modals/NotificationModal";
 import { createNewCollection } from "../../services/collection_s";
-import { LoadingAnimation } from "../Loading";
 import {
   Button,
   ButtonContainer,
   Form,
   FormField,
-  FormWrapper,
   Label,
   Input,
-} from "../../styles/AddLoteStyles";
+  ContentWrapper,
+} from "../../styles/FormStyles";
+import { LoadingAnimation } from "../Loading";
+import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
   cropId: string;
@@ -65,13 +65,13 @@ export const CollectionForm: React.FC<Props> = ({ cropId }) => {
           </Button>
         </div>
       ) : (
-        <FormWrapper>
-          <Form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit();
-            }}
-          >
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <ContentWrapper>
             <FormField>
               <Label htmlFor="name">Nombre</Label>
               <Input
@@ -82,21 +82,21 @@ export const CollectionForm: React.FC<Props> = ({ cropId }) => {
                 required
               />
             </FormField>
-            <ButtonContainer>
-              <Button type="submit">Agregar</Button>
-            </ButtonContainer>
-          </Form>
+          </ContentWrapper>
+          <ButtonContainer>
+            <Button type="submit">Agregar</Button>
+          </ButtonContainer>
+        </Form>
+      )}
 
-          {showNotification && (
-            <NotificationModal
-              description={notificationDetails.description}
-              buttonText="Aceptar"
-              title={notificationDetails.title}
-              status={notificationDetails.status}
-              onClose={closeNotification}
-            />
-          )}
-        </FormWrapper>
+      {showNotification && (
+        <NotificationModal
+          description={notificationDetails.description}
+          buttonText="Aceptar"
+          title={notificationDetails.title}
+          status={notificationDetails.status}
+          onClose={closeNotification}
+        />
       )}
     </>
   );

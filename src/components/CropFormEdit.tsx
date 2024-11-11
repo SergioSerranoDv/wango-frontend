@@ -1,10 +1,10 @@
 import React, { useState, useContext, ChangeEvent, FormEvent } from "react";
 import { ApiContext } from "../context/ApiContext";
 import { UseNotification } from "../hooks/UseNotification";
-import { NotificationModal } from "./modals/NotificationModal";
 import { Crop } from "../interfaces/crop";
 import { updateCrop } from "../services/crop_s";
-import { FormWrapper, Form, Label, Input, ButtonContainer, Button } from "../styles/AddLoteStyles";
+import { Button, Form, Label, Input, FormContainer, ButtonContainer } from "../styles/FormStyles";
+import { NotificationModal } from "./modals/NotificationModal";
 
 interface FormData {
   name: string;
@@ -68,7 +68,7 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
 
   return (
     <>
-      <FormWrapper>
+      <FormContainer>
         <Form onSubmit={handleSubmit}>
           <Label htmlFor="name">Nombre del cultivo*</Label>
           <Input
@@ -108,7 +108,7 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
             <Button type="submit">Guardar cambios</Button>
           </ButtonContainer>
         </Form>
-      </FormWrapper>
+      </FormContainer>
 
       {showNotification && (
         <NotificationModal

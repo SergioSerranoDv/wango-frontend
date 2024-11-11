@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { ApiContext } from "../context/ApiContext";
-import { ButtonSearch, SearchResultItem, ResultsContainer } from "../styles/components/Searcher";
 import { Input } from "../styles/FormStyles";
+import { ButtonSearch, SearchResultItem, ResultsContainer } from "../styles/components/Searcher";
 
 interface Props {
   assignResult: (id: string) => void;
@@ -13,6 +13,7 @@ export const Searcher: React.FC<Props> = ({ assignResult, searchWorker }) => {
   const [query, setQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null); // Track selected item
 
   const handleSearch = async () => {
     setIsSearching(true);
@@ -21,7 +22,10 @@ export const Searcher: React.FC<Props> = ({ assignResult, searchWorker }) => {
     setIsSearching(false);
   };
 
-  console.log(searchResults);
+  const handleSelect = (result: any) => {
+    assignResult(result);
+    setSelectedItem(result);
+  };
 
   return (
     <>
@@ -39,7 +43,13 @@ export const Searcher: React.FC<Props> = ({ assignResult, searchWorker }) => {
       {searchResults && (
         <ResultsContainer>
           {searchResults.map((result: any, index: number) => (
-            <SearchResultItem key={index} onClick={() => assignResult(result)}>
+            <SearchResultItem
+              key={index}
+              onClick={() => handleSelect(result)}
+              style={{
+                backgroundColor: selectedItem === result ? "#d3d3d3" : "transparent",
+              }}
+            >
               {result.name}
             </SearchResultItem>
           ))}

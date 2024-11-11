@@ -38,7 +38,7 @@ export const deleteCropById = async (
   });
 };
 
-export const fetchCropDetails = async (
+export const findCropById = async (
   backendApiCall: (data: Props) => Promise<Response>,
   cropId: string
 ): Promise<Response> => {

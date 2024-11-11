@@ -1,14 +1,14 @@
 import React, { useCallback, useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { MainLayout } from "../layouts/MainLayout";
-import { TableV1 } from "../components/tables/TableV1";
-import { UseGet } from "../hooks/UseGet";
-import { ApiContext } from "../context/ApiContext";
-import { fetchCropDetails } from "../services/crop_s";
-import { Crop } from "../interfaces/crop";
-import { Collection } from "../interfaces/collection";
-import { Text } from "../styles/MainMenuStyles";
 import { CollectionActions } from "../components/actions/CollectionActions";
+import { TableV1 } from "../components/tables/TableV1";
+import { ApiContext } from "../context/ApiContext";
+import { UseGet } from "../hooks/UseGet";
+import { Collection } from "../interfaces/collection";
+import { Crop } from "../interfaces/crop";
+import { MainLayout } from "../layouts/MainLayout";
+import { findCropById } from "../services/crop_s";
+import { Text } from "../styles/MainMenuStyles";
 
 export const Collections: React.FC = () => {
   const { id } = useParams();
@@ -23,7 +23,7 @@ export const Collections: React.FC = () => {
 
   useEffect(() => {
     const fetchCropData = async () => {
-      const response = await fetchCropDetails(backendApiCall, cropId);
+      const response = await findCropById(backendApiCall, cropId);
       if (response.status === "success" && response.data) {
         setCropData(response.data);
       }

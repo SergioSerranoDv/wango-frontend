@@ -3,10 +3,9 @@ import styled from "styled-components";
 export const SearchResultItem = styled.div`
   padding: 0.5rem;
   border-bottom: 1px solid #ddd;
-  margin-bottom: 0.5rem;
   cursor: pointer; /* Cambia el cursor a pointer */
   transition: background-color 0.2s ease-in-out;
-
+  border-radius: 5px;
   &:hover {
     background-color: #eee; /* Cambia el color de fondo al hacer hover */
   }

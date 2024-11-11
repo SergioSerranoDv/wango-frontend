@@ -1,33 +1,47 @@
 import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { CropActions } from "../components/actions/CropActions";
 import { LoadingAnimation } from "../components/Loading";
+import { CropActions } from "../components/actions/CropActions";
 import { TableV1 } from "../components/tables/TableV1";
-import { UseGet } from "../hooks/UseGet";
+import { UseCropsData } from "../hooks/UseCropsData";
 import { UsePagination } from "../hooks/UsePagination";
-import { MainLayout } from "../layouts/MainLayout";
 import { Crop } from "../interfaces/crop";
+import { MainLayout } from "../layouts/MainLayout";
+import { formatDate } from "../services/Date";
 import { Text } from "../styles/MainMenuStyles";
 
 export const Crops: React.FC = () => {
   const { id } = useParams();
   const lotId = id || "";
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
-  const { data, loading, setRefetch } = UseGet({
-    endpoint: `crop/paginated?page=${currentPage}&limit=${rowsPerPage}&lot_id=${lotId}`,
-  });
+  const { data, loading, setRefetch } = UseCropsData(currentPage, rowsPerPage, lotId);
 
   const columns = useCallback(
     () => [
       {
-        title: "Nombre",
-        dataIndex: "name",
-        render: (data: Crop) => <span>{data.name}</span>,
+        title: "Fecha de creación",
+        dataIndex: "createdAt",
+        render: (data: Crop) => (data.createdAt ? formatDate(data.createdAt) : "N/A"),
       },
       {
-        title: "Area",
+        title: "Nombre",
+        dataIndex: "name",
+        render: (data: Crop) => data.name,
+      },
+      {
+        title: "Area (Ha)",
         dataIndex: "area",
-        render: (data: Crop) => <span>{data.area}</span>,
+        render: (data: Crop) => data.area,
+      },
+      {
+        title: "Latitud (°)",
+        dataIndex: "latitude",
+        render: (data: Crop) => data.latitude,
+      },
+      {
+        title: "Longitud (°)",
+        dataIndex: "longitude",
+        render: (data: Crop) => data.longitude,
       },
       {
         title: "Acciones",

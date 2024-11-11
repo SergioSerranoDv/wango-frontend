@@ -18,6 +18,16 @@ export const SubContainer = styled.div`
   margin: 0 auto;
 `;
 
+export const Content = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
 export const Options = styled.button`
   display: flex;
   background-color: rgb(233, 233, 233);

@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { Dropdown } from "../Dropdown";
-import { CollectionFormEdit } from "../forms/CollectionFormEdit";
-import { MoreOptions } from "../../icons/MoreOptions";
 import { AddIcon } from "../../icons/Add";
 import { DeleteIcon } from "../../icons/Delete";
 import { EditIcon } from "../../icons/Edit";
-import { Modal } from "../modals/Modal";
+import { MoreOptions } from "../../icons/MoreOptions";
 import { Collection } from "../../interfaces/collection";
 import { updateCollectionStatus } from "../../services/collection_s";
+import { Button } from "../../styles/FormStyles";
 import { Item } from "../../styles/components/Actions";
+import { Dropdown } from "../Dropdown";
+import { CollectionFormEdit } from "../forms/CollectionFormEdit";
+import { Modal } from "../modals/Modal";
 
 interface Props {
   collectionDetails: Collection;
@@ -22,6 +23,43 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+
+  // const handleDelete = async (recordId: string) => {
+  //   setDeletingRecordId(recordId);
+  //   setShowNotification(true); // Mostrar el modal de notificación
+  // };
+
+  // const handleEdit = (record: Records) => {
+  //   setEditingRecordId(record._id);
+  //   setShowFormModal(true);
+  //   setFormData({
+  //     recordName: record.name,
+  //     eto: record.reference_evotranspiration,
+  //     performance: record.daily_performance,
+  //     etc: record.actual_crop_evapotranspiration,
+  //   });
+  // };
+
+  // const handleDeleteConfirmation = async () => {
+  //   if (deletingRecordId) {
+  //     console.log("Eliminando registro con ID:", deletingRecordId);
+  //     try {
+  //       const response = await backendApiCall({
+  //         method: "DELETE",
+  //         endpoint: `collection-record/delete/${deletingRecordId}`,
+  //       });
+  //       if (response.status === "success") {
+  //         setShowNotification(false); // Cerrar el modal de notificación
+  //         setRefetch((prev) => prev + 1);
+  //         setDeletingRecordId(undefined); // Limpiar el ID del registro a eliminar
+  //       } else {
+  //         console.log("Error al eliminar el registro:", response.message);
+  //       }
+  //     } catch (error) {
+  //       console.log("Error al eliminar el registro:", error);
+  //     }
+  //   }
+  // };
 
   const actions = [
     {
@@ -91,7 +129,19 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
       )}
 
       {isEditModalOpen && (
-        <Modal title="Editar recolección" closeModal={() => setIsEditModalOpen(false)}>
+        <Modal
+          action={
+            <Button
+              form="collection-form-update"
+              type="submit"
+              className="text-primary-500 hover:text-primary-400"
+            >
+              Guardar
+            </Button>
+          }
+          title="Editar recolección"
+          closeModal={() => setIsEditModalOpen(false)}
+        >
           <CollectionFormEdit
             collection={collectionDetails}
             refetchCollections={refetchCollections}

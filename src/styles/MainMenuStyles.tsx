@@ -11,6 +11,18 @@ export const MainWrapper = styled.div`
   padding: 26px 0 80px;
 `;
 
+export const Hero = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+`;
+
 export const Text = styled.div`
   font-family: Inter, sans-serif;
   margin-top: 8px;

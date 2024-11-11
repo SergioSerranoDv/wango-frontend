@@ -1,17 +1,18 @@
 import React, { SetStateAction, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { Dropdown } from "../Dropdown";
-import { Modal } from "../modals/Modal";
-import { LotFormEdit } from "../LotFormEdit";
-import { RegisterCrop } from "../forms/RegisterCrop";
-import { Item } from "../../styles/components/Actions";
+import { AddIcon } from "../../icons/Add";
+import { DeleteIcon } from "../../icons/Delete";
+import { EditIcon } from "../../icons/Edit";
+import { MoreOptions } from "../../icons/MoreOptions";
 import { LotI } from "../../interfaces/Lot";
 import { deleteLotById } from "../../services/lot_s";
-import { AddIcon } from "../../icons/Add";
-import { EditIcon } from "../../icons/Edit";
-import { DeleteIcon } from "../../icons/Delete";
-import { MoreOptions } from "../../icons/MoreOptions";
+import { Button } from "../../styles/FormStyles";
+import { Item } from "../../styles/components/Actions";
+import { Dropdown } from "../Dropdown";
+import { LotFormEdit } from "../LotFormEdit";
+import { RegisterCrop } from "../forms/RegisterCrop";
+import { Modal } from "../modals/Modal";
 
 interface Props {
   lotDetails: LotI;
@@ -24,7 +25,8 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRegisterCropModalOpen, setIsRegisterCropModalOpen] = useState(false);
-  
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const actions = [
     {
       action: () => setIsEditModalOpen(true),
@@ -42,7 +44,7 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
       name: "Ver cultivos",
     },
     {
-      action: () => handleDeleteLot(lotDetails._id ? lotDetails._id : ""),
+      action: () => setIsDeleteModalOpen(true),
       icon: <DeleteIcon />,
       name: "Eliminar lote",
     },
@@ -81,14 +83,48 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
       )}
 
       {isEditModalOpen && (
-        <Modal title="Editar lote" closeModal={() => setIsEditModalOpen(false)}>
+        <Modal
+          action={
+            <Button form="editLot" type="submit">
+              Guardar
+            </Button>
+          }
+          title="Editar lote"
+          closeModal={() => setIsEditModalOpen(false)}
+        >
           <LotFormEdit data={lotDetails} refetchData={refetchLotDetails} />
         </Modal>
       )}
 
       {isRegisterCropModalOpen && (
-        <Modal title="Agregar cultivo" closeModal={() => setIsRegisterCropModalOpen(false)}>
+        <Modal
+          action={
+            <Button form="registerCrop" type="submit">
+              Crear
+            </Button>
+          }
+          title="Crear cultivo"
+          closeModal={() => setIsRegisterCropModalOpen(false)}
+        >
           <RegisterCrop lotDetails={lotDetails} />
+        </Modal>
+      )}
+
+      {isDeleteModalOpen && (
+        <Modal
+          action={
+            <Button
+              $background="#C32F26"
+              $hoverBackground="#A52A21"
+              onClick={() => handleDeleteLot(lotDetails._id ? lotDetails._id : "")}
+            >
+              Eliminar
+            </Button>
+          }
+          title="Eliminar lote"
+          closeModal={() => setIsDeleteModalOpen(false)}
+        >
+          <p>¿Estás seguro que deseas eliminar este lote?</p>
         </Modal>
       )}
     </>

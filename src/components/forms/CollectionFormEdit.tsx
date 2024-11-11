@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
 import { ApiContext } from "../../context/ApiContext";
 import { UseNotification } from "../../hooks/UseNotification";
-import { NotificationModal } from "../modals/NotificationModal";
-import { updateCollection } from "../../services/collection_s";
 import { Collection } from "../../interfaces/collection";
+import { updateCollection } from "../../services/collection_s";
 import {
   Button,
   ButtonContainer,
   Form,
   FormField,
-  FormWrapper,
+  ContentWrapper,
   Label,
   Input,
-} from "../../styles/AddLoteStyles";
+} from "../../styles/FormStyles";
+import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
   collection: Collection;
@@ -48,13 +48,14 @@ export const CollectionFormEdit: React.FC<Props> = ({ collection, refetchCollect
 
   return (
     <>
-      <FormWrapper>
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
+      <Form
+        id="collection-form-update"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <ContentWrapper>
           <FormField>
             <Label htmlFor="name">Nombre</Label>
             <Input
@@ -68,21 +69,18 @@ export const CollectionFormEdit: React.FC<Props> = ({ collection, refetchCollect
               required
             />
           </FormField>
-          <ButtonContainer>
-            <Button type="submit">Agregar</Button>
-          </ButtonContainer>
-        </Form>
+        </ContentWrapper>
+      </Form>
 
-        {showNotification && (
-          <NotificationModal
-            description={notificationDetails.description}
-            buttonText="Aceptar"
-            title={notificationDetails.title}
-            status={notificationDetails.status}
-            onClose={closeNotification}
-          />
-        )}
-      </FormWrapper>
+      {showNotification && (
+        <NotificationModal
+          description={notificationDetails.description}
+          buttonText="Aceptar"
+          title={notificationDetails.title}
+          status={notificationDetails.status}
+          onClose={closeNotification}
+        />
+      )}
     </>
   );
 };

@@ -2,19 +2,19 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { NotificationModal } from "../../components/modals/NotificationModal";
 import { ApiContext } from "../../context/ApiContext";
-import { createNewCrop } from "../../services/crop_s";
 import { LotI } from "../../interfaces/Lot";
 import { NotificationDataInit, NotificationI } from "../../interfaces/notification";
+import { createNewCrop } from "../../services/crop_s";
 import {
-  Button,
-  Description,
   DetailsItem,
   DetailsSign,
   Form,
+  FormField,
   InfoContainer,
   Input,
   Label,
   FormContainer,
+  ContentWrapper,
 } from "../../styles/FormStyles";
 
 interface Props {
@@ -152,25 +152,33 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
           </DetailsSign>
         </InfoContainer>
         <Form onSubmit={handleSubmit}>
-          <Label htmlFor="name">Nombre del cultivo*</Label>
-          <Input type="text" id="name" name="name" onChange={handleChange} required />
+          <ContentWrapper>
+            <FormField>
+              <Label htmlFor="name">Nombre del cultivo*</Label>
+              <Input type="text" id="name" name="name" onChange={handleChange} required />
+            </FormField>
 
-          <Label htmlFor="area">Área (Ha)*</Label>
-          <Input type="number" id="area" name="area" onChange={handleChange} required />
+            <FormField>
+              <Label htmlFor="area">Área (Ha)*</Label>
+              <Input type="number" id="area" name="area" onChange={handleChange} required />
+            </FormField>
 
-          <Label htmlFor="latitude">Latitud (-90° - 90°)*</Label>
-          <Input type="number" id="latitude" name="latitude" onChange={handleChange} required />
+            <FormField>
+              <Label htmlFor="latitude">Latitud (-90° - 90°)*</Label>
+              <Input type="number" id="latitude" name="latitude" onChange={handleChange} required />
+            </FormField>
 
-          <Label htmlFor="longitude">Longitud (-180° - 180°)*</Label>
-          <Input type="number" id="longitude" name="longitude" onChange={handleChange} required />
-          <Button type="submit" $custom2>
-            Añadir cultivo
-          </Button>
-
-          <Description $custom1>
-            Podrás añadir un encargado a este cultivo en la sección de ‘Mis cultivos’ en el menú
-            principal.
-          </Description>
+            <FormField>
+              <Label htmlFor="longitude">Longitud (-180° - 180°)*</Label>
+              <Input
+                type="number"
+                id="longitude"
+                name="longitude"
+                onChange={handleChange}
+                required
+              />
+            </FormField>
+          </ContentWrapper>
         </Form>
       </FormContainer>
       {showNotification && (

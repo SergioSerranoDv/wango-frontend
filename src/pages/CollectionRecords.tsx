@@ -3,20 +3,17 @@ import { useParams } from "react-router-dom";
 import { LoadingAnimation } from "../components/Loading";
 import { AddRegistry } from "../components/modals/FormModal";
 import { Modal } from "../components/modals/Modal";
-import { NotificationModal } from "../components/modals/NotificationModal";
 import { TableV1 } from "../components/tables/TableV1";
 import { ApiContext } from "../context/ApiContext";
 import { UseGet } from "../hooks/UseGet";
 import { UsePagination } from "../hooks/UsePagination";
-import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { Crop, CropDataInit } from "../interfaces/crop";
-import { Records } from "../interfaces/record";
 import { MainLayout } from "../layouts/MainLayout";
-import { getCollectionByCropId } from "../services/collection_s";
-import { fetchCropDetails } from "../services/crop_s";
-import { calculateEt0andETc } from "../services/weather_s";
+import { formatDate } from "../services/Date";
+import { findCollectionById } from "../services/collection_s";
+import { findCropById } from "../services/crop_s";
 import { ButtonSecondary } from "../styles/AddLoteStyles";
-import { Button, ButtonContainer, Description, SignBoard } from "../styles/FormStyles";
+import { Description, SignBoard } from "../styles/FormStyles";
 
 export const CollectionRecords = () => {
   const { id: collectionId = "" } = useParams();
@@ -24,91 +21,40 @@ export const CollectionRecords = () => {
   const { data, loading, setRefetch } = UseGet({
     endpoint: `collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
   });
-
+  const [isloadingCrop, setIsLoadingCrop] = useState(true);
   const { backendApiCall } = useContext(ApiContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [cropData, setCropData] = useState<Crop>(CropDataInit);
-  const [showNotification, setShowNotification] = useState(false);
   const [showFormModal, setShowFormModal] = useState(false);
-  const [editingRecordId, setEditingRecordId] = useState<string>();
-  const [formData, setFormData] = useState({
-    recordName: "",
-    eto: 0,
-    performance: 0,
-    etc: 0,
-  });
-  // Paginación y datos de evapotranspiración
-  const [eto, setEto] = useState(0);
-  const [etc, setEtc] = useState(0);
-
-  const [deletingRecordId, setDeletingRecordId] = useState<string | undefined>();
-
-  const handleShowFormModal = () => {
-    setEditingRecordId(undefined);
-    setShowFormModal(true);
-    // Limpiar los datos del formulario
-    setFormData({
-      recordName: "",
-      eto: 0,
-      performance: 0,
-      etc: 0,
-    });
-  };
-
-  const handleFormModalClose = () => {
-    setEditingRecordId(undefined);
-    setShowFormModal(false);
-  };
-
-  const handleDelete = async (recordId: string) => {
-    setDeletingRecordId(recordId);
-    setShowNotification(true); // Mostrar el modal de notificación
-  };
-
-  const handleEdit = (record: Records) => {
-    setEditingRecordId(record._id);
-    setShowFormModal(true);
-    setFormData({
-      recordName: record.name,
-      eto: record.reference_evotranspiration,
-      performance: record.daily_performance,
-      etc: record.actual_crop_evapotranspiration,
-    });
-  };
-
-  const handleDeleteConfirmation = async () => {
-    if (deletingRecordId) {
-      console.log("Eliminando registro con ID:", deletingRecordId);
-      try {
-        const response = await backendApiCall({
-          method: "DELETE",
-          endpoint: `collection-record/delete/${deletingRecordId}`,
-        });
-        if (response.status === "success") {
-          setShowNotification(false); // Cerrar el modal de notificación
-          setRefetch((prev) => prev + 1);
-          setDeletingRecordId(undefined); // Limpiar el ID del registro a eliminar
-        } else {
-          console.log("Error al eliminar el registro:", response.message);
-        }
-      } catch (error) {
-        console.log("Error al eliminar el registro:", error);
-      }
-    }
-  };
 
   const columns = useCallback(
     () => [
+      {
+        title: "Fecha de creación",
+        dataIndex: "createdAt",
+        render: (record: any) => <span>{formatDate(record.createdAt)}</span>,
+      },
       {
         title: "Nombre",
         dataIndex: "name",
         render: (record: any) => <span>{record.name}</span>,
       },
+
       {
-        title: "Fecha",
-        dataIndex: "createdAt",
-        render: (record: any) => <span>{record.createdAt}</span>,
+        title: "Eto (mm/día)",
+        dataIndex: "reference_evotranspiration",
+        render: (record: any) => <span>{record.reference_evotranspiration}</span>,
       },
+      {
+        title: "Etc (mm/día)",
+        dataIndex: "actual_crop_evapotranspiration",
+        render: (record: any) => <span>{record.actual_crop_evapotranspiration}</span>,
+      },
+      {
+        title: "Rendimiento (kg)",
+        dataIndex: "daily_performance",
+        render: (record: any) => <span>{record.daily_performance}</span>,
+      },
+
       {
         title: "Acciones",
         dataIndex: "_id",
@@ -122,26 +68,32 @@ export const CollectionRecords = () => {
   );
 
   useEffect(() => {
-    async function fetchEvotranspirationDataFromOpenMeteo() {
+    const fetchDetails = async () => {
       try {
-        const { eto, etc } = await calculateEt0andETc();
-        setEto(parseFloat(eto));
-        setEtc(parseFloat(etc));
+        const collectionResponse = await findCollectionById(backendApiCall, collectionId);
+        if (collectionResponse.status === "success") {
+          const cropResponse = await findCropById(backendApiCall, collectionResponse.data.crop_id);
+          if (cropResponse.status === "success") {
+            setCropData(cropResponse.data);
+          }
+        }
       } catch (error) {
-        console.log("Error al obtener los datos de evapotranspiración:", error);
+        console.error("Error fetching details:", error);
+      } finally {
+        setIsLoadingCrop(false);
       }
-    }
-    fetchEvotranspirationDataFromOpenMeteo();
-  }, []);
+    };
+    fetchDetails();
+  }, [backendApiCall, collectionId]);
 
   return (
     <MainLayout>
-      {loading ? (
+      {loading || isloadingCrop ? (
         <LoadingAnimation />
       ) : (
         <>
           <SignBoard $custom2>Registros del cultivo {cropData.name}</SignBoard>
-          <Header openModal={handleShowFormModal} />
+          <Header openModal={() => setShowFormModal(true)} />
           <TableV1
             columns={columns()}
             data={data.collectionRecords}
@@ -161,22 +113,18 @@ export const CollectionRecords = () => {
       )}
 
       {showFormModal && (
-        <Modal title="Agregar registro" closeModal={handleFormModalClose}>
+        <Modal title="Agregar registro" closeModal={() => setShowFormModal(false)}>
           <AddRegistry
             collectionId={collectionId}
-            cropname={cropData.name}
-            eto={eto}
+            crop={cropData}
             currentGrowth={1.75}
-            etc={etc}
-            recordId={editingRecordId}
-            initialData={formData} // Pasar los datos del registro al componente AddRegistry
-            onClose={handleFormModalClose}
+            onClose={() => setShowFormModal(false)}
             setRefetch={setRefetch}
           />
         </Modal>
       )}
 
-      {showNotification && (
+      {/* {showNotification && (
         <NotificationModal
           title={`Eliminar registro`}
           description="Estás seguro de que deseas eliminar este registro?"
@@ -185,7 +133,7 @@ export const CollectionRecords = () => {
           onClose={handleDeleteConfirmation}
           redirectUrl=""
         />
-      )}
+      )} */}
     </MainLayout>
   );
 };

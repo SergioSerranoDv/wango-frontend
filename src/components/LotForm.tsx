@@ -1,18 +1,9 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
-import { NotificationModal } from "./modals/NotificationModal";
-import { UseNotification } from "../hooks/UseNotification";
 import { ApiContext } from "../context/ApiContext";
+import { UseNotification } from "../hooks/UseNotification";
 import { createNewLot } from "../services/lot_s";
-import {
-  FormWrapper,
-  Form,
-  FormHeader,
-  FormField,
-  Label,
-  Input,
-  ButtonContainer,
-  Button,
-} from "../styles/AddLoteStyles";
+import { Form, FormField, Label, Input, ContentWrapper } from "../styles/FormStyles";
+import { NotificationModal } from "./modals/NotificationModal";
 
 interface FormData {
   name: string;
@@ -68,9 +59,8 @@ export const LotForm: React.FC = () => {
 
   return (
     <>
-      <FormWrapper>
-        <Form onSubmit={handleSubmit}>
-          {/* <FormHeader>Crea un nuevo lote, ingresa los datos</FormHeader> */}
+      <Form id="registerLot" onSubmit={handleSubmit}>
+        <ContentWrapper>
           <FormField>
             <Label htmlFor="name">Nombre del lote*</Label>
             <Input
@@ -93,14 +83,13 @@ export const LotForm: React.FC = () => {
               required
             />
           </FormField>
-          <ButtonContainer>
-            <Button type="submit">Añadir Lote</Button>
-          </ButtonContainer>
-          <FormHeader>
-            Podrás añadir un cultivo entrando al lote en específico en la sección anterior.
-          </FormHeader>
-        </Form>
-      </FormWrapper>
+        </ContentWrapper>
+
+        {/* <FormHeader>
+          Podrás añadir un cultivo entrando al lote en específico en la sección anterior.
+        </FormHeader> */}
+      </Form>
+
       {showNotification && (
         <NotificationModal
           title={notificationDetails.title}

@@ -2,7 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { NotificationModal } from "../../components/modals/NotificationModal";
 import { ApiContext } from "../../context/ApiContext";
 import { AppContext } from "../../context/AppContext";
-import { createNewRecords, updateRecord } from "../../services/record_s";
+import { UseNotification } from "../../hooks/UseNotification";
+import { createNewRecords } from "../../services/record_s";
+import { calculateEt0andETc } from "../../services/weather_s";
 import {
   SignBoard,
   InfoContainer,
@@ -19,48 +21,34 @@ import { ProductSearch } from "../ProductSearch";
 
 interface AddRegistryProps {
   collectionId: string;
-  cropname: string;
-  eto: number;
+  crop: {
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
   currentGrowth: number;
-  etc: number;
   onClose: () => void;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
-  recordId?: string;
-  initialData?: {
-    recordName: string;
-    eto: number;
-    performance: number;
-    etc: number;
-  };
 }
 
 export const AddRegistry: React.FC<AddRegistryProps> = ({
   collectionId,
-  cropname,
-  eto,
+  crop,
   currentGrowth,
-  etc,
   onClose,
   setRefetch,
-  recordId,
-  initialData,
 }) => {
   const { userData } = useContext(AppContext);
   const { backendApiCall } = useContext(ApiContext);
+  const { closeNotification, showNotification, notificationDetails, triggerNotification } =
+    UseNotification();
   const [formData, setFormData] = useState({
-    nameRecord: initialData?.recordName || "",
-    eto: initialData?.eto || eto,
-    performance: initialData?.performance || 0,
-    etc: initialData?.etc || etc,
+    nameRecord: "",
+    eto: 0,
+    etc: 0,
+    performance: 0,
   });
   const [productsSelected, setProductsSelected] = useState<any[]>([]);
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationDetails, setNotificationDetails] = useState({
-    title: "",
-    description: "",
-    status: "",
-    redirectUrl: "",
-  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -70,11 +58,9 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Previene el comportamiento por defecto del formulario
     try {
-      // Construye los datos del registro basado en el estado del formulario
-      console.log(productsSelected);
-      const recordData = {
+      e.preventDefault();
+      const record = {
         chemicals_used: productsSelected.map((product) => ({
           product_id: product._id,
           amount: product.quantity,
@@ -88,73 +74,65 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
         user: userData.user,
       };
 
-      let response;
-      if (recordId) {
-        // Si existe un recordId, actualiza el registro existente
-        response = await updateRecord(backendApiCall, recordData, recordId);
-      } else {
-        // Si no existe un recordId, crea un nuevo registro
-        response = await createNewRecords(backendApiCall, recordData);
-      }
+      const response = await createNewRecords(backendApiCall, record);
 
-      // Maneja la respuesta del servidor
       if (response.status === "success") {
-        // Si la respuesta es exitosa, muestra una notificación de éxito
-        const title = recordId ? "Registro actualizado" : "Registro creado";
-        const description = recordId
-          ? "Has actualizado exitosamente el registro."
-          : "Has creado un registro, podrás hacer otro en 24 horas.";
+        const title = "Registro creado";
+        const description = "Has creado un registro, podrás hacer otro en 24 horas.";
 
-        setNotificationDetails({
-          title,
-          description,
-          status: "success",
-          redirectUrl: "",
-        });
+        triggerNotification(title, description, "success", "");
       } else if (
         response.status === "error" &&
         response.message === "You can only create a record once a day"
       ) {
         // Si el usuario ya ha creado un registro hoy, muestra una notificación de error
-        setNotificationDetails({
-          title: "Ya has creado un registro hoy",
-          description: "Recuerda que solo puedes crear un registro cada 24 horas.",
-          status: "error",
-          redirectUrl: "",
-        });
+        triggerNotification(
+          "Error",
+          "Ya has creado un registro hoy. Por favor, intenta de nuevo mañana.",
+          "error",
+          ""
+        );
       } else {
-        // Si hay un error, muestra una notificación de error
-        setNotificationDetails({
-          title: "Error",
-          description: response.message || "Ha ocurrido un error al procesar tu solicitud.",
-          status: "error",
-          redirectUrl: "",
-        });
+        triggerNotification("Error", response.message || "Ha ocurrido un error.", "error", "");
       }
-      setShowNotification(true); // Muestra la notificación
-      setRefetch((prev) => prev + 1); // Actualiza el estado para refrescar los datos si es necesario
+      setRefetch((prev) => prev + 1);
     } catch (error) {
-      console.error(error); // Registra el error en la consola
-      // Muestra una notificación de error
-      setNotificationDetails({
-        title: "Error inesperado",
-        description: "Ha ocurrido un error inesperado. Por favor, intenta de nuevo más tarde.",
-        status: "error",
-        redirectUrl: "",
-      });
-      setShowNotification(true);
+      triggerNotification(
+        "Error",
+        "Ha ocurrido un error inesperado. Por favor, intenta mas tarde",
+        "error",
+        ""
+      );
     }
   };
 
   const handleNotificationClose = () => {
-    setShowNotification(false);
+    closeNotification();
     onClose();
   };
+
+  useEffect(() => {
+    async function fetchEvotranspirationDataFromOpenMeteo() {
+      try {
+        const { eto, etc } = await calculateEt0andETc(crop.latitude, crop.longitude);
+        setFormData((prev) => ({ ...prev, eto: parseFloat(eto) }));
+        setFormData((prev) => ({ ...prev, etc: parseFloat(etc) }));
+      } catch (error) {
+        triggerNotification(
+          "Error",
+          "No se pudo obtener la información de evapotranspiración. Por favor, intenta de nuevo.",
+          "error",
+          ""
+        );
+      }
+    }
+    fetchEvotranspirationDataFromOpenMeteo();
+  }, [crop.latitude, crop.longitude, triggerNotification]);
 
   return (
     <>
       <SignBoard $custom2>
-        Haz tu registro diario para el cultivo <DetailsItem>{cropname}</DetailsItem>
+        Haz tu registro diario para el cultivo <DetailsItem>{crop.name}</DetailsItem>
       </SignBoard>
       <InfoContainer>
         <DetailsSign>
@@ -221,7 +199,7 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
         </div>
         <ButtonContainer>
           <Button type="submit" color="green">
-            {recordId ? "Actualizar" : "Crear"}
+            Guardar
           </Button>
           <Button type="button" color="red" onClick={onClose}>
             Cancelar

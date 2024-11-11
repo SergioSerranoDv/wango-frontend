@@ -28,7 +28,7 @@ export const ProductFormEdit: React.FC<Props> = ({ product }) => {
       [e.target.name]: e.target.value,
     });
   };
-  
+
   const resetForm = () => {
     setFormData({
       code: "",
@@ -103,9 +103,7 @@ export const ProductFormEdit: React.FC<Props> = ({ product }) => {
             required
           />
 
-          <Button type="submit" $custom2>
-            Guardar cambios
-          </Button>
+          <Button type="submit">Guardar cambios</Button>
         </Form>
       </FormContainer>
       {showNotification && (

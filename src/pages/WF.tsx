@@ -9,7 +9,7 @@ import { Records } from "../interfaces/record";
 import { MainLayout } from "../layouts/MainLayout";
 import { formatDate } from "../services/Date";
 import { findCollectionById } from "../services/collection_s";
-import { fetchCropDetails } from "../services/crop_s";
+import { findCropById } from "../services/crop_s";
 import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
 import {
   ContainerInput,
@@ -62,10 +62,10 @@ export const WF: React.FC = () => {
   const cropId = collection?.crop_id;
 
   useEffect(() => {
-    async function loadCropDetails() {
+    async function fetchCropDetails() {
       if (cropId) {
         try {
-          const cropDetails = await fetchCropDetails(backendApiCall, cropId);
+          const cropDetails = await findCropById(backendApiCall, cropId);
           if (cropDetails && cropDetails.data) {
             setCrop(cropDetails.data);
           }
@@ -74,7 +74,7 @@ export const WF: React.FC = () => {
         }
       }
     }
-    loadCropDetails();
+    fetchCropDetails();
   }, [backendApiCall, cropId]);
 
   //Fetch the collection records

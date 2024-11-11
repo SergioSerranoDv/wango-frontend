@@ -1,49 +1,58 @@
 import React, { useState } from "react";
+import { LoadingAnimation } from "../components/Loading";
+import { WFActions } from "../components/actions/WFActions";
 import { WForm } from "../components/forms/WForm";
 import { Modal } from "../components/modals/Modal";
 import { TableV1 } from "../components/tables/TableV1";
-import { MainLayout } from "../layouts/MainLayout";
 import { UseGet } from "../hooks/UseGet";
+import { UsePagination } from "../hooks/UsePagination";
+import { WaterFootprintI } from "../interfaces/WaterFootprint";
+import { MainLayout } from "../layouts/MainLayout";
 import { ButtonSecondary } from "../styles/AddLoteStyles";
 import { Text } from "../styles/LoteMenuStyles";
 
 export const WaterFootPrint = () => {
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = UseGet({
     endpoint: `water-footprint/records?page=${currentPage}&limit=${rowsPerPage}`,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const columns = (data: any) => {
+  const columns = () => {
     return [
       {
-        title: "Componente azul",
+        title: "Lote",
         dataIndex: "name",
-        render: (data: any) => <span>{data.blue_component}</span>,
+        render: (data: WaterFootprintI) => <span>{data.lotData?.name}</span>,
       },
       {
-        title: "Componente verde",
+        title: "Cultivo",
         dataIndex: "capacity",
-        render: (data: any) => <span>{data.green_component}</span>,
+        render: (data: WaterFootprintI) => <span>{data.cropData?.name}</span>,
       },
       {
-        title: "Componente gris",
+        title: "Recolección",
         dataIndex: "capacity",
-        render: (data: any) => <span>{data.grey_component}</span>,
+        render: (data: WaterFootprintI) => <span>{data.collectionData?.name}</span>,
       },
       {
-        title: "Total",
+        title: "Total (m³)",
         dataIndex: "capacity",
-        render: (data: any) => <span>{data.total}</span>,
+        render: (data: WaterFootprintI) => <span>{data.total}</span>,
+      },
+      {
+        title: "Acciones",
+        dataIndex: "_id",
+        render: (data: WaterFootprintI) => <WFActions WFDetails={data} />,
       },
     ];
   };
 
   return (
     <MainLayout>
-      {!loading && data.records.length > 0 && (
+      {loading ? (
+        <LoadingAnimation />
+      ) : (
         <>
           <Header openModal={() => setIsModalOpen(true)} />
           <TableV1
@@ -59,7 +68,7 @@ export const WaterFootPrint = () => {
               totalPages: data.meta.total_pages,
             }}
             title="Huellas hidricas"
-            columns={columns(data)}
+            columns={columns()}
           />
         </>
       )}

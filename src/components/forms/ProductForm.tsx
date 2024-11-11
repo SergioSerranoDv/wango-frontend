@@ -104,9 +104,7 @@ export const ProductForm: React.FC<Props> = ({ closeModal, refetchProductDetails
             required
           />
 
-          <Button type="submit" $custom2>
-            Guardar cambios
-          </Button>
+          <Button type="submit">Guardar cambios</Button>
         </Form>
       </FormContainer>
       {showNotification && (

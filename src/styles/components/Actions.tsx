@@ -20,7 +20,7 @@ export const Item = styled.li`
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  border-radius: 10px;
+  border-radius: 6px;
   transition: all 0.3s ease;
   cursor: pointer;
   &:hover {
