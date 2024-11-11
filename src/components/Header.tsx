@@ -1,20 +1,16 @@
-import { useState } from "react";
 import { Button } from "../styles/FormStyles";
 import { Text, Hero } from "../styles/MainMenuStyles";
-import { LotForm } from "./LotForm";
-import { Modal } from "./modals/Modal";
 
-export const Header: React.FC<{ description: string }> = ({ description }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+export const Header: React.FC<{ description: string; openModal: any }> = ({
+  description,
+  openModal,
+}) => {
   return (
     <>
       <Hero>
         <Text> {description} </Text>
         <Button
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
+          onClick={() => openModal()}
           style={{
             padding: "12px 16px",
           }}
@@ -34,20 +30,6 @@ export const Header: React.FC<{ description: string }> = ({ description }) => {
           Crear Lote
         </Button>
       </Hero>
-
-      {isModalOpen && (
-        <Modal
-          action={
-            <Button form="registerLot" type="submit">
-              Crear
-            </Button>
-          }
-          title="Nuevo Lote"
-          closeModal={() => setIsModalOpen(false)}
-        >
-          <LotForm />
-        </Modal>
-      )}
     </>
   );
 };

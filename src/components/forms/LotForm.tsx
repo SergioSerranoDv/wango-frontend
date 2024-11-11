@@ -1,9 +1,9 @@
-import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
-import { ApiContext } from "../context/ApiContext";
-import { UseNotification } from "../hooks/UseNotification";
-import { createNewLot } from "../services/lot_s";
-import { Form, FormField, Label, Input, ContentWrapper } from "../styles/FormStyles";
-import { NotificationModal } from "./modals/NotificationModal";
+import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { UseNotification } from "../..//hooks/UseNotification";
+import { ApiContext } from "../../context/ApiContext";
+import { createNewLot } from "../../services/lot_s";
+import { Form, FormContent, FormField, Input, Label } from "../../styles/FormStyles";
+import { NotificationModal } from "../modals/NotificationModal";
 
 interface FormData {
   name: string;
@@ -59,8 +59,8 @@ export const LotForm: React.FC = () => {
 
   return (
     <>
-      <Form id="registerLot" onSubmit={handleSubmit}>
-        <ContentWrapper>
+      <Form id="lot-form" onSubmit={handleSubmit}>
+        <FormContent>
           <FormField>
             <Label htmlFor="name">Nombre del lote*</Label>
             <Input
@@ -83,11 +83,7 @@ export const LotForm: React.FC = () => {
               required
             />
           </FormField>
-        </ContentWrapper>
-
-        {/* <FormHeader>
-          Podrás añadir un cultivo entrando al lote en específico en la sección anterior.
-        </FormHeader> */}
+        </FormContent>
       </Form>
 
       {showNotification && (

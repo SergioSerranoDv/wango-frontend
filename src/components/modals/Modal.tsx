@@ -12,13 +12,13 @@ import {
 } from "../../styles/components/modals/ModalStyles";
 
 interface ModalProps {
-  action: React.ReactNode;
   title: string;
   children?: React.ReactNode;
   closeModal: () => void;
+  footer?: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({ action, closeModal, children, title }) => {
+export const Modal: React.FC<ModalProps> = ({ closeModal, children, title, footer }) => {
   return (
     <Container>
       <BackDrop />
@@ -43,10 +43,14 @@ export const Modal: React.FC<ModalProps> = ({ action, closeModal, children, titl
           </ModalHeader>
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
-            <CancelButton type="button" onClick={() => closeModal()}>
-              Cancelar
-            </CancelButton>
-            {action}
+            {footer && (
+              <>
+                <CancelButton type="button" onClick={() => closeModal()}>
+                  Cancelar
+                </CancelButton>
+                {footer}
+              </>
+            )}
           </ModalFooter>
         </ModalContent>
       </ModalContainer>

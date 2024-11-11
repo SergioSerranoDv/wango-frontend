@@ -3,7 +3,7 @@ import { ApiContext } from "../context/ApiContext";
 import { UseNotification } from "../hooks/UseNotification";
 import { Crop } from "../interfaces/crop";
 import { updateCrop } from "../services/crop_s";
-import { Button, Form, Label, Input, FormContainer, ButtonContainer } from "../styles/FormStyles";
+import { Form, Label, Input, FormField, FormContent } from "../styles/FormStyles";
 import { NotificationModal } from "./modals/NotificationModal";
 
 interface FormData {
@@ -68,47 +68,52 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
 
   return (
     <>
-      <FormContainer>
-        <Form onSubmit={handleSubmit}>
-          <Label htmlFor="name">Nombre del cultivo*</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name} // Asegúrate de que el valor esté vinculado a formData.cropName
-            onChange={handleChange}
-            required
-          />
-          <Label htmlFor="area">Área (Ha)*</Label>
-          <Input
-            type="number"
-            id="area"
-            name="area"
-            value={formData.area}
-            onChange={handleChange}
-            disabled
-          />
-          <Label htmlFor="latitude">Latitud (°)*</Label>
-          <Input
-            type="number"
-            id="latitude"
-            name="latitude"
-            value={formData.latitude}
-            onChange={handleChange}
-          />
-          <Label htmlFor="longitude">Longitud (°)*</Label>
-          <Input
-            type="number"
-            id="longitude"
-            name="longitude"
-            value={formData.longitude}
-            onChange={handleChange}
-          />
-          <ButtonContainer>
-            <Button type="submit">Guardar cambios</Button>
-          </ButtonContainer>
-        </Form>
-      </FormContainer>
+      <Form id="crop-form-update" onSubmit={handleSubmit}>
+        <FormContent>
+          <FormField>
+            <Label htmlFor="name">Nombre del cultivo*</Label>
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name} // Asegúrate de que el valor esté vinculado a formData.cropName
+              onChange={handleChange}
+              required
+            />
+          </FormField>
+          <FormField>
+            <Label htmlFor="area">Área (Ha)*</Label>
+            <Input
+              type="number"
+              id="area"
+              name="area"
+              value={formData.area}
+              onChange={handleChange}
+              disabled
+            />
+          </FormField>
+          <FormField>
+            <Label htmlFor="latitude">Latitud (°)*</Label>
+            <Input
+              type="number"
+              id="latitude"
+              name="latitude"
+              value={formData.latitude}
+              onChange={handleChange}
+            />
+          </FormField>
+          <FormField>
+            <Label htmlFor="longitude">Longitud (°)*</Label>
+            <Input
+              type="number"
+              id="longitude"
+              name="longitude"
+              value={formData.longitude}
+              onChange={handleChange}
+            />
+          </FormField>
+        </FormContent>
+      </Form>
 
       {showNotification && (
         <NotificationModal

@@ -4,15 +4,7 @@ import { ApiContext } from "../../context/ApiContext";
 import { UseGet } from "../../hooks/UseGet";
 import { UseNotification } from "../../hooks/UseNotification";
 import { createNewCollection } from "../../services/collection_s";
-import {
-  Button,
-  ButtonContainer,
-  Form,
-  FormField,
-  Label,
-  Input,
-  ContentWrapper,
-} from "../../styles/FormStyles";
+import { Button, Form, FormField, Label, Input, FormContent } from "../../styles/FormStyles";
 import { LoadingAnimation } from "../Loading";
 import { NotificationModal } from "../modals/NotificationModal";
 
@@ -66,12 +58,13 @@ export const CollectionForm: React.FC<Props> = ({ cropId }) => {
         </div>
       ) : (
         <Form
+          id="collection-form"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
           }}
         >
-          <ContentWrapper>
+          <FormContent>
             <FormField>
               <Label htmlFor="name">Nombre</Label>
               <Input
@@ -82,10 +75,7 @@ export const CollectionForm: React.FC<Props> = ({ cropId }) => {
                 required
               />
             </FormField>
-          </ContentWrapper>
-          <ButtonContainer>
-            <Button type="submit">Agregar</Button>
-          </ButtonContainer>
+          </FormContent>
         </Form>
       )}
 

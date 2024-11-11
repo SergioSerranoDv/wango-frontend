@@ -10,7 +10,7 @@ import { deleteLotById } from "../../services/lot_s";
 import { Button } from "../../styles/FormStyles";
 import { Item } from "../../styles/components/Actions";
 import { Dropdown } from "../Dropdown";
-import { LotFormEdit } from "../LotFormEdit";
+import { LotFormEdit } from "../forms/LotFormEdit";
 import { RegisterCrop } from "../forms/RegisterCrop";
 import { Modal } from "../modals/Modal";
 
@@ -84,8 +84,8 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
 
       {isEditModalOpen && (
         <Modal
-          action={
-            <Button form="editLot" type="submit">
+          footer={
+            <Button form="lot-form-update" type="submit">
               Guardar
             </Button>
           }
@@ -98,12 +98,12 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
 
       {isRegisterCropModalOpen && (
         <Modal
-          action={
-            <Button form="registerCrop" type="submit">
+          footer={
+            <Button form="crop-form" type="submit">
               Crear
             </Button>
           }
-          title="Crear cultivo"
+          title="Nuevo cultivo"
           closeModal={() => setIsRegisterCropModalOpen(false)}
         >
           <RegisterCrop lotDetails={lotDetails} />
@@ -112,7 +112,7 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
 
       {isDeleteModalOpen && (
         <Modal
-          action={
+          footer={
             <Button
               $background="#C32F26"
               $hoverBackground="#A52A21"

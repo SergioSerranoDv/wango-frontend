@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent, useContext, SetStateAction } from "react";
-import { ApiContext } from "../context/ApiContext";
-import { UseNotification } from "../hooks/UseNotification";
-import { LotI } from "../interfaces/Lot";
-import { updateLot } from "../services/lot_s";
-import { Label, Form, Input, ContentWrapper, FormField } from "../styles/FormStyles";
-import { NotificationModal } from "./modals/NotificationModal";
+import { ApiContext } from "../../context/ApiContext";
+import { UseNotification } from "../../hooks/UseNotification";
+import { LotI } from "../../interfaces/Lot";
+import { updateLot } from "../../services/lot_s";
+import { Label, Form, Input, FormContent, FormField } from "../../styles/FormStyles";
+import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
   data: any;
@@ -56,8 +56,8 @@ export const LotFormEdit: React.FC<Props> = ({ data, refetchData }) => {
 
   return (
     <>
-      <Form id="editLot" onSubmit={handleSubmit}>
-        <ContentWrapper>
+      <Form id="lot-form-update" onSubmit={handleSubmit}>
+        <FormContent>
           <FormField>
             <Label htmlFor="name">Nombre del lote*</Label>
             <Input
@@ -85,7 +85,7 @@ export const LotFormEdit: React.FC<Props> = ({ data, refetchData }) => {
               required
             />
           </FormField>
-        </ContentWrapper>
+        </FormContent>
       </Form>
 
       {showNotification && (

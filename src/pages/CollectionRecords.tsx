@@ -1,7 +1,7 @@
 import { useState, useCallback, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { LoadingAnimation } from "../components/Loading";
-import { AddRegistry } from "../components/modals/FormModal";
+import { RecordForm } from "../components/forms/RecordForm";
 import { Modal } from "../components/modals/Modal";
 import { TableV1 } from "../components/tables/TableV1";
 import { ApiContext } from "../context/ApiContext";
@@ -14,6 +14,7 @@ import { findCollectionById } from "../services/collection_s";
 import { findCropById } from "../services/crop_s";
 import { ButtonSecondary } from "../styles/AddLoteStyles";
 import { Description, SignBoard } from "../styles/FormStyles";
+import { Button } from "../styles/FormStyles";
 
 export const CollectionRecords = () => {
   const { id: collectionId = "" } = useParams();
@@ -113,8 +114,16 @@ export const CollectionRecords = () => {
       )}
 
       {showFormModal && (
-        <Modal title="Agregar registro" closeModal={() => setShowFormModal(false)}>
-          <AddRegistry
+        <Modal
+          footer={
+            <Button type="submit" form="record-form">
+              crear
+            </Button>
+          }
+          title="Nuevo registro"
+          closeModal={() => setShowFormModal(false)}
+        >
+          <RecordForm
             collectionId={collectionId}
             crop={cropData}
             currentGrowth={1.75}
@@ -123,17 +132,6 @@ export const CollectionRecords = () => {
           />
         </Modal>
       )}
-
-      {/* {showNotification && (
-        <NotificationModal
-          title={`Eliminar registro`}
-          description="Estás seguro de que deseas eliminar este registro?"
-          status="error"
-          buttonText="Eliminar"
-          onClose={handleDeleteConfirmation}
-          redirectUrl=""
-        />
-      )} */}
     </MainLayout>
   );
 };
@@ -164,7 +162,7 @@ const Header: React.FC<{ openModal: () => void }> = ({ openModal }) => (
           <path d="M11 13v6h2v-6h6v-2h-6V5h-2v6H5v2h6z" fill="currentColor"></path>
         </svg>
       </span>
-      Agregar registro
+      Cear registro
     </ButtonSecondary>
   </div>
 );

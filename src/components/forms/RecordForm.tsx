@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NotificationModal } from "../../components/modals/NotificationModal";
 import { ApiContext } from "../../context/ApiContext";
 import { AppContext } from "../../context/AppContext";
 import { UseNotification } from "../../hooks/UseNotification";
@@ -12,12 +11,11 @@ import {
   Form,
   Input,
   Label,
-  ButtonContainer,
-  Button,
   Description,
   DetailsItem,
 } from "../../styles/components/FormModalStyles";
 import { ProductSearch } from "../ProductSearch";
+import { NotificationModal } from "../modals/NotificationModal";
 
 interface AddRegistryProps {
   collectionId: string;
@@ -31,7 +29,7 @@ interface AddRegistryProps {
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const AddRegistry: React.FC<AddRegistryProps> = ({
+export const RecordForm: React.FC<AddRegistryProps> = ({
   collectionId,
   crop,
   currentGrowth,
@@ -115,8 +113,7 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
     async function fetchEvotranspirationDataFromOpenMeteo() {
       try {
         const { eto, etc } = await calculateEt0andETc(crop.latitude, crop.longitude);
-        setFormData((prev) => ({ ...prev, eto: parseFloat(eto) }));
-        setFormData((prev) => ({ ...prev, etc: parseFloat(etc) }));
+        setFormData((prev) => ({ ...prev, eto: parseFloat(eto), etc: parseFloat(etc) }));
       } catch (error) {
         triggerNotification(
           "Error",
@@ -127,23 +124,21 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
       }
     }
     fetchEvotranspirationDataFromOpenMeteo();
-  }, [crop.latitude, crop.longitude, triggerNotification]);
+  }, []);
 
   return (
     <>
       <SignBoard $custom2>
         Haz tu registro diario para el cultivo <DetailsItem>{crop.name}</DetailsItem>
       </SignBoard>
+
       <InfoContainer>
         <DetailsSign>
           Fecha de inicio de recolección: <DetailsItem>Proximamente</DetailsItem>
         </DetailsSign>
       </InfoContainer>
 
-      {/* <div style={{ paddingBottom: "32px" }}>
-              <Calendar selected={formData.selectedDate} onChange={handleDateChange} />
-            </div> */}
-      <Form onSubmit={handleSubmit}>
+      <Form id="record-form" onSubmit={handleSubmit}>
         <Label htmlFor="nameRecord">Nombre del registro</Label>
         <Input
           type="text"
@@ -197,14 +192,6 @@ export const AddRegistry: React.FC<AddRegistryProps> = ({
             </div>
           ))}
         </div>
-        <ButtonContainer>
-          <Button type="submit" color="green">
-            Guardar
-          </Button>
-          <Button type="button" color="red" onClick={onClose}>
-            Cancelar
-          </Button>
-        </ButtonContainer>
       </Form>
 
       {showNotification && (

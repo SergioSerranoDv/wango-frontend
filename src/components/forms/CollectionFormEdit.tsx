@@ -3,15 +3,7 @@ import { ApiContext } from "../../context/ApiContext";
 import { UseNotification } from "../../hooks/UseNotification";
 import { Collection } from "../../interfaces/collection";
 import { updateCollection } from "../../services/collection_s";
-import {
-  Button,
-  ButtonContainer,
-  Form,
-  FormField,
-  ContentWrapper,
-  Label,
-  Input,
-} from "../../styles/FormStyles";
+import { Form, Label, Input, FormContent, FormField } from "../../styles/FormStyles";
 import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
@@ -55,7 +47,7 @@ export const CollectionFormEdit: React.FC<Props> = ({ collection, refetchCollect
           handleSubmit();
         }}
       >
-        <ContentWrapper>
+        <FormContent>
           <FormField>
             <Label htmlFor="name">Nombre</Label>
             <Input
@@ -69,7 +61,7 @@ export const CollectionFormEdit: React.FC<Props> = ({ collection, refetchCollect
               required
             />
           </FormField>
-        </ContentWrapper>
+        </FormContent>
       </Form>
 
       {showNotification && (

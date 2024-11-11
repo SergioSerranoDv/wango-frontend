@@ -34,7 +34,7 @@ export const FormContainer = styled.div<InputProps>`
 
 export const Form = styled.form``;
 
-export const ContentWrapper = styled.div<InputProps>`
+export const FormContent = styled.div<InputProps>`
   display: flex;
   flex-direction: column;
   gap: 24px;

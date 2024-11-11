@@ -23,23 +23,8 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-
-  // const handleDelete = async (recordId: string) => {
-  //   setDeletingRecordId(recordId);
-  //   setShowNotification(true); // Mostrar el modal de notificación
-  // };
-
-  // const handleEdit = (record: Records) => {
-  //   setEditingRecordId(record._id);
-  //   setShowFormModal(true);
-  //   setFormData({
-  //     recordName: record.name,
-  //     eto: record.reference_evotranspiration,
-  //     performance: record.daily_performance,
-  //     etc: record.actual_crop_evapotranspiration,
-  //   });
-  // };
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  
   // const handleDeleteConfirmation = async () => {
   //   if (deletingRecordId) {
   //     console.log("Eliminando registro con ID:", deletingRecordId);
@@ -87,6 +72,11 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
       icon: <AddIcon />,
       name: "Ver registros",
     },
+    {
+      action: () => setIsDeleteModalOpen(true),
+      icon: <DeleteIcon />,
+      name: "Eliminar recolección",
+    },
   ];
 
   const handleUpdateCollectionStatus = async (collectionId: string, crop_id: string) => {
@@ -130,7 +120,7 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
 
       {isEditModalOpen && (
         <Modal
-          action={
+          footer={
             <Button
               form="collection-form-update"
               type="submit"
@@ -146,6 +136,25 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
             collection={collectionDetails}
             refetchCollections={refetchCollections}
           />
+        </Modal>
+      )}
+      {isDeleteModalOpen && (
+        <Modal
+          footer={
+            <Button
+              $background="#C32F26"
+              $hoverBackground="#A52A21"
+              onClick={() =>
+                handleUpdateCollectionStatus(collectionDetails._id, collectionDetails.crop_id)
+              }
+            >
+              Eliminar
+            </Button>
+          }
+          title="Eliminar recolección"
+          closeModal={() => setIsDeleteModalOpen(false)}
+        >
+          <p>¿Estás seguro de que deseas eliminar la recolección?</p>
         </Modal>
       )}
     </>

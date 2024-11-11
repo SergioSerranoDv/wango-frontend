@@ -1,7 +1,9 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useState } from "react";
 import { Header } from "../components/Header";
 import { LoadingAnimation } from "../components/Loading";
 import { LotActions } from "../components/actions/LotActions";
+import { LotForm } from "../components/forms/LotForm";
+import { Modal } from "../components/modals/Modal";
 import { TableV1 } from "../components/tables/TableV1";
 import { AppContext } from "../context/AppContext";
 import { useLotsData } from "../hooks/UseLotsData";
@@ -9,11 +11,13 @@ import { UsePagination } from "../hooks/UsePagination";
 import { LotI } from "../interfaces/Lot";
 import { MainLayout } from "../layouts/MainLayout";
 import { formatDate } from "../services/Date";
+import { Button } from "../styles/FormStyles";
 
 export const Lots: React.FC = () => {
   const { userData } = useContext(AppContext);
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = useLotsData(currentPage, rowsPerPage);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Memoized columns definition
   const columns = useCallback(
@@ -57,6 +61,7 @@ export const Lots: React.FC = () => {
         <>
           <Header
             description={`Estos son tus lotes ${userData.name}, aquí puedes ver y administrar tus lotes.`}
+            openModal={() => setIsModalOpen(true)}
           />
           <TableV1
             evencolor="#FFFFFF"
@@ -74,6 +79,19 @@ export const Lots: React.FC = () => {
             columns={columns()}
           />
         </>
+      )}
+      {isModalOpen && (
+        <Modal
+          footer={
+            <Button form="lot-form" type="submit">
+              Crear
+            </Button>
+          }
+          title="Nuevo Lote"
+          closeModal={() => setIsModalOpen(false)}
+        >
+          <LotForm />
+        </Modal>
       )}
     </MainLayout>
   );

@@ -4,7 +4,7 @@ import { ApiContext } from "../../context/ApiContext";
 import { UseNotification } from "../../hooks/UseNotification";
 import { ProductI } from "../../interfaces/Product";
 import { updateProductById } from "../../services/product_s";
-import { Button, Form, Input, Label, FormContainer, SelectInput } from "../../styles/FormStyles";
+import { Form, Input, Label, FormContent, SelectInput, FormField } from "../../styles/FormStyles";
 
 interface Props {
   product: ProductI;
@@ -61,51 +61,60 @@ export const ProductFormEdit: React.FC<Props> = ({ product }) => {
 
   return (
     <>
-      <FormContainer>
-        <Form onSubmit={handleSubmit}>
-          <Label htmlFor="name">Nombre del producto</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <Label htmlFor="code">Codigo de registro (ICA)*</Label>
-          <Input
-            type="text"
-            id="code"
-            name="code"
-            value={formData.code}
-            onChange={handleChange}
-            required
-          />
-
-          <Label htmlFor="type">Tipo</Label>
-          <SelectInput id="type" name="type" value={formData.type} onChange={handleChange} required>
-            <option value="pesticide">Pesticida</option>
-            <option value="fertilizer">Fertilizante</option>
-            <option value="fungicide">Fungicida</option>
-            <option value="insecticide">Insecticida</option>
-            <option value="additive">Aditivo</option>
-            <option value="other">Otro</option>
-          </SelectInput>
-
-          <Label htmlFor="description">Descripción</Label>
-          <Input
-            type="description"
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-
-          <Button type="submit">Guardar cambios</Button>
-        </Form>
-      </FormContainer>
+      <Form id="product-form-update" onSubmit={handleSubmit}>
+        <FormContent>
+          <FormField>
+            <Label htmlFor="name">Nombre del producto</Label>
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </FormField>
+          <FormField>
+            <Label htmlFor="code">Codigo de registro (ICA)*</Label>
+            <Input
+              type="text"
+              id="code"
+              name="code"
+              value={formData.code}
+              onChange={handleChange}
+              required
+            />
+          </FormField>
+          <FormField>
+            <Label htmlFor="type">Tipo</Label>
+            <SelectInput
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value="pesticide">Pesticida</option>
+              <option value="fertilizer">Fertilizante</option>
+              <option value="fungicide">Fungicida</option>
+              <option value="insecticide">Insecticida</option>
+              <option value="additive">Aditivo</option>
+              <option value="other">Otro</option>
+            </SelectInput>
+          </FormField>
+          <FormField>
+            <Label htmlFor="description">Descripción</Label>
+            <Input
+              type="description"
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </FormField>
+        </FormContent>
+      </Form>
       {showNotification && (
         <NotificationModal
           title={notificationDetails.title}

@@ -14,7 +14,7 @@ import {
   Input,
   Label,
   FormContainer,
-  ContentWrapper,
+  FormContent,
 } from "../../styles/FormStyles";
 
 interface Props {
@@ -151,8 +151,8 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
             Área en ocupación: <DetailsItem>{lotDetails.capacity_in_use} Ha</DetailsItem>
           </DetailsSign>
         </InfoContainer>
-        <Form onSubmit={handleSubmit}>
-          <ContentWrapper>
+        <Form id="crop-form" onSubmit={handleSubmit}>
+          <FormContent>
             <FormField>
               <Label htmlFor="name">Nombre del cultivo*</Label>
               <Input type="text" id="name" name="name" onChange={handleChange} required />
@@ -178,7 +178,7 @@ export const RegisterCrop: React.FC<Props> = ({ lotDetails }) => {
                 required
               />
             </FormField>
-          </ContentWrapper>
+          </FormContent>
         </Form>
       </FormContainer>
       {showNotification && (

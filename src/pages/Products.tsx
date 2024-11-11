@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { Header } from "../components/Header";
 import { LoadingAnimation } from "../components/Loading";
 import { ProductActions } from "../components/actions/ProductActions";
 import { ProductForm } from "../components/forms/ProductForm";
@@ -8,8 +9,8 @@ import { UseGet } from "../hooks/UseGet";
 import { UsePagination } from "../hooks/UsePagination";
 import { ProductI } from "../interfaces/Product";
 import { MainLayout } from "../layouts/MainLayout";
-import { ButtonSecondary } from "../styles/AddLoteStyles";
-import { Text } from "../styles/MainMenuStyles";
+import { formatDate } from "../services/Date";
+import { Button } from "../styles/FormStyles";
 
 export const Products: React.FC = () => {
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
@@ -21,14 +22,24 @@ export const Products: React.FC = () => {
   const columns = useCallback(
     () => [
       {
+        title: "Fecha de creación",
+        dataIndex: "createdAt",
+        render: (product: any) => formatDate(product.createdAt),
+      },
+      {
         title: "Nombre",
         dataIndex: "name",
-        render: (product: ProductI) => <span>{product.name}</span>,
+        render: (product: ProductI) => product.name,
       },
       {
         title: "Tipo",
         dataIndex: "type",
-        render: (product: ProductI) => <span>{product.type}</span>,
+        render: (product: ProductI) => product.type,
+      },
+      {
+        title: "Código (ICA)",
+        dataIndex: "code",
+        render: (product: ProductI) => product.code,
       },
       {
         title: "Acciones",
@@ -47,24 +58,11 @@ export const Products: React.FC = () => {
         <LoadingAnimation />
       ) : (
         <>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "32px" }}>
-            <Text>Tus productos quimicos registrados.</Text>
-            <ButtonSecondary onClick={() => setEditModalOpen(true)}>
-              <span>
-                <svg
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  style={{ marginRight: "6px" }}
-                >
-                  <path d="M11 13v6h2v-6h6v-2h-6V5h-2v6H5v2h6z" fill="currentColor"></path>
-                </svg>
-              </span>
-              Crear Producto
-            </ButtonSecondary>
-          </div>
+          <Header
+            description="Tus productos quimicos registrados."
+            openModal={() => setEditModalOpen(true)}
+          />
+
           <TableV1
             columns={columns()}
             data={data.products}
@@ -82,8 +80,17 @@ export const Products: React.FC = () => {
           />
         </>
       )}
+
       {isModalOpen && (
-        <Modal title="Nuevo producto" closeModal={() => setEditModalOpen(false)}>
+        <Modal
+          footer={
+            <Button form="product-form" type="submit">
+              Crear
+            </Button>
+          }
+          title="Nuevo producto"
+          closeModal={() => setEditModalOpen(false)}
+        >
           <ProductForm
             refetchProductDetails={setRefetch}
             closeModal={() => setEditModalOpen(false)}

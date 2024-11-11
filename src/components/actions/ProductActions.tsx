@@ -5,6 +5,7 @@ import { EditIcon } from "../../icons/Edit";
 import { MoreOptions } from "../../icons/MoreOptions";
 import { ProductI } from "../../interfaces/Product";
 import { deleteProductById } from "../../services/product_s";
+import { Button } from "../../styles/FormStyles";
 import { Item } from "../../styles/components/Actions";
 import { Dropdown } from "../Dropdown";
 import { ProductFormEdit } from "../forms/ProductFormEdit";
@@ -66,7 +67,15 @@ export const ProductActions: React.FC<Props> = ({ productDetails, refetchProduct
       )}
 
       {isEditModalOpen && (
-        <Modal title="Editar producto" closeModal={() => setIsEditModalOpen(false)}>
+        <Modal
+        footer={
+            <Button form="product-form-update" type="submit">
+              Guardar
+            </Button>
+          }
+          title="Editar producto"
+          closeModal={() => setIsEditModalOpen(false)}
+        >
           <ProductFormEdit product={productDetails} refetchProductDetails={refetchProductDetails} />
         </Modal>
       )}

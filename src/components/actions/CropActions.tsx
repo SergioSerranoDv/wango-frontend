@@ -1,17 +1,18 @@
 import React, { SetStateAction, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "../Dropdown";
-import { Crop } from "../../interfaces/crop";
-import { EditIcon } from "../../icons/Edit";
+import { ApiContext } from "../../context/ApiContext";
 import { AddIcon } from "../../icons/Add";
 import { DeleteIcon } from "../../icons/Delete";
-import { Modal } from "../modals/Modal";
-import { CollectionForm } from "../forms/CollectionForm";
-import { CropFormEdit } from "../CropFormEdit";
-import { ApiContext } from "../../context/ApiContext";
-import { Item } from "../../styles/components/Actions";
-import { deleteCropById } from "../../services/crop_s";
+import { EditIcon } from "../../icons/Edit";
 import { MoreOptions } from "../../icons/MoreOptions";
+import { Crop } from "../../interfaces/crop";
+import { deleteCropById } from "../../services/crop_s";
+import { Button } from "../../styles/FormStyles";
+import { Item } from "../../styles/components/Actions";
+import { CropFormEdit } from "../CropFormEdit";
+import { Dropdown } from "../Dropdown";
+import { CollectionForm } from "../forms/CollectionForm";
+import { Modal } from "../modals/Modal";
 
 interface Props {
   cropDetails: Crop;
@@ -23,6 +24,7 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
   const { backendApiCall } = useContext(ApiContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
 
   const handleDeleteCrop = async (cropId: string) => {
@@ -49,7 +51,7 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
       name: "Ver recolecciones",
     },
     {
-      action: () => handleDeleteCrop(cropDetails._id),
+      action: () => setIsDeleteModalOpen(true),
       icon: <DeleteIcon />,
       name: "Eliminar cultivo",
     },
@@ -81,14 +83,48 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
       )}
 
       {isEditModalOpen && (
-        <Modal title="Editar cultivo" closeModal={() => setIsEditModalOpen(false)}>
+        <Modal
+          footer={
+            <Button type="submit" form="crop-form-update">
+              Guardar
+            </Button>
+          }
+          title="Editar cultivo"
+          closeModal={() => setIsEditModalOpen(false)}
+        >
           <CropFormEdit crop={cropDetails} />
         </Modal>
       )}
 
       {isCollectionModalOpen && (
-        <Modal title="Agregar recolección" closeModal={() => setIsCollectionModalOpen(false)}>
+        <Modal
+          footer={
+            <Button type="submit" form="collection-form">
+              Crear
+            </Button>
+          }
+          title="Crear recolección"
+          closeModal={() => setIsCollectionModalOpen(false)}
+        >
           <CollectionForm cropId={cropDetails._id} />
+        </Modal>
+      )}
+
+      {isDeleteModalOpen && (
+        <Modal
+          footer={
+            <Button
+              $background="#C32F26"
+              $hoverBackground="#A52A21"
+              onClick={() => handleDeleteCrop(cropDetails._id)}
+            >
+              Eliminar
+            </Button>
+          }
+          title="Eliminar cultivo"
+          closeModal={() => setIsDeleteModalOpen(false)}
+        >
+          <div>¿Estás seguro de que quieres eliminar este cultivo?</div>
         </Modal>
       )}
     </>

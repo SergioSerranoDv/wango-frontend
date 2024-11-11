@@ -2,7 +2,15 @@ import React, { useState, useContext } from "react";
 import { ApiContext } from "../../context/ApiContext";
 import { UseNotification } from "../../hooks/UseNotification";
 import { createProduct } from "../../services/product_s";
-import { Button, Form, Input, Label, FormContainer, SelectInput } from "../../styles/FormStyles";
+import {
+  Form,
+  Input,
+  Label,
+  FormField,
+  FormContainer,
+  SelectInput,
+  FormContent,
+} from "../../styles/FormStyles";
 import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
@@ -62,49 +70,60 @@ export const ProductForm: React.FC<Props> = ({ closeModal, refetchProductDetails
   return (
     <>
       <FormContainer>
-        <Form onSubmit={handleSubmit}>
-          <Label htmlFor="name">Nombre del producto</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <Label htmlFor="code">Codigo de registro (ICA)*</Label>
-          <Input
-            type="text"
-            id="code"
-            name="code"
-            value={formData.code}
-            onChange={handleChange}
-            required
-          />
-
-          <Label htmlFor="type">Tipo</Label>
-          <SelectInput id="type" name="type" value={formData.type} onChange={handleChange} required>
-            <option value="">Selecciona un tipo</option>
-            <option value="pesticide">Pesticida</option>
-            <option value="fertilizer">Fertilizante</option>
-            <option value="fungicide">Fungicida</option>
-            <option value="insecticide">Insecticida</option>
-            <option value="additive">Aditivo</option>
-            <option value="other">Otro</option>
-          </SelectInput>
-
-          <Label htmlFor="description">Descripción</Label>
-          <Input
-            type="description"
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-
-          <Button type="submit">Guardar cambios</Button>
+        <Form id="product-form" onSubmit={handleSubmit}>
+          <FormContent>
+            <FormField>
+              <Label htmlFor="name">Nombre del producto*</Label>
+              <Input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </FormField>
+            <FormField>
+              <Label htmlFor="code">Codigo de registro (ICA)*</Label>
+              <Input
+                type="text"
+                id="code"
+                name="code"
+                value={formData.code}
+                onChange={handleChange}
+                required
+              />
+            </FormField>
+            <FormField>
+              <Label htmlFor="type">Tipo*</Label>
+              <SelectInput
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Selecciona un tipo</option>
+                <option value="pesticide">Pesticida</option>
+                <option value="fertilizer">Fertilizante</option>
+                <option value="fungicide">Fungicida</option>
+                <option value="insecticide">Insecticida</option>
+                <option value="additive">Aditivo</option>
+                <option value="other">Otro</option>
+              </SelectInput>
+            </FormField>
+            <FormField>
+              <Label htmlFor="description">Descripción</Label>
+              <Input
+                type="description"
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                required
+              />
+            </FormField>
+          </FormContent>
         </Form>
       </FormContainer>
       {showNotification && (

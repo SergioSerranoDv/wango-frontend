@@ -7,5 +7,5 @@
   "tabWidth": 2,
   "quoteProps": "as-needed",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["react", "^@app/(.*)$", "^[./]"]
+  "importOrder": ["react", "prop-types", "styled-components", ".*"]
 }
