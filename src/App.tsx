@@ -1,25 +1,25 @@
-import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AppContextProvider } from "./context/AppContext";
-import { ApiContextProvider } from "./context/ApiContext";
-import { LoadingAnimation } from "./components/Loading";
-import { Profile } from "./pages/UserProfile";
-import { Dashboard } from "./pages/Dashboard";
-import { Products } from "./pages/Products";
-import RegisterForm from "./pages/RegisterForm";
-import { Lots } from "./pages/Lots";
-import VarForm from "./pages/VarForm";
-import { Crops } from "./pages/Crops";
-import { CollectionRecords } from "./pages/CollectionRecords";
-import { WFComponents } from "./pages/WFComponents";
-import { Collections } from "./pages/Collections";
 import "./App.css";
-import "./styles/MainMenuStyles";
-import { WF } from "./pages/WF";
+import { LoadingAnimation } from "./components/Loading";
+import { ApiContextProvider } from "./context/ApiContext";
+import { AppContextProvider } from "./context/AppContext";
+import { CollectionRecords } from "./pages/CollectionRecords";
+import { Collections } from "./pages/Collections";
+import { Crops } from "./pages/Crops";
+import { Dashboard } from "./pages/Dashboard";
 import { IA } from "./pages/IA";
+import { Lots } from "./pages/Lots";
+import { Products } from "./pages/Products";
+import { SignUp } from "./pages/SignUp";
+import { Profile } from "./pages/UserProfile";
+import VarForm from "./pages/VarForm";
+import { WF } from "./pages/WF";
+import { WFComponents } from "./pages/WFComponents";
 import { WFFull } from "./pages/WFFull";
 import { WaterFootPrint } from "./pages/WaterFootprint";
+import "./styles/MainMenuStyles";
 
 export const App: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -47,7 +47,7 @@ export const App: React.FC = () => {
                   <Route path="/dashboard/products" element={<Products />} />
                   <Route path="/dashboard/water-footprint" element={<WaterFootPrint />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/register-form" element={<RegisterForm />} />
+                  <Route path="/register-form" element={<SignUp />} />
                   <Route path="/config-vars" element={<VarForm />} />
                   <Route
                     path="/dashboard/water-footprint/components/:id"
