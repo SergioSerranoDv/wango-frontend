@@ -52,24 +52,26 @@ export const TableV1: React.FC<TableV1Props> = ({
   return (
     <TableContainer>
       <span style={{ color: "#ffb032" }}>{title}</span>
-      <Table style={{ marginTop: "2rem" }}>
-        <thead style={{ borderRadius: "16px" }}>
-          <TableRow $index={-1} $evenColor={evencolor} $oddColor={oddcolor}>
-            {columns.map((column: any, index: number) => (
-              <TableCell key={index}>{column.title}</TableCell>
-            ))}
-          </TableRow>
-        </thead>
-        <tbody>
-          {data.map((item: any, index: number) => (
-            <TableRow key={index} $index={index} $evenColor={evencolor} $oddColor={oddcolor}>
+      <div style={{ overflowX: "auto" }}>
+        <Table style={{ marginTop: "2rem" }}>
+          <thead style={{ borderRadius: "16px" }}>
+            <TableRow $index={-1} $evenColor={evencolor} $oddColor={oddcolor}>
               {columns.map((column: any, index: number) => (
-                <TableCell key={index}>{column.render(item)}</TableCell>
+                <TableCell key={index}>{column.title}</TableCell>
               ))}
             </TableRow>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {data.map((item: any, index: number) => (
+              <TableRow key={index} $index={index} $evenColor={evencolor} $oddColor={oddcolor}>
+                {columns.map((column: any, index: number) => (
+                  <TableCell key={index}>{column.render(item)}</TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
+      </div>
       <div
         style={{
           display: "flex",
