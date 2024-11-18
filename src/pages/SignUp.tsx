@@ -17,7 +17,7 @@ import {
 import { DivIdentification } from "../styles/FormStyles";
 import { Container } from "../styles/GlobalStyles";
 
-const RegisterForm: React.FC = () => {
+export const SignUp: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { setRefetchData } = useContext(AppContext);
   const [emailNewUser, setEmailNewUser] = useState("");
@@ -164,5 +164,3 @@ const RegisterForm: React.FC = () => {
     </Container>
   );
 };
-
-export default RegisterForm;
