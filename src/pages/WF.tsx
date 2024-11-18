@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SignBoardWithVariablesToCalculateWaterFootprint } from "../components/SignBoard";
-import { TableV2 } from "../components/TableV2";
+import { TableV1 } from "../components/tables/TableV1";
 import { ApiContext } from "../context/ApiContext";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { Crop, CropDataInit } from "../interfaces/crop";
@@ -258,8 +258,8 @@ export const WF: React.FC = () => {
             />
           </ContainerInput>
           <SignBoard $custom5>Hechos en el periodo</SignBoard>
-          {!loadingCollectionData && collectionRecords.length > 0 && (
-            <TableV2
+          {/* {!loadingCollectionData && collectionRecords.length > 0 && (
+            <TableV1
               oddcolor="#FFFFFF"
               evencolor={
                 type === "blue"
@@ -289,7 +289,7 @@ export const WF: React.FC = () => {
               }}
               options={{ edit: () => {}, delete: () => {} }}
             />
-          )}
+          )} */}
         </FormContainer>
       </MainLayout>
     </>
