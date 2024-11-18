@@ -7,7 +7,7 @@ export const updateProductById = async (
 ) => {
   return await backendApiCall({
     method: "PUT",
-    endpoint: `products/${productId}`,
+    endpoint: `v1/products/${productId}`,
     body: data,
   });
 };
@@ -18,7 +18,7 @@ export const createProduct = async (
 ) => {
   return await backendApiCall({
     method: "POST",
-    endpoint: "products",
+    endpoint: "v1/products",
     body: data,
   });
 };
@@ -29,6 +29,6 @@ export const deleteProductById = async (
 ) => {
   return await backendApiCall({
     method: "DELETE",
-    endpoint: `products/${productId}`,
+    endpoint: `v1/products/${productId}`,
   });
 };

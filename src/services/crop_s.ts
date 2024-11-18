@@ -20,7 +20,7 @@ export const fetchPaginatedCropsByLotId = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `crop/paginated?page=${page}&limit=${limit}&lot_id=${lotId}`,
+    endpoint: `v1/crop/paginated?page=${page}&limit=${limit}&lot_id=${lotId}`,
   });
 };
 
@@ -31,7 +31,7 @@ export const deleteCropById = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "DELETE",
-    endpoint: `crop/delete/${cropId}`,
+    endpoint: `v1/crop/delete/${cropId}`,
     body: {
       lot_id: lotId,
     },
@@ -42,7 +42,7 @@ export const findCropById = async (
   backendApiCall: (data: Props) => Promise<Response>,
   cropId: string
 ): Promise<Response> => {
-  return await backendApiCall({ method: "GET", endpoint: `crop/info/${cropId}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/crop/info/${cropId}` });
 };
 
 export const updateCrop = async (
@@ -50,7 +50,7 @@ export const updateCrop = async (
   data: Crop,
   cropId: string
 ) => {
-  return await backendApiCall({ method: "PUT", endpoint: `crop/update/${cropId}`, body: data });
+  return await backendApiCall({ method: "PUT", endpoint: `v1/crop/update/${cropId}`, body: data });
 };
 
 export const saveCrop = async (
@@ -58,12 +58,12 @@ export const saveCrop = async (
   data: Crop,
   cropId: string
 ) => {
-  return await backendApiCall({ method: "PUT", endpoint: `crop/update/${cropId}`, body: data });
+  return await backendApiCall({ method: "PUT", endpoint: `v1/crop/update/${cropId}`, body: data });
 };
 
 export const searchCrops = async (
   backendApiCall: (data: Props) => Promise<Response>,
   query: string
 ): Promise<any> => {
-  return await backendApiCall({ method: "GET", endpoint: `crop/search?search=${query}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/crop/search?search=${query}` });
 };

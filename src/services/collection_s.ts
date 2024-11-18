@@ -18,14 +18,14 @@ export const getCollectionByCropId = async (
   backendApiCall: (data: Props) => Promise<Response>,
   cropId: string
 ): Promise<Response> => {
-  return await backendApiCall({ method: "GET", endpoint: `collection/info/crop/${cropId}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/crop/${cropId}` });
 };
 
 export const findCollectionById = async (
   backendApiCall: (data: Props) => Promise<Response>,
   collectionId: string
 ): Promise<Response> => {
-  return await backendApiCall({ method: "GET", endpoint: `collection/info/${collectionId}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection/info/${collectionId}` });
 };
 
 interface PaaginationProps {
@@ -40,7 +40,7 @@ export const fetchPaginatedCollectionPerCollection = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `collection/info/crop/${record_id}/paginated?page=${page}&limit=${limit}`,
+    endpoint: `v1/collection/info/crop/${record_id}/paginated?page=${page}&limit=${limit}`,
   });
 };
 
@@ -51,7 +51,7 @@ export const updateCollectionStatus = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "PUT",
-    endpoint: `collection/update/status/${collectionId}`,
+    endpoint: `v1/collection/update/status/${collectionId}`,
     body: data,
   });
 };
@@ -63,7 +63,7 @@ export const updateCollection = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "PUT",
-    endpoint: `collection/update/${collectionId}`,
+    endpoint: `v1/collection/update/${collectionId}`,
     body: data,
   });
 };
@@ -72,5 +72,5 @@ export const searchCollections = async (
   backendApiCall: (data: Props) => Promise<Response>,
   query: string
 ): Promise<any> => {
-  return await backendApiCall({ method: "GET", endpoint: `collection/search?search=${query}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection/search?search=${query}` });
 };

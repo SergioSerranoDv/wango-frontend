@@ -13,7 +13,7 @@ import { MainLayout } from "../layouts/MainLayout";
 export const WaterFootPrint = () => {
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = UseGet({
-    endpoint: `water-footprint/records?page=${currentPage}&limit=${rowsPerPage}`,
+    endpoint: `v1/water-footprint/records?page=${currentPage}&limit=${rowsPerPage}`,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 

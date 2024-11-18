@@ -4,7 +4,7 @@ export const createNewLot = async (
   backendApiCall: (data: Props) => Promise<Response>,
   data: any
 ) => {
-  return await backendApiCall({ method: "POST", endpoint: "lot/new", body: data });
+  return await backendApiCall({ method: "POST", endpoint: "v1/lot/new", body: data });
 };
 
 export const updateLot = async (
@@ -12,14 +12,14 @@ export const updateLot = async (
   data: any,
   lotId: string
 ) => {
-  return await backendApiCall({ method: "PUT", endpoint: `lot/update/${lotId}`, body: data });
+  return await backendApiCall({ method: "PUT", endpoint: `v1/lot/update/${lotId}`, body: data });
 };
 
 export const fetchLotDetails = async (
   backendApiCall: (data: Props) => Promise<Response>,
   lotId: string
 ): Promise<Response> => {
-  return await backendApiCall({ method: "GET", endpoint: `lot/info/${lotId}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/lot/info/${lotId}` });
 };
 
 export const fetchPaginatedLotsPerUser = async (
@@ -28,7 +28,7 @@ export const fetchPaginatedLotsPerUser = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `lot/paginated?page=${page}&limit=${limit}`,
+    endpoint: `v1/lot/paginated?page=${page}&limit=${limit}`,
   });
 };
 
@@ -36,5 +36,5 @@ export const deleteLotById = async (
   backendApiCall: (data: Props) => Promise<Response>,
   lotId: string
 ): Promise<any> => {
-  return await backendApiCall({ method: "DELETE", endpoint: `lot/delete/${lotId}` });
+  return await backendApiCall({ method: "DELETE", endpoint: `v1/lot/delete/${lotId}` });
 };

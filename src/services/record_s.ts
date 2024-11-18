@@ -1,5 +1,6 @@
-import { Props, Response } from "../types/Api";
 import { Records } from "../interfaces/record";
+import { Props, Response } from "../types/Api";
+
 interface PaginationProps {
   page: number;
   limit: number;
@@ -12,7 +13,7 @@ export const createNewRecords = async (
 ) => {
   return await backendApiCall({
     method: "POST",
-    endpoint: "collection-record/new/",
+    endpoint: "v1/collection-record/new/",
     body: data,
   });
 };
@@ -24,7 +25,7 @@ export const updateRecord = async (
 ) => {
   return await backendApiCall({
     method: "PUT",
-    endpoint: `collection-record/update/${recordId}`,
+    endpoint: `v1/collection-record/update/${recordId}`,
     body: data,
   });
 };
@@ -33,7 +34,7 @@ export const fetchRecordDetails = async (
   backendApiCall: (data: Props) => Promise<Response>,
   recordId: string
 ): Promise<Response> => {
-  return await backendApiCall({ method: "GET", endpoint: `collection-record/info/${recordId}` });
+  return await backendApiCall({ method: "GET", endpoint: `v1/collection-record/info/${recordId}` });
 };
 
 export const fetchPaginatedRecordPerCollection = async (
@@ -42,6 +43,6 @@ export const fetchPaginatedRecordPerCollection = async (
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
-    endpoint: `collection-record/paginated?page=${page}&limit=${limit}&collection_id=${collection_id}`,
+    endpoint: `v1/collection-record/paginated?page=${page}&limit=${limit}&collection_id=${collection_id}`,
   });
 };
