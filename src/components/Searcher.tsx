@@ -29,7 +29,7 @@ export const Searcher: React.FC<Props> = ({ assignResult, searchWorker }) => {
 
   return (
     <>
-      <div style={{ display: "flex", gap: "1rem" }}>
+      <div style={{ display: "flex", gap: "1rem", margin: "1rem 0" }}>
         <Input
           placeholder="Buscar por nombre"
           type="text"
