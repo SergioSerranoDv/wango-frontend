@@ -15,7 +15,7 @@ import { Button } from "../styles/FormStyles";
 export const Products: React.FC = () => {
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = UseGet({
-    endpoint: `products?page=${currentPage}&limit=${rowsPerPage}`,
+    endpoint: `v1/products?page=${currentPage}&limit=${rowsPerPage}`,
   });
   const [isModalOpen, setEditModalOpen] = React.useState(false);
 
