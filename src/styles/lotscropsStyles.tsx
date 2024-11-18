@@ -9,70 +9,6 @@ interface InputProps {
   $custom4?: boolean;
 }
 
-export const RegisterFormContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 700px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  padding: 20px;
-`;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  box-sizing: border-box;
-`;
-
-export const Label = styled.label<{ $primary?: boolean }>`
-  //color: "#000000";
-  margin: ${(props) => (props.$primary ? "4px 0px -12px 0" : "0 0 -6px 0")};
-  font-size: 1rem;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 0.01;
-  //background-color: #000;
-`;
-
-export const Input = styled.input<InputProps>`
-  margin: ${(props) => (props.$primary ? "-12px 0 12px 0" : "6px 0 4px 0")};
-  padding: 9.5px;
-  font-size: 14px;
-  color: #4d4d4d;
-  font-weight: 550; /*semibold*/
-  opacity: 0.85;
-  border-radius: 5px;
-  width: 100%;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  //background-color: #ff0078;
-`;
-
-export const Button = styled.button<InputProps>`
-  font-size: 14px;
-  font-weight: 550; /*semibold*/
-  padding: 10px;
-  background-color: #fb9e0b;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 6px;
-  border: 1px #ff670f;
-  width: ${(props) => (props.$custom1 ? "100%" : "")};
-  margin-bottom: ${(props) => (props.$custom1 ? "20px" : "")};
-  margin-bottom: ${(props) => (props.$primary ? "10px" : "")};
-  margin-top: ${(props) => (props.$custom1 ? "10px" : "")};
-`;
-
-export const Logo = styled.img`
-  max-width: 277px;
-  max-heigh: 90px;
-  align-self: center;
-  margin-bottom: -22px; /* Espacio entre el logo Wango y el formulario */
-`;
-
 export const SignBoard = styled.p<InputProps>`
   //padding-top: ${(props) => (props.$custom4 ? "10px" : "")};
   font-size: ${(props) => (props.$primary ? "13px" : "13px")};
@@ -100,38 +36,6 @@ export const SignBoard3 = styled.p<InputProps>`
   color: #4d4d4d;
   margin: -18px 0 24px 0;
   opacity: 0.95;
-`;
-
-export const Description = styled.p<InputProps>`
-  font-size: ${(props) => (props.$custom1 ? "13px" : "12px")};
-  text-align: ${(props) => (props.$custom1 ? "center" : "")};
-  //color: ${(props) => (props.$primary ? "#a0cac5" : "#a0cac5")};
-  //background: ${(props) => (props.$custom1 ? "#bb9de4" : "#bb9de4")};
-  border-bottom: ${(props) => (props.$custom1 ? "10px solid #000000" : "")};
-  margin-top: "-20px";
-  color: #4d4d4d;
-  opacity: 0.95;
-  border: 0px;
-`;
-
-export const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-export const DivIdentification = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 1em;
-`;
-
-export const FormField = styled.div<InputProps>``;
-
-export const Link = styled.a<InputProps>`
-  color: ${(props) => (props.$primary ? "#548af7" : "#4d4d4d")};
-  color: ${(props) => (props.$custom3 ? "#2a64f6" : "")};
-  cursor: pointer;
 `;
 
 export const InfoContainer = styled.div<InputProps>`
