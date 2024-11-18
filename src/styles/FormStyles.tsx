@@ -29,6 +29,7 @@ export const FormContainer = styled.div<InputProps>`
   max-width: 720px;
   width: 100%;
   flex-direction: column;
+  margin: auto;
   position: relative; /* Añade posición relativa */
 `;
 
@@ -38,6 +39,10 @@ export const FormContent = styled.div<InputProps>`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
 `;
 
 export const ContainerInput = styled.div<InputProps>`
@@ -110,7 +115,6 @@ export const Button = styled.button<ButtonProps>`
   font-weight: 500;
   border-radius: 5px;
   border: 1px solid #fff;
-  margin-left: 10px;
   transition: background-color 0.3s;
 
   &:hover {
@@ -168,7 +172,7 @@ export const ButtonSubmit = styled.button<InputProps>`
 export const Logo = styled.img`
   max-width: 277px;
   max-height: 90px;
-  align-self: center;
+  margin: 0 auto;
   margin-bottom: -22px; /* Espacio entre el logo Wango y el formulario */
 `;
 
@@ -237,6 +241,7 @@ export const DivIdentification = styled.div`
   display: flex;
   width: 100%;
   gap: 1em;
+  align-items: center;
 `;
 
 export const FormField = styled.div<InputProps>`
