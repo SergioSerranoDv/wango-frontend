@@ -8,18 +8,11 @@ interface InputProps {
   $custom3?: boolean;
 }
 
-export const Container = styled.div<InputProps>`
-  display: block;
-  max-width: 700px;
-  margin: auto;
-  padding: 0px;
-  box-sizing: border-box;
-`;
-
 export const TableContainer = styled.div`
   background-color: #fff;
   padding: 40px;
   border-radius: 16px;
+
   @media (max-width: 768px) {
     padding: 20px;
   }
@@ -39,19 +32,12 @@ export const TableRow = styled.tr<{ $index: number; $evenColor: string; $oddColo
   color: ${(props) => (props.$index === -1 ? "#737373" : "#4c443f")};
 `;
 
-export const TableRow2 = styled.tr<{ $index: number }>`
-  background-color: ${(props) => (props.$index % 2 === 0 ? "#ffffff" : "#d4eff5")};
-  background-color: ${(props) => (props.$index === -1 ? "#ffffff" : "")};
-  font-weight: ${(props) => (props.$index === -1 ? "bold" : "")};
-  font-size: ${(props) => (props.$index === -1 ? "14px" : "12.5px")};
-  color: ${(props) => (props.$index === -1 ? "#737373" : "#4c443f")};
-`;
-
 export const TableCell = styled.td<InputProps>`
   font-weight: ${(props) => (props.$custom1 ? "600" : "")};
   padding: ${(props) => (props.$custom ? "4px 8px 4px 8px" : "11px")};
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
+
 export const PrevArrow = styled.button`
   display: flex;
   justify-content: center;
