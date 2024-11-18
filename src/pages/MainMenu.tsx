@@ -21,19 +21,19 @@ const MainMenu: React.FC = () => {
           background="#FFB032"
           description="Lotes de este mes"
           icon={farm}
-          endpoint="user/analytics/lots/quantity/by-month"
+          endpoint="v1/user/analytics/lots/quantity/by-month"
         />
         <TopCard
           background="#4CAF50"
           description="Cultivos de este mes"
           icon={crop}
-          endpoint="user/analytics/crops/quantity/by-month"
+          endpoint="v1/user/analytics/crops/quantity/by-month"
         />
         <TopCard
           background="#6C4E31"
           description="Recolecciones de este mes"
           icon={performance}
-          endpoint="user/analytics/collections/daily-performance/quantity/by-month"
+          endpoint="v1/user/analytics/collections/daily-performance/quantity/by-month"
         />
       </TopCardsContainer>
       <WaterFootprintPieChart data={data} />

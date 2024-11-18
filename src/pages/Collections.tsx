@@ -17,7 +17,7 @@ export const Collections: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const { data, loading, setRefetch } = UseGet({
-    endpoint: `collection/info/crop/${cropId}/paginated?page=${currentPage}&limit=${rowsPerPage}`,
+    endpoint: `v1/collection/info/crop/${cropId}/paginated?page=${currentPage}&limit=${rowsPerPage}`,
   });
   const [cropData, setCropData] = useState({} as Crop);
 
