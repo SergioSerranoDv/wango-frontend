@@ -13,7 +13,7 @@ import { IA } from "./pages/IA";
 import { Lots } from "./pages/Lots";
 import { Products } from "./pages/Products";
 import { SignUp } from "./pages/SignUp";
-import { Profile } from "./pages/UserProfile";
+import { Profile } from "./pages/Profile";
 import VarForm from "./pages/VarForm";
 import { WF } from "./pages/WF";
 import { WFComponents } from "./pages/WFComponents";
