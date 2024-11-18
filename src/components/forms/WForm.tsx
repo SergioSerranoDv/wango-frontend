@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import { ApiContext } from "../../context/ApiContext";
 import { useNavigate } from "react-router-dom";
-import { Text } from "../../styles/LoteMenuStyles";
-import { Searcher } from "../Searcher";
+import { ApiContext } from "../../context/ApiContext";
 import { searchCollections } from "../../services/collection_s";
 import { createNewWaterFootprint } from "../../services/water_footprint_s";
 import { Button } from "../../styles/AddLoteStyles";
+import { Text } from "../../styles/MainMenuStyles";
+import { Searcher } from "../Searcher";
 
 export const WForm: React.FC = () => {
   const navigate = useNavigate();
