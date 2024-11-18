@@ -28,11 +28,10 @@ export const Profile: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Formulario enviado:", editedData);
 
     const response = await backendApiCall({
       method: "PUT",
-      endpoint: "user/info/update",
+      endpoint: "v1/user/info/update",
       body: editedData,
     });
     if (response.status === "error") {

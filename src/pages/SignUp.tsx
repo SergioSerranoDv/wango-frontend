@@ -45,7 +45,7 @@ export const SignUp: React.FC = () => {
 
     const response = await backendApiCall({
       method: "PUT",
-      endpoint: "user/info/update",
+      endpoint: "v1/user/info/update",
       body: {
         name: userName,
         last_name: lastName,
@@ -67,7 +67,7 @@ export const SignUp: React.FC = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await backendApiCall({ method: "GET", endpoint: "user/info" });
+      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
       if (userData.data) {
         setEmailNewUser(userData.data.email);
       }

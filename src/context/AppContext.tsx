@@ -8,6 +8,7 @@ import React, {
   Dispatch,
 } from "react";
 import { ApiContext } from "./ApiContext";
+
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;
@@ -68,7 +69,7 @@ export const AppContextProvider: React.FC<PropsWithChildren> = (props) => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await backendApiCall({ method: "GET", endpoint: "user/info" });
+      const userData = await backendApiCall({ method: "GET", endpoint: "v1/user/info" });
 
       if (userData.status === "error") {
         console.error(userData.message);
