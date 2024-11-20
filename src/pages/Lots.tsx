@@ -67,7 +67,7 @@ export const Lots: React.FC = () => {
           <TableV1
             evencolor="#FFFFFF"
             oddcolor="rgb(255, 103, 15, 0.2)"
-            data={data.lots}
+            data={data.lots || []}
             pagination={{
               rowsPerPage,
               setRowsPerPage,
