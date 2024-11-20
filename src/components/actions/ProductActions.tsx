@@ -1,13 +1,12 @@
-import React, { SetStateAction, useContext, useState } from "react";
+import React, { SetStateAction, useContext, useState, useRef } from "react";
 import { ApiContext } from "../../context/ApiContext";
-import { Edit, Delete } from "../../icons/Actions";
-import { MoreOptions } from "../../icons/MoreOptions";
 import { ProductI } from "../../interfaces/Product";
 import { deleteProductById } from "../../services/product_s";
 import { Button } from "../../styles/FormStyles";
-import { Dropdown } from "../Dropdown";
 import { ProductFormEdit } from "../forms/ProductFormEdit";
 import { Modal } from "../modals/Modal";
+import { Edit, Delete, MoreVert } from "@mui/icons-material";
+import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface Props {
   productDetails: ProductI;
@@ -16,17 +15,19 @@ interface Props {
 
 export const ProductActions: React.FC<Props> = ({ productDetails, refetchProductDetails }) => {
   const { backendApiCall } = useContext(ApiContext);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const actions = [
+  const elRef = useRef<HTMLButtonElement>(null);
+
+  const menuItems = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <Edit />,
+      icon: <Edit fontSize="small" />,
       name: "Editar producto",
     },
     {
       action: () => handleDeleteProduct(productDetails._id),
-      icon: <Delete />,
+      icon: <Delete fontSize="small" />,
       name: "Eliminar producto",
     },
   ];
@@ -40,15 +41,27 @@ export const ProductActions: React.FC<Props> = ({ productDetails, refetchProduct
 
   return (
     <>
-      <MoreOptions
-        style={{ pointerEvents: isDropdownOpen ? "none" : "auto" }}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-      />
+      <Tooltip title="Opciones" placement="top">
+        <IconButton ref={elRef} onClick={() => setIsMenuOpen(true)}>
+          <MoreVert />
+        </IconButton>
+      </Tooltip>
 
-      {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
-      )}
+      <Menu open={isMenuOpen} anchorEl={elRef.current} onClose={() => setIsMenuOpen(false)}>
+        {menuItems.map((item, index) => (
+          <MenuItem
+            color="#4c443f"
+            key={index}
+            onClick={() => {
+              setIsMenuOpen(false);
+              item.action();
+            }}
+          >
+            <span style={{ marginRight: "4px" }}>{item.icon}</span>
+            <Typography fontSize={12}>{item.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
 
       {isEditModalOpen && (
         <Modal

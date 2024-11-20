@@ -1,15 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { Add, Delete, Edit } from "../../icons/Actions";
-import { MoreOptions } from "../../icons/MoreOptions";
 import { LotI } from "../../interfaces/Lot";
 import { deleteLotById } from "../../services/lot_s";
 import { Button } from "../../styles/FormStyles";
-import { Dropdown } from "../Dropdown";
 import { LotFormEdit } from "../forms/LotFormEdit";
 import { RegisterCrop } from "../forms/RegisterCrop";
 import { Modal } from "../modals/Modal";
+import { Add, Edit, Delete, MoreVert } from "@mui/icons-material";
+import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface Props {
   lotDetails: LotI;
@@ -19,29 +18,31 @@ interface Props {
 export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) => {
   const navigate = useNavigate();
   const { backendApiCall } = useContext(ApiContext);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRegisterCropModalOpen, setIsRegisterCropModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const actions = [
+  const elRef = useRef<HTMLButtonElement>(null);
+
+  const menuItems = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <Edit />,
+      icon: <Edit fontSize="small" />,
       name: "Editar lote",
     },
     {
       action: () => setIsRegisterCropModalOpen(true),
-      icon: <Add />,
+      icon: <Add fontSize="small" />,
       name: "Agregar cultivo",
     },
     {
       action: () => navigate(`/dashboard/crops/${lotDetails._id}`),
-      icon: <Add />,
+      icon: <Add fontSize="small" />,
       name: "Ver cultivos",
     },
     {
       action: () => setIsDeleteModalOpen(true),
-      icon: <Delete />,
+      icon: <Delete fontSize="small" />,
       name: "Eliminar lote",
     },
   ];
@@ -55,15 +56,27 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
 
   return (
     <>
-      <MoreOptions
-        style={{ pointerEvents: isDropdownOpen ? "none" : "auto" }}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-      />
+      <Tooltip title="Opciones" placement="top">
+        <IconButton ref={elRef} onClick={() => setIsMenuOpen(true)}>
+          <MoreVert />
+        </IconButton>
+      </Tooltip>
 
-      {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
-      )}
+      <Menu open={isMenuOpen} anchorEl={elRef.current} onClose={() => setIsMenuOpen(false)}>
+        {menuItems.map((item, index) => (
+          <MenuItem
+            color="#4c443f"
+            key={index}
+            onClick={() => {
+              setIsMenuOpen(false);
+              item.action();
+            }}
+          >
+            <span style={{ marginRight: "4px" }}>{item.icon}</span>
+            <Typography fontSize={12}>{item.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
 
       {isEditModalOpen && (
         <Modal

@@ -1,15 +1,14 @@
-import React, { SetStateAction, useState, useContext } from "react";
+import React, { SetStateAction, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { Add, Delete, Edit } from "../../icons/Actions";
-import { MoreOptions } from "../../icons/MoreOptions";
 import { Crop } from "../../interfaces/crop";
 import { deleteCropById } from "../../services/crop_s";
 import { Button } from "../../styles/FormStyles";
 import { CropFormEdit } from "../CropFormEdit";
-import { Dropdown } from "../Dropdown";
 import { CollectionForm } from "../forms/CollectionForm";
 import { Modal } from "../modals/Modal";
+import { Add, Edit, Delete, MoreVert } from "@mui/icons-material";
+import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface Props {
   cropDetails: Crop;
@@ -19,10 +18,11 @@ interface Props {
 export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails }) => {
   const navigate = useNavigate();
   const { backendApiCall } = useContext(ApiContext);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
+  const elRef = useRef<HTMLButtonElement>(null);
 
   const handleDeleteCrop = async (cropId: string) => {
     const response = await deleteCropById(backendApiCall, cropId, cropDetails.lot_id);
@@ -31,40 +31,52 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
     }
   };
 
-  const actions = [
+  const menuItems = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <Edit />,
+      icon: <Edit fontSize="small" />,
       name: "Editar cultivo",
     },
     {
       action: () => setIsCollectionModalOpen(true),
-      icon: <Add />,
+      icon: <Add fontSize="small" />,
       name: "Agregar recolección",
     },
     {
       action: () => navigate(`/dashboard/collections/${cropDetails._id}`),
-      icon: <Add />,
+      icon: <Add fontSize="small" />,
       name: "Ver recolecciones",
     },
     {
       action: () => setIsDeleteModalOpen(true),
-      icon: <Delete />,
+      icon: <Delete fontSize="small" />,
       name: "Eliminar cultivo",
     },
   ];
 
   return (
     <>
-      <MoreOptions
-        style={{ pointerEvents: isDropdownOpen ? "none" : "auto" }}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-      />
+      <Tooltip title="Opciones" placement="top">
+        <IconButton ref={elRef} onClick={() => setIsMenuOpen(true)}>
+          <MoreVert />
+        </IconButton>
+      </Tooltip>
 
-      {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
-      )}
+      <Menu open={isMenuOpen} anchorEl={elRef.current} onClose={() => setIsMenuOpen(false)}>
+        {menuItems.map((item, index) => (
+          <MenuItem
+            color="#4c443f"
+            key={index}
+            onClick={() => {
+              setIsMenuOpen(false);
+              item.action();
+            }}
+          >
+            <span style={{ marginRight: "4px" }}>{item.icon}</span>
+            <Typography fontSize={12}>{item.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
 
       {isEditModalOpen && (
         <Modal

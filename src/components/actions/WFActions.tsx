@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Add } from "../../icons/Actions";
-import { MoreOptions } from "../../icons/MoreOptions";
 import { WaterFootprintI } from "../../interfaces/WaterFootprint";
-import { Dropdown } from "../Dropdown";
+import { MoreVert } from "@mui/icons-material";
+import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface WFActionsProps {
   WFDetails: WaterFootprintI;
@@ -11,8 +11,10 @@ interface WFActionsProps {
 
 export const WFActions: React.FC<WFActionsProps> = ({ WFDetails }) => {
   const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const actions = [
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const elRef = useRef<HTMLButtonElement>(null);
+
+  const menuItems = [
     {
       action: () => navigate(`/dashboard/collections/records/${WFDetails.collectionData?._id}`),
       icon: <Add />,
@@ -22,14 +24,27 @@ export const WFActions: React.FC<WFActionsProps> = ({ WFDetails }) => {
 
   return (
     <>
-      <MoreOptions
-        style={{ pointerEvents: isDropdownOpen ? "none" : "auto" }}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
-      />
-      {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
-      )}
+      <Tooltip title="Opciones" placement="top">
+        <IconButton ref={elRef} onClick={() => setIsMenuOpen(true)}>
+          <MoreVert />
+        </IconButton>
+      </Tooltip>
+
+      <Menu open={isMenuOpen} anchorEl={elRef.current} onClose={() => setIsMenuOpen(false)}>
+        {menuItems.map((item, index) => (
+          <MenuItem
+            color="#4c443f"
+            key={index}
+            onClick={() => {
+              setIsMenuOpen(false);
+              item.action();
+            }}
+          >
+            <span style={{ marginRight: "4px" }}>{item.icon}</span>
+            <Typography fontSize={12}>{item.name}</Typography>
+          </MenuItem>
+        ))}
+      </Menu>
     </>
   );
 };
