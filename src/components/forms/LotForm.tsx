@@ -10,7 +10,11 @@ interface FormData {
   capacity: string;
 }
 
-export const LotForm: React.FC = () => {
+interface LotFormProps {
+  refetchLotDetails: () => void;
+}
+
+export const LotForm: React.FC<LotFormProps> = ({ refetchLotDetails }) => {
   const { closeNotification, notificationDetails, showNotification, triggerNotification } =
     UseNotification();
   const { backendApiCall } = useContext(ApiContext);
@@ -45,6 +49,7 @@ export const LotForm: React.FC = () => {
       });
 
       if (response.status === "success") {
+        refetchLotDetails();
         triggerNotification(
           "Lote añadido exitosamente",
           "¡Excelente! Podrás ver tu nuevo lote en la sección de <br />  ‘Ver mis lotes’.",
