@@ -20,7 +20,7 @@ export const CollectionRecords = () => {
   const { id: collectionId = "" } = useParams();
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = UseGet({
-    endpoint: `collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
+    endpoint: `v1/collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
   });
   const [isloadingCrop, setIsLoadingCrop] = useState(true);
   const { backendApiCall } = useContext(ApiContext);
