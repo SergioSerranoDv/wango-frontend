@@ -9,7 +9,7 @@ export const createNewCollection = async (
 ) => {
   return await backendApiCall({
     method: "POST",
-    endpoint: "collection/new/",
+    endpoint: "v1/collection/new/",
     body: data,
   });
 };
