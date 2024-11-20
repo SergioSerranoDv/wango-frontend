@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AddIcon } from "../../icons/Add";
+import { Add } from "../../icons/Actions";
 import { MoreOptions } from "../../icons/MoreOptions";
 import { WaterFootprintI } from "../../interfaces/WaterFootprint";
-import { Item } from "../../styles/components/Actions";
 import { Dropdown } from "../Dropdown";
 
 interface WFActionsProps {
@@ -16,7 +15,7 @@ export const WFActions: React.FC<WFActionsProps> = ({ WFDetails }) => {
   const actions = [
     {
       action: () => navigate(`/dashboard/collections/records/${WFDetails.collectionData?._id}`),
-      icon: <AddIcon />,
+      icon: <Add />,
       name: "Ver registros",
     },
   ];
@@ -29,20 +28,7 @@ export const WFActions: React.FC<WFActionsProps> = ({ WFDetails }) => {
         setIsDropdownOpen={setIsDropdownOpen}
       />
       {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)}>
-          {actions.map((action) => (
-            <Item
-              key={action.name}
-              onClick={() => {
-                action.action();
-                setIsDropdownOpen(false);
-              }}
-            >
-              <span style={{ marginRight: "8px" }}>{action.icon}</span>
-              <div>{action.name}</div>
-            </Item>
-          ))}
-        </Dropdown>
+        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
       )}
     </>
   );

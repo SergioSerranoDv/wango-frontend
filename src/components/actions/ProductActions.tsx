@@ -1,12 +1,10 @@
 import React, { SetStateAction, useContext, useState } from "react";
 import { ApiContext } from "../../context/ApiContext";
-import { DeleteIcon } from "../../icons/Delete";
-import { EditIcon } from "../../icons/Edit";
+import { Edit, Delete } from "../../icons/Actions";
 import { MoreOptions } from "../../icons/MoreOptions";
 import { ProductI } from "../../interfaces/Product";
 import { deleteProductById } from "../../services/product_s";
 import { Button } from "../../styles/FormStyles";
-import { Item } from "../../styles/components/Actions";
 import { Dropdown } from "../Dropdown";
 import { ProductFormEdit } from "../forms/ProductFormEdit";
 import { Modal } from "../modals/Modal";
@@ -20,16 +18,15 @@ export const ProductActions: React.FC<Props> = ({ productDetails, refetchProduct
   const { backendApiCall } = useContext(ApiContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
   const actions = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <EditIcon />,
+      icon: <Edit />,
       name: "Editar producto",
     },
     {
       action: () => handleDeleteProduct(productDetails._id),
-      icon: <DeleteIcon />,
+      icon: <Delete />,
       name: "Eliminar producto",
     },
   ];
@@ -50,25 +47,12 @@ export const ProductActions: React.FC<Props> = ({ productDetails, refetchProduct
       />
 
       {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)}>
-          {actions.map((action) => (
-            <Item
-              key={action.name}
-              onClick={() => {
-                action.action();
-                setIsDropdownOpen(false);
-              }}
-            >
-              <span style={{ marginRight: "8px" }}>{action.icon}</span>
-              <div>{action.name}</div>
-            </Item>
-          ))}
-        </Dropdown>
+        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
       )}
 
       {isEditModalOpen && (
         <Modal
-        footer={
+          footer={
             <Button form="product-form-update" type="submit">
               Guardar
             </Button>

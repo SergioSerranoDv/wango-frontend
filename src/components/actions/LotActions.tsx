@@ -1,14 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { AddIcon } from "../../icons/Add";
-import { DeleteIcon } from "../../icons/Delete";
-import { EditIcon } from "../../icons/Edit";
+import { Add, Delete, Edit } from "../../icons/Actions";
 import { MoreOptions } from "../../icons/MoreOptions";
 import { LotI } from "../../interfaces/Lot";
 import { deleteLotById } from "../../services/lot_s";
 import { Button } from "../../styles/FormStyles";
-import { Item } from "../../styles/components/Actions";
 import { Dropdown } from "../Dropdown";
 import { LotFormEdit } from "../forms/LotFormEdit";
 import { RegisterCrop } from "../forms/RegisterCrop";
@@ -26,26 +23,25 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRegisterCropModalOpen, setIsRegisterCropModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
   const actions = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <EditIcon />,
+      icon: <Edit />,
       name: "Editar lote",
     },
     {
       action: () => setIsRegisterCropModalOpen(true),
-      icon: <AddIcon />,
+      icon: <Add />,
       name: "Agregar cultivo",
     },
     {
       action: () => navigate(`/dashboard/crops/${lotDetails._id}`),
-      icon: <AddIcon />,
+      icon: <Add />,
       name: "Ver cultivos",
     },
     {
       action: () => setIsDeleteModalOpen(true),
-      icon: <DeleteIcon />,
+      icon: <Delete />,
       name: "Eliminar lote",
     },
   ];
@@ -66,20 +62,7 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
       />
 
       {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)}>
-          {actions.map((action) => (
-            <Item
-              key={action.name}
-              onClick={() => {
-                action.action();
-                setIsDropdownOpen(false);
-              }}
-            >
-              <span style={{ marginRight: "8px" }}>{action.icon}</span>
-              <div>{action.name}</div>
-            </Item>
-          ))}
-        </Dropdown>
+        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
       )}
 
       {isEditModalOpen && (

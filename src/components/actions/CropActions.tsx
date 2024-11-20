@@ -1,14 +1,11 @@
 import React, { SetStateAction, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { AddIcon } from "../../icons/Add";
-import { DeleteIcon } from "../../icons/Delete";
-import { EditIcon } from "../../icons/Edit";
+import { Add, Delete, Edit } from "../../icons/Actions";
 import { MoreOptions } from "../../icons/MoreOptions";
 import { Crop } from "../../interfaces/crop";
 import { deleteCropById } from "../../services/crop_s";
 import { Button } from "../../styles/FormStyles";
-import { Item } from "../../styles/components/Actions";
 import { CropFormEdit } from "../CropFormEdit";
 import { Dropdown } from "../Dropdown";
 import { CollectionForm } from "../forms/CollectionForm";
@@ -37,22 +34,22 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
   const actions = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <EditIcon />,
+      icon: <Edit />,
       name: "Editar cultivo",
     },
     {
       action: () => setIsCollectionModalOpen(true),
-      icon: <AddIcon />,
+      icon: <Add />,
       name: "Agregar recolección",
     },
     {
       action: () => navigate(`/dashboard/collections/${cropDetails._id}`),
-      icon: <AddIcon />,
+      icon: <Add />,
       name: "Ver recolecciones",
     },
     {
       action: () => setIsDeleteModalOpen(true),
-      icon: <DeleteIcon />,
+      icon: <Delete />,
       name: "Eliminar cultivo",
     },
   ];
@@ -66,20 +63,7 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
       />
 
       {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)}>
-          {actions.map((action) => (
-            <Item
-              key={action.name}
-              onClick={() => {
-                action.action();
-                setIsDropdownOpen(false);
-              }}
-            >
-              <span style={{ marginRight: "8px" }}>{action.icon}</span>
-              <div>{action.name}</div>
-            </Item>
-          ))}
-        </Dropdown>
+        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
       )}
 
       {isEditModalOpen && (

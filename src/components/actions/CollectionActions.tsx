@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
-import { AddIcon } from "../../icons/Add";
-import { DeleteIcon } from "../../icons/Delete";
-import { EditIcon } from "../../icons/Edit";
+import { Add, Edit } from "../../icons/Actions";
 import { MoreOptions } from "../../icons/MoreOptions";
 import { Collection } from "../../interfaces/collection";
 import { updateCollectionStatus } from "../../services/collection_s";
 import { Button } from "../../styles/FormStyles";
-import { Item } from "../../styles/components/Actions";
 import { Dropdown } from "../Dropdown";
 import { CollectionFormEdit } from "../forms/CollectionFormEdit";
 import { Modal } from "../modals/Modal";
@@ -23,7 +20,6 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
   // const deleteCollection = async (id: string) => {
   //   try {
@@ -44,7 +40,7 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
   const actions = [
     {
       action: () => setIsEditModalOpen(true),
-      icon: <EditIcon />,
+      icon: <Edit />,
       name: "Editar recoleción",
     },
     {
@@ -64,7 +60,7 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
     },
     {
       action: () => navigate(`/dashboard/collections/records/${collectionDetails._id}`),
-      icon: <AddIcon />,
+      icon: <Add />,
       name: "Ver registros",
     },
     // {
@@ -97,20 +93,7 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
       />
 
       {isDropdownOpen && (
-        <Dropdown closeDropdown={() => setIsDropdownOpen(false)}>
-          {actions.map((action) => (
-            <Item
-              key={action.name}
-              onClick={() => {
-                action.action();
-                setIsDropdownOpen(false);
-              }}
-            >
-              <span style={{ marginRight: "8px" }}>{action.icon}</span>
-              <div>{action.name}</div>
-            </Item>
-          ))}
-        </Dropdown>
+        <Dropdown closeDropdown={() => setIsDropdownOpen(false)} items={actions} />
       )}
 
       {isEditModalOpen && (
