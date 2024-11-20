@@ -1,4 +1,4 @@
-import React, { SetStateAction, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiContext } from "../../context/ApiContext";
 import { AddIcon } from "../../icons/Add";
@@ -16,7 +16,7 @@ import { Modal } from "../modals/Modal";
 
 interface Props {
   lotDetails: LotI;
-  refetchLotDetails: React.Dispatch<SetStateAction<number>>;
+  refetchLotDetails: () => void;
 }
 
 export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) => {
@@ -53,7 +53,7 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
   const handleDeleteLot = async (id: string) => {
     const response = await deleteLotById(backendApiCall, id);
     if (response.status === "success") {
-      refetchLotDetails((prev) => prev + 1);
+      refetchLotDetails();
     }
   };
 
