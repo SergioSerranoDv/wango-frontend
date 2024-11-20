@@ -24,25 +24,20 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
-  
-  // const handleDeleteConfirmation = async () => {
-  //   if (deletingRecordId) {
-  //     console.log("Eliminando registro con ID:", deletingRecordId);
-  //     try {
-  //       const response = await backendApiCall({
-  //         method: "DELETE",
-  //         endpoint: `collection-record/delete/${deletingRecordId}`,
-  //       });
-  //       if (response.status === "success") {
-  //         setShowNotification(false); // Cerrar el modal de notificación
-  //         setRefetch((prev) => prev + 1);
-  //         setDeletingRecordId(undefined); // Limpiar el ID del registro a eliminar
-  //       } else {
-  //         console.log("Error al eliminar el registro:", response.message);
-  //       }
-  //     } catch (error) {
-  //       console.log("Error al eliminar el registro:", error);
+
+  // const deleteCollection = async (id: string) => {
+  //   try {
+  //     const response = await backendApiCall({
+  //       method: "DELETE",
+  //       endpoint: `v1/collection-record/delete/${id}`,
+  //     });
+
+  //     if (response.status === "success") {
+  //       refetchCollections((prev) => prev + 1);
+  //       setIsDeleteModalOpen(false);
   //     }
+  //   } catch (error) {
+  //     console.log("Error al eliminar el registro:", error);
   //   }
   // };
 
@@ -72,11 +67,11 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
       icon: <AddIcon />,
       name: "Ver registros",
     },
-    {
-      action: () => setIsDeleteModalOpen(true),
-      icon: <DeleteIcon />,
-      name: "Eliminar recolección",
-    },
+    // {
+    //   action: () => setIsDeleteModalOpen(true),
+    //   icon: <DeleteIcon />,
+    //   name: "Eliminar recolección",
+    // },
   ];
 
   const handleUpdateCollectionStatus = async (collectionId: string, crop_id: string) => {
@@ -138,15 +133,14 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
           />
         </Modal>
       )}
-      {isDeleteModalOpen && (
+
+      {/* {isDeleteModalOpen && (
         <Modal
           footer={
             <Button
               $background="#C32F26"
               $hoverBackground="#A52A21"
-              onClick={() =>
-                handleUpdateCollectionStatus(collectionDetails._id, collectionDetails.crop_id)
-              }
+              onClick={() => deleteCollection(collectionDetails._id)}
             >
               Eliminar
             </Button>
@@ -156,7 +150,7 @@ export const CollectionActions: React.FC<Props> = ({ collectionDetails, refetchC
         >
           <p>¿Estás seguro de que deseas eliminar la recolección?</p>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };
