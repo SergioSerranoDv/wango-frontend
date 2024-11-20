@@ -19,7 +19,6 @@ export const Lots: React.FC = () => {
   const { data, loading, setRefetch } = useLotsData(currentPage, rowsPerPage);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Memoized columns definition
   const columns = useCallback(
     () => [
       {
