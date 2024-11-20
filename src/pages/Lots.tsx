@@ -91,7 +91,7 @@ export const Lots: React.FC = () => {
           title="Nuevo Lote"
           closeModal={() => setIsModalOpen(false)}
         >
-          <LotForm />
+          <LotForm refetchLotDetails={() => setRefetch((prev) => prev + 1)} />
         </Modal>
       )}
     </MainLayout>
