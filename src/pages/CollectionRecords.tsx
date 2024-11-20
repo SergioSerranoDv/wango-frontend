@@ -18,12 +18,12 @@ import { Button } from "../styles/FormStyles";
 
 export const CollectionRecords = () => {
   const { id: collectionId = "" } = useParams();
+  const { backendApiCall } = useContext(ApiContext);
   const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const { data, loading, setRefetch } = UseGet({
     endpoint: `v1/collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
   });
   const [isloadingCrop, setIsLoadingCrop] = useState(true);
-  const { backendApiCall } = useContext(ApiContext);
   const [cropData, setCropData] = useState<Crop>(CropDataInit);
   const [showFormModal, setShowFormModal] = useState(false);
 
@@ -69,7 +69,7 @@ export const CollectionRecords = () => {
   );
 
   useEffect(() => {
-    const fetchDetails = async () => {
+    const fetchCollectionDetails = async () => {
       try {
         const collectionResponse = await findCollectionById(backendApiCall, collectionId);
         if (collectionResponse.status === "success") {
@@ -84,7 +84,8 @@ export const CollectionRecords = () => {
         setIsLoadingCrop(false);
       }
     };
-    fetchDetails();
+
+    fetchCollectionDetails();
   }, [backendApiCall, collectionId]);
 
   return (
@@ -101,7 +102,7 @@ export const CollectionRecords = () => {
           />
           <TableV1
             columns={columns()}
-            data={data.collectionRecords}
+            data={data.collectionRecords || []}
             evencolor="#FFFFFF"
             oddcolor="rgb(6, 182, 212, 0.2)"
             pagination={{
