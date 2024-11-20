@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import errorLogo from "../../assets/icons/errorLogo.svg";
 import checkLogo from "../../assets/icons/checkLogo.svg";
+import errorLogo from "../../assets/icons/errorLogo.svg";
 import {
   Overlay,
   ModalContainer,
