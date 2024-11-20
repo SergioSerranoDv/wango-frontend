@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import React, { useState, useEffect, useContext, ChangeEvent } from "react";
+import styled from "styled-components";
 import { ApiContext } from "../context/ApiContext";
-import { AddIcon } from "../icons/Add";
+import { Add } from "../icons/Actions";
 import { Input } from "../styles/FormStyles";
 import { AddButton } from "../styles/components/modals/ModalStyles";
 
@@ -84,8 +84,6 @@ export const ProductSearch: React.FC<ProductSearchProps> = ({
     }
   }, [searchQuery, backendApiCall]);
 
-  console.log("productsSelected", productsSelected);
-
   return (
     <DropdownContainer>
       <SearchContainer>
@@ -116,7 +114,7 @@ export const ProductSearch: React.FC<ProductSearchProps> = ({
           onChange={handleQuantityChange}
         />
         <AddButton type="button" onClick={addProduct}>
-          <AddIcon />
+          <Add />
         </AddButton>
       </SearchContainer>
     </DropdownContainer>
