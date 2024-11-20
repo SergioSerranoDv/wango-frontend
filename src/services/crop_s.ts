@@ -1,5 +1,5 @@
-import { Props, Response } from "../types/Api";
 import { Crop } from "../interfaces/crop";
+import { Props, Response } from "../types/Api";
 
 export const createNewCrop = async (
   backendApiCall: (data: Props) => Promise<Response>,
@@ -11,7 +11,7 @@ export const createNewCrop = async (
     lot_id: string;
   }
 ) => {
-  return await backendApiCall({ method: "POST", endpoint: "crop/new", body: data });
+  return await backendApiCall({ method: "POST", endpoint: "v1/crop/new", body: data });
 };
 
 export const fetchPaginatedCropsByLotId = async (
