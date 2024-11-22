@@ -7,7 +7,7 @@ export const createNewLot = async (
   return await backendApiCall({ method: "POST", endpoint: "v1/lot/new", body: data });
 };
 
-export const updateLot = async (
+export const updateLotById = async (
   backendApiCall: (data: Props) => Promise<Response>,
   data: any,
   lotId: string
