@@ -6,6 +6,7 @@ export interface Collection {
   name: string;
   status: string;
   user: string;
+  createdAt: string;
 }
 
 export const CollectionDataInit: Collection = {
@@ -16,4 +17,5 @@ export const CollectionDataInit: Collection = {
   name: "",
   status: "",
   user: "",
+  createdAt: "",
 };

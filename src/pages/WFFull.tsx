@@ -1,8 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { MainLayout } from "../layouts/MainLayout";
 import { ApiContext } from "../context/ApiContext";
-import { Crop } from "../interfaces/crop";
+import { waterFootprintDataInit } from "../interfaces/WaterFootprint";
+import { Collection, CollectionDataInit } from "../interfaces/collection";
+import { MainLayout } from "../layouts/MainLayout";
+import { findCollectionById } from "../services/collection_s";
+import { findCropById } from "../services/crop_s";
+import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
+import { Adder, ContainerInput, FormContainer, Input, Label, SubLabel } from "../styles/FormStyles";
 import {
   DetailsItem,
   DetailsSign,
@@ -10,12 +15,6 @@ import {
   SignBoard,
   SignBoard3,
 } from "../styles/lotscropsStyles";
-import { Adder, ContainerInput, FormContainer, Input, Label, SubLabel } from "../styles/FormStyles";
-import { waterFootprintDataInit } from "../interfaces/WaterFootprint";
-import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
-import { findCollectionById } from "../services/collection_s";
-import { Collection, CollectionDataInit } from "../interfaces/collection";
-import { fetchCropDetails } from "../services/crop_s";
 
 export const WFFull: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
@@ -25,7 +24,7 @@ export const WFFull: React.FC = () => {
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
-  const [crop, setCrop] = useState<Crop>({
+  const [crop, setCrop] = useState({
     _id: "",
     area: 0,
     lot_id: "",
@@ -35,8 +34,6 @@ export const WFFull: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("Tipo de componente: ", type);
-    console.log("CollectionID: ", collectionId);
     async function loadCollectionDetails() {
       if (collectionId) {
         try {
@@ -79,7 +76,7 @@ export const WFFull: React.FC = () => {
     async function loadCropDetails() {
       if (cropId) {
         try {
-          const cropDetails = await fetchCropDetails(backendApiCall, cropId);
+          const cropDetails = await findCropById(backendApiCall, cropId);
           if (cropDetails && cropDetails.data) {
             setCrop(cropDetails.data);
           }
@@ -89,7 +86,6 @@ export const WFFull: React.FC = () => {
       }
     }
     loadCropDetails();
-    console.log("Crop: ", crop);
   }, [backendApiCall, cropId]);
 
   useEffect(() => {

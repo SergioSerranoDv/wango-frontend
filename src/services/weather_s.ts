@@ -1,9 +1,9 @@
 import { fetchWeatherApi } from "openmeteo";
 
-export const calculateEt0andETc = async () => {
+export const calculateEt0andETc = async (latitude: number, longitude: number) => {
   const params = {
-    latitude: 2.9273,
-    longitude: -75.2819,
+    latitude: latitude,
+    longitude: longitude,
     hourly: ["evapotranspiration", "et0_fao_evapotranspiration"],
     timezone: "auto",
     forecast_days: 1,

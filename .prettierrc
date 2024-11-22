@@ -5,5 +5,7 @@
   "bracketSpacing": true,
   "printWidth": 100,
   "tabWidth": 2,
-  "quoteProps": "as-needed"
+  "quoteProps": "as-needed",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["react", "prop-types", "styled-components", ".*"]
 }

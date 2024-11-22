@@ -1,16 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { MainLayout } from "../layouts/MainLayout";
-import { TableV2 } from "../components/TableV2";
-import { ApiContext } from "../context/ApiContext";
 import { SignBoardWithVariablesToCalculateWaterFootprint } from "../components/SignBoard";
-import { Crop, CropDataInit } from "../interfaces/crop";
+import { TableV1 } from "../components/tables/TableV1";
+import { ApiContext } from "../context/ApiContext";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
+import { Crop, CropDataInit } from "../interfaces/crop";
 import { Records } from "../interfaces/record";
-import { fetchCropDetails } from "../services/crop_s";
+import { MainLayout } from "../layouts/MainLayout";
 import { formatDate } from "../services/Date";
-import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
 import { findCollectionById } from "../services/collection_s";
+import { findCropById } from "../services/crop_s";
+import { getWaterFootprintByCropIdAndCollectionId } from "../services/water_footprint_s";
 import {
   ContainerInput,
   DetailsItem,
@@ -62,10 +62,10 @@ export const WF: React.FC = () => {
   const cropId = collection?.crop_id;
 
   useEffect(() => {
-    async function loadCropDetails() {
+    async function fetchCropDetails() {
       if (cropId) {
         try {
-          const cropDetails = await fetchCropDetails(backendApiCall, cropId);
+          const cropDetails = await findCropById(backendApiCall, cropId);
           if (cropDetails && cropDetails.data) {
             setCrop(cropDetails.data);
           }
@@ -74,7 +74,7 @@ export const WF: React.FC = () => {
         }
       }
     }
-    loadCropDetails();
+    fetchCropDetails();
   }, [backendApiCall, cropId]);
 
   //Fetch the collection records
@@ -84,7 +84,7 @@ export const WF: React.FC = () => {
         try {
           const collectionRecords = await backendApiCall({
             method: "GET",
-            endpoint: `v1/collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
+            endpoint: `collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
           });
           const formattedRecords = collectionRecords.data.collectionRecords.map((record: any) => ({
             ...record,
@@ -200,7 +200,7 @@ export const WF: React.FC = () => {
             )}
             {type === "grey" && (
               <>
-                <DetailsSign2 $custom3>
+                {/* <DetailsSign2 $custom3>
                   AR ={" "}
                   <DetailsItem>
                     {collectionRecords && collectionRecords.length > 0
@@ -217,7 +217,7 @@ export const WF: React.FC = () => {
                       : null}
                     m3/año
                   </DetailsItem>
-                </DetailsSign2>
+                </DetailsSign2> */}
                 <DetailsSign2 $custom3>
                   C<SubLabel>max</SubLabel>=<DetailsItem> 50mg/L</DetailsItem>
                 </DetailsSign2>
@@ -258,8 +258,8 @@ export const WF: React.FC = () => {
             />
           </ContainerInput>
           <SignBoard $custom5>Hechos en el periodo</SignBoard>
-          {!loadingCollectionData && collectionRecords.length > 0 && (
-            <TableV2
+          {/* {!loadingCollectionData && collectionRecords.length > 0 && (
+            <TableV1
               oddcolor="#FFFFFF"
               evencolor={
                 type === "blue"
@@ -289,7 +289,7 @@ export const WF: React.FC = () => {
               }}
               options={{ edit: () => {}, delete: () => {} }}
             />
-          )}
+          )} */}
         </FormContainer>
       </MainLayout>
     </>

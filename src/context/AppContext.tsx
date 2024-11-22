@@ -8,6 +8,7 @@ import React, {
   Dispatch,
 } from "react";
 import { ApiContext } from "./ApiContext";
+
 interface ContextData {
   userData: UserDataI;
   appContextIsFetching: boolean;

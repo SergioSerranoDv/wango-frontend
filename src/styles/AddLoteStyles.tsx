@@ -15,47 +15,11 @@ const spacing = {
   large: "40px",
 };
 
-const InputBase = styled.input`
-  padding: ${spacing.small};
-  border: 1px solid ${colors.black};
-  border-radius: 5px;
-  height: 34px;
-  box-sizing: border-box;
-`;
-
-export const FormWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  max-width: 800px;
-`;
-
-export const Form = styled.form`
-  background-color: ${colors.white};
-  border-radius: 10px;
-  width: 100%;
-`;
-
 export const FormHeader = styled.p`
   color: ${colors.text};
   text-align: center;
   font-weight: 550;
   margin-bottom: ${spacing.large};
-`;
-
-export const FormField = styled.div`
-  margin-bottom: ${spacing.medium};
-`;
-
-export const Label = styled.label`
-  display: block;
-  font-weight: bold;
-  margin-bottom: ${spacing.small};
-`;
-
-export const Input = styled(InputBase)`
-  width: 100%;
 `;
 
 export const ButtonContainer = styled.div`

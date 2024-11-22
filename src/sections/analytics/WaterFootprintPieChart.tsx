@@ -43,6 +43,7 @@ export const WaterFootprintPieChart = ({ data }: any) => {
         borderRadius: "16px",
         background: "#fff",
         boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)",
+        maxWidth: "310px",
       }}
     >
       <span>Huella hídrica de la ultima recolección</span>

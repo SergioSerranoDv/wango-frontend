@@ -1,6 +1,7 @@
-import { Props, Response } from "../types/Api";
 import { Records } from "../interfaces/record";
-interface PaaginationProps {
+import { Props, Response } from "../types/Api";
+
+interface PaginationProps {
   page: number;
   limit: number;
   collection_id: string;
@@ -38,7 +39,7 @@ export const fetchRecordDetails = async (
 
 export const fetchPaginatedRecordPerCollection = async (
   backendApiCall: (data: Props) => Promise<Response>,
-  { page, limit, collection_id }: PaaginationProps
+  { page, limit, collection_id }: PaginationProps
 ): Promise<any> => {
   return await backendApiCall({
     method: "GET",
