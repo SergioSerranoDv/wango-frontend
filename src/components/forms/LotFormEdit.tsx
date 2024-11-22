@@ -1,14 +1,14 @@
-import React, { useState, ChangeEvent, FormEvent, useContext, SetStateAction } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { ApiContext } from "../../context/ApiContext";
 import { UseNotification } from "../../hooks/UseNotification";
 import { LotI } from "../../interfaces/Lot";
-import { updateLot } from "../../services/lot_s";
+import { updateLotById } from "../../services/lot_s";
 import { Label, Form, Input, FormContent, FormField } from "../../styles/FormStyles";
 import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
   data: any;
-  refetchData: React.Dispatch<SetStateAction<number>>;
+  refetchData: () => void;
 }
 
 export const LotFormEdit: React.FC<Props> = ({ data, refetchData }) => {
@@ -19,6 +19,7 @@ export const LotFormEdit: React.FC<Props> = ({ data, refetchData }) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const newCapacity = formData.capacity ?? 0;
 
     if (newCapacity <= 0) {
@@ -27,30 +28,46 @@ export const LotFormEdit: React.FC<Props> = ({ data, refetchData }) => {
     }
 
     try {
-      const response = await updateLot(
-        backendApiCall,
-        {
-          _id: data._id,
-          available_capacity: formData.capacity - data.capacity_in_use,
-          capacity: formData.capacity,
-          name: formData.name,
-        },
-        data._id
-      );
+      const updatedFormData = {
+        name: formData.name.trim(),
+        capacity: newCapacity,
+      };
+
+      const isDataUnchanged = {
+        name: updatedFormData.name === data.name.trim(),
+        capacity: updatedFormData.capacity === data.capacity,
+      };
+
+      if (isDataUnchanged.name && isDataUnchanged.capacity) {
+        triggerNotification("Sin cambios", "No se realizaron modificaciones.", "info");
+        return;
+      }
+
+      const payload = {
+        _id: data._id,
+        available_capacity: newCapacity - data.capacity_in_use,
+        capacity: newCapacity,
+        name: updatedFormData.name,
+      };
+
+      const response = await updateLotById(backendApiCall, payload, data._id);
 
       if (response.status === "success") {
-        refetchData((prev) => prev + 1);
+        refetchData();
         triggerNotification(
           "Lote editado exitosamente",
           "¡Excelente! El lote ha sido editado exitosamente.",
           "success",
           ""
         );
-      } else {
-        triggerNotification("Error", "No se pudo editar el lote.", "error", "");
       }
     } catch (error) {
-      console.error("Error updating lot:", error);
+      triggerNotification(
+        "Error inesperado",
+        error instanceof Error ? error.message : "Ocurrió un error inesperado.",
+        "error",
+        ""
+      );
     }
   };
 
