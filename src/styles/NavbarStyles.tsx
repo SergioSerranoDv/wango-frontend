@@ -19,12 +19,9 @@ export const NavbarContainer = styled.nav`
   background-color: #ffb032;
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
-
-  @media (max-width: 768px) {
-    background-color: #fff;
-  }
 `;
 
 export const LeftContainer = styled.div`
@@ -69,7 +66,7 @@ export const NavbarInnerContainer = styled.div`
   width: 100%;
 `;
 
-export const UserImage = styled.img`
+export const Profile = styled.img`
   border-radius: 50%;
   height: 40px;
   width: 40px;

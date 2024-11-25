@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
-import { AppContext } from "../../context/AppContext";
-import { Link, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import LogoImg from "../../assets/images/logoNavbar.svg";
+import { AppContext } from "../../context/AppContext";
 import {
   LeftContainer,
   NavbarContainer,
@@ -11,11 +12,9 @@ import {
   RightContainer,
   Logo,
   Text,
-  UserImage,
-  DropdownContent,
-  DropdownItem,
+  Profile,
 } from "../../styles/NavbarStyles";
-import LogoImg from "../../assets/images/logoNavbar.svg";
+import { Tooltip, IconButton } from "@mui/material";
 
 interface LinkProps {
   id: number;
@@ -25,11 +24,15 @@ interface LinkElementProps {
   text: string;
   link: string;
 }
-const Navbar: React.FC = () => {
-  const navigate = useNavigate();
+
+interface HeaderProps {
+  toogleSidebar: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ toogleSidebar }) => {
   const { logout } = useAuth0();
   const { userData } = useContext(AppContext);
-  const [isOpen, setIsOpen] = useState(false);
+
   const LinkItems: LinkProps[] = [
     {
       id: 1,
@@ -56,14 +59,6 @@ const Navbar: React.FC = () => {
     },
   ];
 
-  const toggleDropdown = () => {
-    if (window.innerWidth >= 768) {
-      navigate("/my-profile");
-    } else {
-      setIsOpen(!isOpen);
-    }
-  };
-
   return (
     <>
       <NavbarContainer>
@@ -81,15 +76,20 @@ const Navbar: React.FC = () => {
                 ))}
               </NavbarLinkContainer>
             </CenterContainer>
-            <UserImage onClick={toggleDropdown} src={userData.picture} alt="User profile" />
+            <Tooltip title="Perfil">
+              <IconButton onClick={() => toogleSidebar()}>
+                <Profile
+                  onClick={() => toogleSidebar()}
+                  src={userData.picture}
+                  width={40}
+                  height={40}
+                  alt="User profile"
+                />
+              </IconButton>
+            </Tooltip>
           </RightContainer>
         </NavbarInnerContainer>
       </NavbarContainer>
-      <DropdownContent open={isOpen}>
-        {LinkItems.map((item) => (
-          <DropdownItem key={item.id}>{item.elementList}</DropdownItem>
-        ))}
-      </DropdownContent>
     </>
   );
 };
@@ -99,5 +99,3 @@ const LinkElement: React.FC<LinkElementProps> = ({ text, link }) => (
     <Text>{text}</Text>
   </Link>
 );
-
-export default Navbar;
