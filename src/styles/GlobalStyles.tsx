@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 4rem;
-  height: 100vh;
   background-color: #f5f5f5;
   flex-wrap: wrap;
   justify-content: center;
@@ -18,10 +17,8 @@ export const SubContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const Content = styled.div`
+export const Content = styled.main`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
 
   @media (max-width: 768px) {
     display: block;
