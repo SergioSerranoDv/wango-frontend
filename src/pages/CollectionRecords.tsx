@@ -2,6 +2,7 @@ import { useState, useCallback, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "../components/Header";
 import { LoadingAnimation } from "../components/Loading";
+import { CollectionRecordActions } from "../components/actions/CollectionRecordActions";
 import { RecordForm } from "../components/forms/RecordForm";
 import { Modal } from "../components/modals/Modal";
 import { TableV1 } from "../components/tables/TableV1";
@@ -59,10 +60,7 @@ export const CollectionRecords = () => {
       {
         title: "Acciones",
         dataIndex: "_id",
-        render: (record: any) => (
-          <div></div>
-          // <LotActions lotDetails={lot} refetchLotDetails={() => setRefetch((prev) => prev + 1)} />
-        ),
+        render: (record: any) => <CollectionRecordActions />,
       },
     ],
     []
