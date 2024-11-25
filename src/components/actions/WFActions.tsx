@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Add } from "../../icons/Actions";
 import { WaterFootprintI } from "../../interfaces/WaterFootprint";
-import { MoreVert } from "@mui/icons-material";
+import { generatePDF } from "../../utils/pdf-report";
+import { Add, Download, MoreVert } from "@mui/icons-material";
 import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface WFActionsProps {
@@ -17,8 +17,13 @@ export const WFActions: React.FC<WFActionsProps> = ({ WFDetails }) => {
   const menuItems = [
     {
       action: () => navigate(`/dashboard/collections/records/${WFDetails.collectionData?._id}`),
-      icon: <Add />,
+      icon: <Add fontSize="small" />,
       name: "Ver registros",
+    },
+    {
+      action: () => generatePDF(WFDetails),
+      icon: <Download fontSize="small" />,
+      name: "Generar reporte",
     },
   ];
 
