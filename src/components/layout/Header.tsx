@@ -13,7 +13,7 @@ import {
   Logo,
   Text,
   Profile,
-} from "../../styles/NavbarStyles";
+} from "../../styles/components/layout/HeaderStyles";
 import { Tooltip, IconButton } from "@mui/material";
 
 interface LinkProps {
