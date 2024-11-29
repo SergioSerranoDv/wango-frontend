@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { ButtonSubmit, Form, FormContainer, SignBoard } from "../styles/FormStyles";
 import { MainLayout } from "../layouts/MainLayout";
+import { ButtonSubmit, FormContainer, FormContent, SignBoard } from "../styles/FormStyles";
 
 export const WFComponents = () => {
   const { id } = useParams();
@@ -14,7 +14,7 @@ export const WFComponents = () => {
     <MainLayout>
       <FormContainer style={{ margin: "auto" }}>
         <SignBoard $custom2>Selecciona un componente</SignBoard>
-        <Form>
+        <FormContent>
           <Link
             to={`/lot-menu/water-footprint/crops/comp/${collectionId}/type/green`}
             style={linkStyle}
@@ -49,7 +49,7 @@ export const WFComponents = () => {
               Análisis IA
             </ButtonSubmit>
           </Link>
-        </Form>
+        </FormContent>
       </FormContainer>
     </MainLayout>
   );

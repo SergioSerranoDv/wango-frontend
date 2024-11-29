@@ -87,20 +87,7 @@ export const ProductFormEdit: React.FC<Props> = ({ product }) => {
           </FormField>
           <FormField>
             <Label htmlFor="type">Tipo</Label>
-            <SelectInput
-              id="type"
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              required
-            >
-              <option value="pesticide">Pesticida</option>
-              <option value="fertilizer">Fertilizante</option>
-              <option value="fungicide">Fungicida</option>
-              <option value="insecticide">Insecticida</option>
-              <option value="additive">Aditivo</option>
-              <option value="other">Otro</option>
-            </SelectInput>
+            <Input id="type" name="type" value={formData.type} onChange={handleChange} required />
           </FormField>
           <FormField>
             <Label htmlFor="description">Descripción</Label>

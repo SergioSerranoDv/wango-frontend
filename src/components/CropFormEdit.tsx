@@ -14,9 +14,10 @@ interface FormData {
 }
 interface Props {
   crop: Crop;
+  refetchData: () => void;
 }
 
-export const CropFormEdit: React.FC<Props> = ({ crop }) => {
+export const CropFormEdit: React.FC<Props> = ({ crop, refetchData }) => {
   const { closeNotification, notificationDetails, showNotification, triggerNotification } =
     UseNotification();
   const { backendApiCall } = useContext(ApiContext);
@@ -29,29 +30,46 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value, // Esto actualiza el valor del campo correspondiente
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      const response = await updateCrop(
-        backendApiCall,
-        {
-          _id: crop._id,
-          name: formData.name,
-          area: formData.area,
-          lot_id: crop.lot_id,
-          latitude: formData.latitude,
-          longitude: formData.longitude,
-          status_data_collection: crop.status_data_collection,
-        },
-        crop._id
-      );
+      const updatedFormData = {
+        name: formData.name.trim(),
+        area: formData.area,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+      };
+
+      const isDataUnchanged =
+        updatedFormData.name === crop.name.trim() &&
+        updatedFormData.area === crop.area &&
+        updatedFormData.latitude === crop.latitude &&
+        updatedFormData.longitude === crop.longitude;
+
+      if (isDataUnchanged) {
+        triggerNotification("Sin cambios", "No se realizaron modificaciones.", "info", "");
+        return;
+      }
+
+      const payload = {
+        _id: crop._id,
+        ...updatedFormData,
+        lot_id: crop.lot_id,
+        status_data_collection: crop.status_data_collection,
+      };
+
+      const response = await updateCrop(backendApiCall, payload, crop._id);
+
       if (response.status === "success") {
+        refetchData();
         triggerNotification(
           "Cultivo editado exitosamente",
           "¡Excelente! El cultivo ha sido editado exitosamente.",
@@ -59,10 +77,15 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
           ""
         );
       } else {
-        triggerNotification("Error", "No se pudo editar el cultivo.", "error", "");
+        throw new Error("Error al actualizar el cultivo.");
       }
     } catch (error) {
-      console.error("Error updating crop:", error);
+      triggerNotification(
+        "Error inesperado",
+        error instanceof Error ? error.message : "Ocurrió un error inesperado.",
+        "error",
+        ""
+      );
     }
   };
 
@@ -76,7 +99,7 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
               type="text"
               id="name"
               name="name"
-              value={formData.name} // Asegúrate de que el valor esté vinculado a formData.cropName
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -90,26 +113,33 @@ export const CropFormEdit: React.FC<Props> = ({ crop }) => {
               value={formData.area}
               onChange={handleChange}
               disabled
+              required
             />
           </FormField>
           <FormField>
-            <Label htmlFor="latitude">Latitud (°)*</Label>
+            <Label htmlFor="latitude">Latitud (-90° - 90°)*</Label>
             <Input
               type="number"
               id="latitude"
               name="latitude"
+              max={90}
+              min={-90}
               value={formData.latitude}
               onChange={handleChange}
+              required
             />
           </FormField>
           <FormField>
-            <Label htmlFor="longitude">Longitud (°)*</Label>
+            <Label htmlFor="longitude">Longitud (-180° - 180°)*</Label>
             <Input
               type="number"
               id="longitude"
               name="longitude"
+              max={180}
+              min={-180}
               value={formData.longitude}
               onChange={handleChange}
+              required
             />
           </FormField>
         </FormContent>

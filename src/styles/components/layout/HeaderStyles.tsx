@@ -19,7 +19,8 @@ export const NavbarContainer = styled.nav`
   background-color: #ffb032;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
+  z-index: 20;
   top: 0;
   width: 100%;
 `;
@@ -70,36 +71,4 @@ export const Profile = styled.img`
   border-radius: 50%;
   height: 40px;
   width: 40px;
-`;
-
-export const DropdownContent = styled.div<{ open: boolean }>`
-  align-items: center;
-  background-color: #ffb032;
-  display: ${({ open }) => (open ? "flex" : "none")};
-  flex-direction: column;
-  height: 100%;
-  position: relative;
-  right: 0;
-  width: 100%;
-  z-index: 1;
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
-
-export const DropdownItem = styled.div`
-  align-items: center;
-  border-bottom: 2px solid #ffdda8;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  font-size: 14px;
-  height: 36px;
-  justify-content: center;
-  width: 80%;
-
-  &:hover {
-    background-color: #ffdda8;
-  }
 `;

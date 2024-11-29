@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CancelButton } from "../../styles/FormStyles";
 import {
   CloseButton,
@@ -19,9 +19,29 @@ interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ closeModal, children, title, footer }) => {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [closeModal]);
+
   return (
     <Container>
-      <BackDrop />
+      <BackDrop onClick={closeModal} />
       <ModalContainer>
         <ModalContent>
           <ModalHeader>

@@ -1,6 +1,7 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { createContext, useEffect, useState, PropsWithChildren } from "react";
 import { Props, Response } from "../types/Api";
-import { useAuth0 } from "@auth0/auth0-react";
+
 interface apiData {
   userToken: string;
   backendApiCall: (apiData: Props) => Promise<Response>;
@@ -14,6 +15,7 @@ export const ApiContext = createContext<apiData>({
   },
   serviceIsReady: false,
 });
+
 export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
   const { getAccessTokenSilently } = useAuth0();
   const [serviceIsReady, setServiceIsReady] = useState<boolean>(false);
@@ -44,7 +46,6 @@ export const ApiContextProvider: React.FC<PropsWithChildren> = (props) => {
 
   const getToken = async () => {
     const token = await getAccessTokenSilently();
-    console.log(token);
     return token;
   };
 

@@ -47,10 +47,7 @@ export const Crops: React.FC = () => {
         title: "Acciones",
         dataIndex: "_id",
         render: (data: Crop) => (
-          <CropActions
-            cropDetails={data}
-            refetchLotDetails={() => setRefetch((prev) => prev + 1)}
-          />
+          <CropActions cropDetails={data} refetchCropData={() => setRefetch((prev) => prev + 1)} />
         ),
       },
     ],

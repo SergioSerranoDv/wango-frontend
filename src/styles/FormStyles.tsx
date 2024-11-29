@@ -132,6 +132,7 @@ export const CancelButton = styled.button`
   font-weight: 500;
   border-radius: 5px;
   border: 1px solid #ccc;
+  margin-right: 8px;
   transition: background-color 0.3s;
 
   &:hover {

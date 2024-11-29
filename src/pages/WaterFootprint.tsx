@@ -35,7 +35,7 @@ export const WaterFootPrint = () => {
         render: (data: WaterFootprintI) => <span>{data.collectionData?.name}</span>,
       },
       {
-        title: "Total (m³)",
+        title: "Total (m³/tonelada)",
         dataIndex: "capacity",
         render: (data: WaterFootprintI) => <span>{data.total}</span>,
       },

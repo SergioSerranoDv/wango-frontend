@@ -7,7 +7,7 @@ import { Button } from "../../styles/FormStyles";
 import { LotFormEdit } from "../forms/LotFormEdit";
 import { RegisterCrop } from "../forms/RegisterCrop";
 import { Modal } from "../modals/Modal";
-import { Add, Edit, Delete, MoreVert } from "@mui/icons-material";
+import { Add, Edit, Delete, Folder, MoreVert } from "@mui/icons-material";
 import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface Props {
@@ -37,7 +37,7 @@ export const LotActions: React.FC<Props> = ({ lotDetails, refetchLotDetails }) =
     },
     {
       action: () => navigate(`/dashboard/crops/${lotDetails._id}`),
-      icon: <Add fontSize="small" />,
+      icon: <Folder fontSize="small" />,
       name: "Ver cultivos",
     },
     {

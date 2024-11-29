@@ -41,24 +41,30 @@ export const LotForm: React.FC<LotFormProps> = ({ refetchLotDetails }) => {
         return;
       }
 
-      const response = await createNewLot(backendApiCall, {
+      const payload = {
         available_capacity: area,
         name: formData.name,
         capacity: area,
         capacity_in_use: 0,
-      });
+      };
+
+      const response = await createNewLot(backendApiCall, payload);
 
       if (response.status === "success") {
         refetchLotDetails();
         triggerNotification(
           "Lote añadido exitosamente",
-          "¡Excelente! Podrás ver tu nuevo lote en la sección de <br />  ‘Ver mis lotes’.",
-          "success",
-          "/lots-manage"
+          "¡Excelente! El lote ha sido añadido exitosamente.",
+          "success"
         );
       }
     } catch (error) {
-      console.error("Error:", error);
+      triggerNotification(
+        "Error inesperado",
+        error instanceof Error ? error.message : "Ocurrió un error inesperado.",
+        "error",
+        ""
+      );
     }
   };
 

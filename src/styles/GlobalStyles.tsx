@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  padding: 4rem;
-  height: 100vh;
-  background-color: #f5f5f5;
-  flex-wrap: wrap;
-  justify-content: center;
+export const Container = styled.main`
   flex: 1;
+  padding: 2rem;
+  background-color: #f5f5f5;
+  transition: margin-left 0.3s ease;
+
   @media (max-width: 768px) {
-    padding: 20px;
+    margin-left: 0;
+    padding: 2rem 1rem;
   }
 `;
 
@@ -18,14 +18,25 @@ export const SubContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const Content = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+export const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto;
+  height: 100vh;
+  padding-top: 80px;
+  overflow: hidden;
 
   @media (max-width: 768px) {
     display: block;
+    height: auto;
   }
+`;
+
+export const Content = styled.div`
+  display: flex;
+
+  flex-direction: column;
+  flex: 1;
 `;
 
 export const Options = styled.button`

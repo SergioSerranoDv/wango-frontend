@@ -7,15 +7,15 @@ import { Button } from "../../styles/FormStyles";
 import { CropFormEdit } from "../CropFormEdit";
 import { CollectionForm } from "../forms/CollectionForm";
 import { Modal } from "../modals/Modal";
-import { Add, Edit, Delete, MoreVert } from "@mui/icons-material";
+import { Add, Edit, Folder, Delete, MoreVert } from "@mui/icons-material";
 import { Menu, Tooltip, IconButton, MenuItem, Typography } from "@mui/material";
 
 interface Props {
   cropDetails: Crop;
-  refetchLotDetails: React.Dispatch<SetStateAction<number>>;
+  refetchCropData: React.Dispatch<SetStateAction<number>>;
 }
 
-export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails }) => {
+export const CropActions: React.FC<Props> = ({ cropDetails, refetchCropData }) => {
   const navigate = useNavigate();
   const { backendApiCall } = useContext(ApiContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +27,7 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
   const handleDeleteCrop = async (cropId: string) => {
     const response = await deleteCropById(backendApiCall, cropId, cropDetails.lot_id);
     if (response.status === "success") {
-      refetchLotDetails((prev) => prev + 1);
+      refetchCropData((prev) => prev + 1);
     }
   };
 
@@ -44,7 +44,7 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
     },
     {
       action: () => navigate(`/dashboard/collections/${cropDetails._id}`),
-      icon: <Add fontSize="small" />,
+      icon: <Folder fontSize="small" />,
       name: "Ver recolecciones",
     },
     {
@@ -88,7 +88,10 @@ export const CropActions: React.FC<Props> = ({ cropDetails, refetchLotDetails })
           title="Editar cultivo"
           closeModal={() => setIsEditModalOpen(false)}
         >
-          <CropFormEdit crop={cropDetails} />
+          <CropFormEdit
+            crop={cropDetails}
+            refetchData={() => refetchCropData((prev) => prev + 1)}
+          />
         </Modal>
       )}
 
