@@ -1,6 +1,7 @@
 import { fetchWeatherApi } from "openmeteo";
 
 export const calculateEt0andETc = async (latitude: number, longitude: number) => {
+  console.log("Calculating ET0 and ETc...", latitude, longitude);
   const params = {
     latitude: latitude,
     longitude: longitude,
@@ -9,7 +10,9 @@ export const calculateEt0andETc = async (latitude: number, longitude: number) =>
     forecast_days: 1,
   };
   const url = "https://api.open-meteo.com/v1/forecast";
+
   const weatherResponse = await fetchWeatherApi(url, params);
+
   const weatherData = weatherResponse[0].hourly()!;
   const et0Array = weatherData.variables(1)!.valuesArray()!;
   const etcArray = weatherData.variables(0)!.valuesArray()!;
