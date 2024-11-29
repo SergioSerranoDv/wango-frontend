@@ -1,4 +1,4 @@
-import { Records } from "../interfaces/record";
+import { Record } from "../interfaces/record";
 import { Props, Response } from "../types/Api";
 
 interface PaginationProps {
@@ -9,7 +9,7 @@ interface PaginationProps {
 
 export const createNewRecords = async (
   backendApiCall: (data: Props) => Promise<Response>,
-  data: Records
+  data: Record
 ) => {
   return await backendApiCall({
     method: "POST",
@@ -20,7 +20,7 @@ export const createNewRecords = async (
 
 export const updateRecord = async (
   backendApiCall: (data: Props) => Promise<Response>,
-  data: Records,
+  data: Record,
   recordId: string
 ) => {
   return await backendApiCall({
