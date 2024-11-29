@@ -1,4 +1,4 @@
-export interface Records {
+export interface Record {
   chemicals_used: {
     product_id: string;
     amount: number;
@@ -15,7 +15,7 @@ export interface Records {
   updatedAt?: Date;
 }
 
-export const RecordsDataInit: Records = {
+export const RecordsDataInit: Record = {
   chemicals_used: [],
   actual_crop_evapotranspiration: 0,
   collection_id: "",
