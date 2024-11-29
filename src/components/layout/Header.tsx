@@ -60,31 +60,29 @@ export const Header: React.FC<HeaderProps> = ({ toogleSidebar }) => {
   ];
 
   return (
-    <>
-      <NavbarContainer>
-        <NavbarInnerContainer>
-          <LeftContainer>
-            <Link to="/">
-              <Logo src={LogoImg} />
-            </Link>
-          </LeftContainer>
-          <RightContainer>
-            <CenterContainer>
-              <NavbarLinkContainer>
-                {LinkItems.map((item) => (
-                  <div key={item.id}>{item.elementList}</div>
-                ))}
-              </NavbarLinkContainer>
-            </CenterContainer>
-            <Tooltip title="Perfil">
-              <IconButton onClick={() => toogleSidebar()}>
-                <Profile src={userData.picture} width={40} height={40} alt="User profile" />
-              </IconButton>
-            </Tooltip>
-          </RightContainer>
-        </NavbarInnerContainer>
-      </NavbarContainer>
-    </>
+    <NavbarContainer>
+      <NavbarInnerContainer>
+        <LeftContainer>
+          <Link to="/">
+            <Logo src={LogoImg} />
+          </Link>
+        </LeftContainer>
+        <RightContainer>
+          <CenterContainer>
+            <NavbarLinkContainer>
+              {LinkItems.map((item) => (
+                <div key={item.id}>{item.elementList}</div>
+              ))}
+            </NavbarLinkContainer>
+          </CenterContainer>
+          <Tooltip title="Perfil">
+            <IconButton onClick={() => toogleSidebar()}>
+              <Profile src={userData.picture} width={40} height={40} alt="User profile" />
+            </IconButton>
+          </Tooltip>
+        </RightContainer>
+      </NavbarInnerContainer>
+    </NavbarContainer>
   );
 };
 

@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import { Aside } from "../../styles/components/layout/SiderStyles";
 import { Item } from "../../styles/components/menu/MenuStyles";
 import { MenuProps } from "./menu";
 
-export const Menu: React.FC<MenuProps> = ({ items }) => {
+export const Menu: React.FC<MenuProps> = ({ items, open }) => {
   return (
-    <nav>
+    <Aside open={open}>
       <ul style={{ marginTop: "2rem", listStyle: "none", padding: "0 1rem" }}>
         {items?.map((item, index) => (
           <Item key={index}>
@@ -18,6 +19,6 @@ export const Menu: React.FC<MenuProps> = ({ items }) => {
           </Item>
         ))}
       </ul>
-    </nav>
+    </Aside>
   );
 };

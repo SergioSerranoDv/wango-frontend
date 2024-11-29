@@ -1,11 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { LoadingAnimation } from "../components/Loading";
 import { SignBoardWithVariablesToCalculateWaterFootprint } from "../components/SignBoard";
 import { TableV1 } from "../components/tables/TableV1";
 import { ApiContext } from "../context/ApiContext";
+import { UseGet } from "../hooks/UseGet";
+import { UsePagination } from "../hooks/UsePagination";
 import { Collection, CollectionDataInit } from "../interfaces/collection";
 import { Crop, CropDataInit } from "../interfaces/crop";
-import { Records } from "../interfaces/record";
+import { Record } from "../interfaces/record";
 import { MainLayout } from "../layouts/MainLayout";
 import { formatDate } from "../services/Date";
 import { findCollectionById } from "../services/collection_s";
@@ -27,19 +30,17 @@ export const WF: React.FC = () => {
   const { backendApiCall } = useContext(ApiContext);
   const { id, type } = useParams<{ id: string; type: string }>();
   const collectionId = id;
+  const { currentPage, setCurrentPage, rowsPerPage, setRowsPerPage } = UsePagination();
   const [crop, setCrop] = useState<Crop>(CropDataInit);
+  const { data, loading, setRefetch } = UseGet({
+    endpoint: `v1/collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
+  });
 
   //Se declara el estado inicial de collection
   const [collection, setCollection] = useState<Collection>(CollectionDataInit);
   const [waterFootprint, setWaterFootprint] = useState<any>({}); // Estado para almacenar la huella hídrica
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(9);
-  const [collectionRecords, setCollectionRecords] = useState<Records[]>([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [loadingCollectionData, setLoadingCollectionData] = useState(true);
-  const [refetch, setRefetch] = useState(0);
 
   useEffect(() => {
     async function loadCollectionDetails() {
@@ -77,34 +78,6 @@ export const WF: React.FC = () => {
     fetchCropDetails();
   }, [backendApiCall, cropId]);
 
-  //Fetch the collection records
-  useEffect(() => {
-    async function fetchCollectionRecords() {
-      if (collectionId) {
-        try {
-          const collectionRecords = await backendApiCall({
-            method: "GET",
-            endpoint: `collection-record/paginated?page=${currentPage}&limit=${rowsPerPage}&collection_id=${collectionId}`,
-          });
-          const formattedRecords = collectionRecords.data.collectionRecords.map((record: any) => ({
-            ...record,
-            createdAt: new Date(record.createdAt).toLocaleString(undefined, {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            }),
-          }));
-          setCollectionRecords(formattedRecords);
-          setTotalPages(collectionRecords.data.meta.total_pages);
-          setLoadingCollectionData(false);
-        } catch (error) {
-          console.log("Error al obtener los datos de la colección:", error);
-        }
-      }
-    }
-    fetchCollectionRecords();
-  }, [backendApiCall, collectionId]);
-
   useEffect(() => {
     async function fetchWaterFootprint() {
       if (collectionId && cropId) {
@@ -125,10 +98,45 @@ export const WF: React.FC = () => {
     fetchWaterFootprint();
   }, [backendApiCall, collectionId, cropId]);
 
+  const columns = useCallback(
+    () => [
+      {
+        title: "Fecha de creación",
+        dataIndex: "createdAt",
+        render: (record: Record) =>
+          record.createdAt ? formatDate(record.createdAt.toString()) : "N/A",
+      },
+
+      {
+        title: "Rendimiento diario (kg)",
+        dataIndex: "daily_performance",
+        render: (record: Record) => record.daily_performance,
+      },
+      {
+        title: "Etapa actual",
+        dataIndex: "current_stage",
+        render: (record: Record) => record.current_stage,
+      },
+      {
+        title: "ETo (mm/día)",
+        dataIndex: "reference_evotranspiration",
+        render: (record: Record) => record.reference_evotranspiration,
+      },
+      {
+        title: "ETc (mm/día)",
+        dataIndex: "actual_crop_evapotranspiration",
+        render: (record: Record) => record.actual_crop_evapotranspiration,
+      },
+    ],
+    [setRefetch]
+  );
+
   return (
-    <>
-      <MainLayout>
-        <FormContainer>
+    <MainLayout>
+      {loading ? (
+        <LoadingAnimation />
+      ) : (
+        <>
           <SignBoard $custom4>Registros del cultivo '{crop?.name}' en el periodo</SignBoard>
           <SignBoard $custom3>
             {initialDate ? `${initialDate} - ` : ""}
@@ -143,13 +151,13 @@ export const WF: React.FC = () => {
             <DetailsSign2 $custom3>
               ETo ={" "}
               <DetailsItem>
-                {collectionRecords && collectionRecords.length > 0
+                {data.collectionRecords.length > 0
                   ? (() => {
-                      let eto = collectionRecords.reduce(
-                        (acc, record) => acc + record.reference_evotranspiration,
+                      let eto = data.collectionRecords.reduce(
+                        (acc: number, record: Record) => acc + record.reference_evotranspiration,
                         0
                       );
-                      eto = eto / collectionRecords.length;
+                      eto = eto / data.collectionRecords.length;
                       eto = eto * 365;
                       return eto.toFixed(2);
                     })()
@@ -160,15 +168,15 @@ export const WF: React.FC = () => {
             <DetailsSign2 $custom3>
               R ={" "}
               <DetailsItem>
-                {collectionRecords && collectionRecords.length > 0
+                {data.collectionRecords.length > 0
                   ? (() => {
-                      let r = collectionRecords.reduce(
-                        (acc, record) => acc + record.daily_performance,
+                      let r = data.collectionRecords.reduce(
+                        (acc: number, record: Record) => acc + record.daily_performance,
                         0
                       );
                       // convert to kg/year
                       r = r * 365;
-                      r = r / collectionRecords.length;
+                      r = r / data.collectionRecords.length;
                       r = r / 1000; // Convert to tons/year
                       return r.toFixed(2);
                     })()
@@ -181,15 +189,16 @@ export const WF: React.FC = () => {
                 {}
                 Ir ={" "}
                 <DetailsItem>
-                  {collectionRecords && collectionRecords.length > 0
+                  {data.collectionRecords.length > 0
                     ? (() => {
-                        let etc = collectionRecords.reduce(
-                          (acc, record) => acc + record.actual_crop_evapotranspiration,
+                        let etc = data.collectionRecords.reduce(
+                          (acc: number, record: Record) =>
+                            acc + record.actual_crop_evapotranspiration,
                           0
                         );
                         // convert to kg/year
                         etc = etc * 365;
-                        etc = etc / collectionRecords.length;
+                        etc = etc / data.collectionRecords.length;
                         let lr = etc / 1.75;
                         return lr.toFixed(2);
                       })()
@@ -198,26 +207,26 @@ export const WF: React.FC = () => {
                 </DetailsItem>
               </DetailsSign2>
             )}
-            {type === "grey" && (
+            {/* {type === "grey" && (
               <>
-                {/* <DetailsSign2 $custom3>
+                <DetailsSign2 $custom3>
                   AR ={" "}
                   <DetailsItem>
-                    {collectionRecords && collectionRecords.length > 0
+                    {data.collectionRecords.length > 0
                       ? (() => {
-                          let ar = collectionRecords.reduce(
-                            (acc, record) => acc + record.amount_chemicals_used,
+                          let ar = data.collectionRecords.reduce(
+                            (acc: number, record: Record) => acc + record.chemicals_used,
                             0
                           );
                           // convert to kg/year
                           ar = ar * 365;
-                          ar = ar / collectionRecords.length;
+                          ar = ar / data.collectionRecords.length;
                           return ar.toFixed(2);
                         })()
                       : null}
                     m3/año
                   </DetailsItem>
-                </DetailsSign2> */}
+                </DetailsSign2>
                 <DetailsSign2 $custom3>
                   C<SubLabel>max</SubLabel>=<DetailsItem> 50mg/L</DetailsItem>
                 </DetailsSign2>
@@ -225,7 +234,7 @@ export const WF: React.FC = () => {
                   C<SubLabel>nat</SubLabel>=<DetailsItem> 50mg/L</DetailsItem>
                 </DetailsSign2>
               </>
-            )}
+            )} */}
           </InfoContainer>
           <ContainerInput>
             <Label htmlFor="WateFGreen" $custom1>
@@ -257,10 +266,9 @@ export const WF: React.FC = () => {
               }
             />
           </ContainerInput>
-          <SignBoard $custom5>Hechos en el periodo</SignBoard>
-          {/* {!loadingCollectionData && collectionRecords.length > 0 && (
+          {data.collectionRecords.length > 0 && (
             <TableV1
-              oddcolor="#FFFFFF"
+              data={data.collectionRecords}
               evencolor={
                 type === "blue"
                   ? "rgb(6, 182, 212, 0.2)"
@@ -270,28 +278,21 @@ export const WF: React.FC = () => {
                       ? "rgb(115, 115, 115, 0.2)"
                       : ""
               }
-              data={collectionRecords}
+              oddcolor="#FFFFFF"
               pagination={{
                 setRefetch,
                 rowsPerPage,
                 setRowsPerPage,
                 currentPage,
                 setCurrentPage,
-                totalPages: totalPages,
+                totalPages: data.meta.total_pages,
               }}
-              columns={["Fecha", "R", "Kc", "ETo", "ETc"]}
-              columnMapping={{
-                Fecha: "createdAt",
-                R: "daily_performance",
-                Kc: "current_stage",
-                ETo: "reference_evotranspiration",
-                ETc: "actual_crop_evapotranspiration",
-              }}
-              options={{ edit: () => {}, delete: () => {} }}
+              columns={columns()}
+              title="Registros de la recolección"
             />
-          )} */}
-        </FormContainer>
-      </MainLayout>
-    </>
+          )}
+        </>
+      )}
+    </MainLayout>
   );
 };

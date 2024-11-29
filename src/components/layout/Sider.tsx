@@ -2,7 +2,6 @@ import React from "react";
 import fertilizer from "../../assets/icons/fertilizer.svg";
 import lot from "../../assets/icons/lot.svg";
 import water from "../../assets/icons/water.svg";
-import { Aside } from "../../styles/components/layout/SiderStyles";
 import { Menu } from "../menu/index.d";
 import { Dashboard } from "@mui/icons-material";
 
@@ -34,9 +33,5 @@ export const Sider: React.FC<SiderProps> = ({ isOpen }) => {
     },
   ];
 
-  return (
-    <Aside open={isOpen}>
-      <Menu items={menuItems} />
-    </Aside>
-  );
+  return <Menu items={menuItems} open={isOpen} />;
 };

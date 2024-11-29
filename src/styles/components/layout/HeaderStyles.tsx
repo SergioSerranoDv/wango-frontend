@@ -19,7 +19,8 @@ export const NavbarContainer = styled.nav`
   background-color: #ffb032;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
+  z-index: 20;
   top: 0;
   width: 100%;
 `;

@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { Header } from "../components/layout/Header";
 import { Sider } from "../components/layout/Sider";
-import { Container, Content } from "../styles/GlobalStyles";
+import { Container, Wrapper } from "../styles/GlobalStyles";
 
 export const MainLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -24,10 +24,10 @@ export const MainLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Header toogleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
-      <Content>
+      <Wrapper>
         <Sider isOpen={isSidebarOpen} />
         <Container>{children}</Container>
-      </Content>
+      </Wrapper>
     </>
   );
 };
