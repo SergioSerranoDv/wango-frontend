@@ -7,8 +7,8 @@ export const Container = styled.main`
   transition: margin-left 0.3s ease;
 
   @media (max-width: 768px) {
-    margin-left: 0
-    padding: 1rem;
+    margin-left: 0;
+    padding: 2rem 1rem;
   }
 `;
 

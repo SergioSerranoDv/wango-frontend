@@ -2,15 +2,7 @@ import React, { useState, useContext } from "react";
 import { ApiContext } from "../../context/ApiContext";
 import { UseNotification } from "../../hooks/UseNotification";
 import { createProduct } from "../../services/product_s";
-import {
-  Form,
-  Input,
-  Label,
-  FormField,
-  FormContainer,
-  SelectInput,
-  FormContent,
-} from "../../styles/FormStyles";
+import { Form, Input, Label, FormField, FormContainer, FormContent } from "../../styles/FormStyles";
 import { NotificationModal } from "../modals/NotificationModal";
 
 interface Props {
@@ -96,21 +88,7 @@ export const ProductForm: React.FC<Props> = ({ closeModal, refetchProductDetails
             </FormField>
             <FormField>
               <Label htmlFor="type">Tipo*</Label>
-              <SelectInput
-                id="type"
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Selecciona un tipo</option>
-                <option value="pesticide">Pesticida</option>
-                <option value="fertilizer">Fertilizante</option>
-                <option value="fungicide">Fungicida</option>
-                <option value="insecticide">Insecticida</option>
-                <option value="additive">Aditivo</option>
-                <option value="other">Otro</option>
-              </SelectInput>
+              <Input id="type" name="type" value={formData.type} onChange={handleChange} required />
             </FormField>
             <FormField>
               <Label htmlFor="description">Descripción</Label>

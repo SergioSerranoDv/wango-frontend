@@ -195,5 +195,8 @@ export const generatePDF = (WFDetails: WaterFootprintI) => {
     { maxWidth: 170, align: "justify" }
   );
 
+  doc.setFont("helvetica", "normal");
+  doc.text(`${WFDetails.ia_suggestion}`, 20, 135, { maxWidth: 170 });
+
   doc.save("Informe_Huella_Hidrica.pdf");
 };
