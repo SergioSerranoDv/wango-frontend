@@ -78,13 +78,7 @@ export const Header: React.FC<HeaderProps> = ({ toogleSidebar }) => {
             </CenterContainer>
             <Tooltip title="Perfil">
               <IconButton onClick={() => toogleSidebar()}>
-                <Profile
-                  onClick={() => toogleSidebar()}
-                  src={userData.picture}
-                  width={40}
-                  height={40}
-                  alt="User profile"
-                />
+                <Profile src={userData.picture} width={40} height={40} alt="User profile" />
               </IconButton>
             </Tooltip>
           </RightContainer>
