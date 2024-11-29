@@ -1,14 +1,31 @@
-import React, { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ApiContext } from "../../context/ApiContext";
+import React, { useRef, useState } from "react";
 import { Edit } from "../../icons/Actions";
+import { Record } from "../../interfaces/record";
+import { RecordFormEdit } from "../forms/RecordFormEdit";
+import { Modal } from "../modals/Modal";
 import { MoreVert } from "@mui/icons-material";
 import { Menu, Typography, Tooltip, IconButton, MenuItem } from "@mui/material";
 
-export const CollectionRecordActions = () => {
-  const { backendApiCall } = useContext(ApiContext);
+interface Props {
+  collectionId: string;
+  crop: {
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
+  currentGrowth: number;
+  record: Record;
+  setRefetch: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const CollectionRecordActions: React.FC<Props> = ({
+  collectionId,
+  currentGrowth,
+  crop,
+  record,
+  setRefetch,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const elRef = useRef<HTMLButtonElement>(null);
 
@@ -18,15 +35,10 @@ export const CollectionRecordActions = () => {
       icon: <Edit />,
       name: "Editar registro",
     },
-
-    // {
-    //   action: () => setIsDeleteModalOpen(true),
-    //   icon: <DeleteIcon />,
-    //   name: "Eliminar recolección",
-    // },
   ];
+
   return (
-    <div>
+    <>
       <Tooltip title="Opciones" placement="top">
         <IconButton ref={elRef} onClick={() => setIsMenuOpen(true)}>
           <MoreVert />
@@ -48,6 +60,19 @@ export const CollectionRecordActions = () => {
           </MenuItem>
         ))}
       </Menu>
-    </div>
+
+      {isEditModalOpen && (
+        <Modal title="Editar registro" closeModal={() => setIsEditModalOpen(false)}>
+          <RecordFormEdit
+            collectionId={collectionId}
+            crop={crop}
+            currentGrowth={currentGrowth}
+            record={record}
+            onClose={() => setIsEditModalOpen(false)}
+            setRefetch={setRefetch}
+          />
+        </Modal>
+      )}
+    </>
   );
 };
