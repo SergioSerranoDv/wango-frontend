@@ -1,7 +1,6 @@
 import { fetchWeatherApi } from "openmeteo";
 
 export const calculateEt0andETc = async (latitude: number, longitude: number) => {
-  console.log("Calculating ET0 and ETc...", latitude, longitude);
   const params = {
     latitude: latitude,
     longitude: longitude,
