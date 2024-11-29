@@ -10,5 +10,5 @@ export const Dashboard: React.FC = () => {
   if (appContextIsFetching) {
     return <LoadingAnimation />;
   }
-  return <>{userData && userData.security.identity_verified ? <MainMenu /> : <SignUp></SignUp>}</>;
+  return <>{userData && userData.security.identity_verified ? <MainMenu /> : <SignUp />}</>;
 };
