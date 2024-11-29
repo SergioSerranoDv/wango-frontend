@@ -60,10 +60,18 @@ export const CollectionRecords = () => {
       {
         title: "Acciones",
         dataIndex: "_id",
-        render: (record: any) => <CollectionRecordActions />,
+        render: (record: any) => (
+          <CollectionRecordActions
+            record={record}
+            crop={cropData}
+            collectionId={collectionId}
+            currentGrowth={1.75}
+            setRefetch={setRefetch}
+          />
+        ),
       },
     ],
-    []
+    [setRefetch, collectionId, cropData]
   );
 
   useEffect(() => {
